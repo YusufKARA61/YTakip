@@ -1,0 +1,71 @@
+{% extends "admin/layout.html" %}
+{% block title %}Admin Panel - Mail Ayarları{% endblock title %}
+
+{% block content %}
+
+<section class="py-5">
+    <div class="row">
+        <div class="col-lg-12 mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="h6 text-uppercase mb-0">Mail Ayarları</h3>
+                </div>
+                <div class="card-body">
+                    <form class="form-horizontal" action="{{ url_for('admin.mail_settings') }}" method="POST">
+                        {{ form.csrf_token }}
+
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label">{{ form.mail_server.label }}</label>
+                            <div class="col-md-9">
+                                {{ form.mail_server(class="form-control form-control-lg") }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label">{{ form.mail_port.label }}</label>
+                            <div class="col-md-9">
+                                {{ form.mail_port(class="form-control form-control-lg") }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label">{{ form.mail_use_tls.label }}</label>
+                            <div class="col-md-9">
+                                {{ form.mail_use_tls(class="form-check-input") }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label">{{ form.mail_username.label }}</label>
+                            <div class="col-md-9">
+                                {{ form.mail_username(class="form-control form-control-lg") }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label">{{ form.mail_password.label }}</label>
+                            <div class="col-md-9">
+                                {{ form.mail_password(class="form-control form-control-lg") }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label">{{ form.mail_default_sender.label }}</label>
+                            <div class="col-md-9">
+                                {{ form.mail_default_sender(class="form-control form-control-lg") }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-9 ml-auto">
+                                {{ form.submit(class="btn btn-primary") }}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

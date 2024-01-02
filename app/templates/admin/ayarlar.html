@@ -1,0 +1,127 @@
+{% extends "admin/layout.html" %}
+{% block title %}Admin Panel - Genel Ayarlar{% endblock title %}
+
+{% block content %} 
+
+<section class="py-5">
+    <div class="row">
+        <!-- Form Elements -->
+        <div class="col-lg-12 mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="h6 text-uppercase mb-0">Genel Ayarlar</h3>
+                </div>
+                <div class="card-body">
+                    <form class="form-horizontal" action="{{ url_for('admin.ayarlar') }}" method="POST" enctype="multipart/form-data">
+                        {{ form.csrf_token }}
+                        
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label">Site Adı</label>
+                            <div class="col-md-9">
+                                <input type="text" name="site_name" class="form-control form-control-lg" value="{{ form.site_name.data or ayar.site_name }}" placeholder="Site Adı">
+                                {% for error in form.site_name.errors %}
+                                <small class="form-text text-muted" style="color: red;">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label">Ana Sayfa Manşet</label>
+                            <div class="col-md-9">
+                                <input type="text" name="site_title" class="form-control form-control-lg" value="{{ form.site_title.data or ayar.site_title }}" placeholder="Ana Sayfa Manşet">
+                                {% for error in form.site_title.errors %}
+                                <small class="form-text text-muted" style="color: red;">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label">Site Logo</label>
+                            <div class="col-md-9">
+                                <input type="file" name="site_logo" class="form-control-file">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label">Google Analytics</label>
+                            <div class="col-md-9">
+                                <input type="text" name="google_analytics" class="form-control" value="{{ form.google_analytics.data or ayar.google_analytics }}" placeholder="Google Analytics Kodu">
+                                {% for error in form.google_analytics.errors %}
+                                <small class="form-text text-muted" style="color: red;">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label">Seo Anahtar Kelime</label>
+                            <div class="col-md-9">
+                                <input type="text" name="seo_keywords" class="form-control" value="{{ form.seo_keywords.data or ayar.seo_keywords }}" placeholder="Seo Anahtar Kelime">
+                                {% for error in form.seo_keywords.errors %}
+                                <small class="form-text text-muted" style="color: red;">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label">Seo Açıklama</label>
+                            <div class="col-md-9">
+                                <input type="text" name="seo_description" class="form-control" value="{{ form.seo_description.data or ayar.seo_description }}" placeholder="Seo Açıklama">
+                                {% for error in form.seo_description.errors %}
+                                <small class="form-text text-muted" style="color: red;">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label">Instagram</label>
+                            <div class="col-md-9">
+                                <input type="text" name="site_instagram" class="form-control" value="{{ form.site_instagram.data or ayar.site_instagram }}" placeholder="Instagram Adresi">
+                                {% for error in form.site_instagram.errors %}
+                                <small class="form-text text-muted" style="color: red;">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label">Facebook</label>
+                            <div class="col-md-9">
+                                <input type="text" name="site_facebook" class="form-control" value="{{ form.site_facebook.data or ayar.site_facebook }}" placeholder="Facebook Adresi">
+                                {% for error in form.site_facebook.errors %}
+                                <small class="form-text text-muted" style="color: red;">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label">Twitter</label>
+                            <div class="col-md-9">
+                                <input type="text" name="site_twitter" class="form-control" value="{{ form.site_twitter.data or ayar.site_twitter }}" placeholder="Twitter Adresi">
+                                {% for error in form.site_twitter.errors %}
+                                <small class="form-text text-muted" style="color: red;">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label">YouTube</label>
+                            <div class="col-md-9">
+                                <input type="text" name="site_youtube" class="form-control" value="{{ form.site_youtube.data or ayar.site_youtube }}" placeholder="YouTube Adresi">
+                                {% for error in form.site_youtube.errors %}
+                                <small class="form-text text-muted" style="color: red;">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-9 ml-auto">
+                                <button type="submit" class="btn btn-primary">Kaydet</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

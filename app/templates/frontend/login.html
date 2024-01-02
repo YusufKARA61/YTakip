@@ -1,0 +1,59 @@
+{% extends "frontend/layout.html" %}
+{% block title %} Giriş {% endblock title %}
+
+{% block icerik %} 
+
+<section class="hero loadercontent">
+    <div class="container mb-5">
+      <h1 class="hero-heading mb-0 mobcenter">GİRİŞ</h1>
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert alert-danger">
+                {% for message in messages %}
+                   {{ message }}
+               {% endfor %}
+            </div>
+          {% endif %}
+          {% endwith %}
+          
+          <form action="{{ url_for('auth.login') }}" method="post" class="login-form text-left">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group mb-4 mobcenter">
+              <label for="email">E-Mail</label>
+              <input class="form-control" type="text" id="email" placeholder="E-Posta" name="email" required="required" />
+              {% if form.email.errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.email.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="form-group mb-4 mobcenter">
+              <label for="password">Şifre</label>
+              <input class="form-control" type="password" id="password" placeholder="Şifre" name="password" required="required" />
+              {% if form.password.errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.password.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="form-group mobcenter">
+              <input type="submit" value="Giriş" class="btn btn-primary" />
+              veya <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Kayıt</a>
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-6"><img src="{{ url_for('static', filename='front/img/add_user.svg') }}" class="hero-image img-fluid d-none d-lg-block" /></div>
+      </div>
+    </div>
+  </section>
+
+{% endblock icerik %} 

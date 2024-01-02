@@ -1,0 +1,43 @@
+{% extends "frontend/layout.html" %}
+{% block title %} Profilim {% endblock title %}
+
+{% block icerik %} 
+<section>
+    <div class="container">
+        <header>
+            <div class="jumbotron">
+                <h1>Sana Özel</h1>
+            </div>
+        </header>
+
+        <div class="row"> 
+            <!-- sidebar-->
+            <aside class="sidebar col-lg-3 mt-5 mt-lg-0">
+                <div class="sidebar-widget mb-4">
+                    <h4 class="sidebar-widget-heading">Menü</h4>
+                    <ul class="list-unstyled pl-0 mt-4">
+                        {% if current_user.membership_type == 'musteri' %}
+                            <li><a href="" class="categories-link">Taleplerim</a></li>
+                        {% elif current_user.membership_type == 'muteahhit' %}
+                            <li><a href="" class="categories-link">Talepler</a></li>
+                            <li><a href="" class="categories-link">Tekliflerim</a></li>
+                            <li><a href="" class="categories-link">Projelerim</a></li>
+                            <li><a href="" class="categories-link">Abonelik</a></li>
+                        {% elif current_user.membership_type == 'emlak' %}
+                            <li><a href="" class="categories-link">Portföyüm</a></li>
+                        {% endif %}
+                        <li><a href="{{ url_for('auth.profile_ayar') }}" class="categories-link">Kullanıcı Bilgilerim</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- İçerik Kısmı -->
+            <div class="col-lg-9">
+                {% block content %}
+                <p>Hoşgeldin {{ current_user.first_name }} {{ current_user.last_name }}</p>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock icerik %} 

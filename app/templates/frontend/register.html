@@ -1,0 +1,77 @@
+{% extends "frontend/layout.html" %}
+{% block title %} Kayıt {% endblock title %}
+
+{% block icerik %} 
+
+<section class="hero loadercontent">
+    <div class="container mb-5">
+      <h1 class="hero-heading mb-0 mobcenter">KAYIT</h1>
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <div class="alert alert-danger">
+                  {% for message in messages %}
+                     {{ message }}
+                 {% endfor %}
+              </div>
+            {% endif %}
+          {% endwith %}
+
+          <form action="{{ url_for('auth.register') }}" method="post" class="login-form text-left">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    {% for subfield in form.membership_type %}
+                        <div class="custom-control custom-radio custom-control-inline">
+                            {{ subfield(class="custom-control-input") }}
+                            <label for="{{ subfield.id }}" class="custom-control-label">{{ subfield.label.text }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="form-group mb-4 mobcenter">
+              {{ form.first_name.label(class="form-control-label") }}
+              {{ form.first_name(class="form-control") }}
+            </div>
+            <div class="form-group mb-4 mobcenter">
+                {{ form.last_name.label(class="form-control-label") }}
+                {{ form.last_name(class="form-control") }}
+              </div>
+            <div class="form-group mb-4 mobcenter">
+              {{ form.email.label(class="form-control-label") }}
+              {{ form.email(class="form-control") }}
+            </div>
+            <div class="form-group mb-4 mobcenter">
+              {{ form.password.label(class="form-control-label") }}
+              {{ form.password(class="form-control") }}
+            </div>
+            <div class="form-group mb-4 mobcenter">
+              {{ form.confirm_password.label(class="form-control-label") }}
+              {{ form.confirm_password(class="form-control") }}
+            </div>
+
+            <div class="form-group mb-4 mobcenter">
+              <div class="custom-control custom-checkbox">
+                  {{ form.accept_terms(class="custom-control-input", id="acceptTerms") }}
+                  <label class="custom-control-label" for="acceptTerms">
+                    <a href="" target="_blank">Kullanıcı Sözleşmesi</a>ni okudum ve kabul ediyorum.
+                  </label>
+              </div>
+            </div>
+
+            <div class="form-group mobcenter">
+              {{ form.submit(class="btn btn-primary") }}
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-6">
+          <img src="{{ url_for('static', filename='front/img/add_user.svg') }}" class="hero-image img-fluid d-none d-lg-block" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock icerik %} 

@@ -1,0 +1,65 @@
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        border: none;
+    }
+
+    .carousel {
+        background-color: transparent;
+    }
+
+    .carousel-item p {
+        color: black;
+    }
+
+    .table-image {
+        width: 100px;
+        height: auto;
+    }
+
+    .clickable-row {
+        cursor: pointer;
+    }
+    
+    .clickable-row:hover {
+        background-color: #38b6ff;
+    }
+    
+    #cookie-consent {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        bottom: 20px;
+        right: 20px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+      
+      #cookie-consent p {
+        margin: 0 0 10px;
+      }
+      
+      #cookie-consent button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .star {
+        cursor: pointer;
+        font-size: 24px;
+        color: gray;
+        transition: color 0.2s;
+      }
+      
+      .star:hover {
+        color: gold;
+      }
+      
+      
+      
