@@ -1,0 +1,69 @@
+{% extends "admin/layout.html" %}
+{% block title %}Admin Panel - KDSID Ayarları{% endblock title %}
+
+{% block content %} 
+<section class="py-5">
+    <div class="card">
+        <div class="card-header">
+            <h3>KDSID Ayarları</h3>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('admin.kdsid_ayarlari') }}" method="post">
+                {{ form.csrf_token }}
+
+                <div class="form-group">
+                    <label>Birleşik Parsel Sayısı:</label>
+                    {{ form.birlesik_parsel_sayisi(class="form-control") }}
+                </div>
+
+                <div class="form-group">
+                    <label>Minimum Toplam Arsa Alanı:</label>
+                    {{ form.toplam_arsa_alani_min(class="form-control") }}
+                </div>
+
+                <div class="form-group">
+                    <label>Site Artış Oranı:</label>
+                    {{ form.is_site_artis_orani(class="form-control") }}
+                </div>
+
+                <div class="form-group">
+                    <label>Boş Parsel Artış Oranı:</label>
+                    {{ form.bos_parsel_artis_orani(class="form-control") }}
+                </div>
+
+                <div class="form-group">
+                    <label>Diğer Parsel Artış Oranı:</label>
+                    {{ form.diger_parsel_artis_orani(class="form-control") }}
+                </div>
+
+                <div class="form-group">
+                    <label>3000 m² Üzeri Arsa Artış Oranı:</label>
+                    {{ form.arsa_alani_3000_artis_orani(class="form-control") }}
+                </div>
+
+                <div class="form-group">
+                    <label>2000 m² Üzeri Arsa Artış Oranı:</label>
+                    {{ form.arsa_alani_2000_artis_orani(class="form-control") }}
+                </div>
+
+                <div class="form-group">
+                    <label>1000 m² Üzeri Arsa Artış Oranı:</label>
+                    {{ form.arsa_alani_1000_artis_orani(class="form-control") }}
+                </div>
+
+                <div class="form-group">
+                    <label>750 m² Üzeri Arsa Artış Oranı:</label>
+                    {{ form.arsa_alani_750_artis_orani(class="form-control") }}
+                </div>
+
+                <div class="form-group">
+                    <label>500 m² Üzeri Arsa Artış Oranı:</label>
+                    {{ form.arsa_alani_500_artis_orani(class="form-control") }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Ayarları Güncelle</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock content %}

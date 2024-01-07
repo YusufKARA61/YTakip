@@ -544,3 +544,45 @@ $(function () {
 
 
 });
+
+function kdsidOranGrafikOlustur(kdsid, toplamKdsid, index) {
+    var ctx = document.getElementById('kdsidOranGrafik' + index).getContext('2d');
+
+  // Oranı hesaplayın
+  var kdsidOrani = (toplamKdsid / kdsid) * 100;
+  var geriKalanOran = 100 - kdsidOrani;
+
+  var grafikVerileri = {
+    labels: ['Onaylayan', 'Onaylamayan'],
+    datasets: [{
+      data: [kdsidOrani, geriKalanOran], // KDSID ve geri kalan
+      backgroundColor: ['#DF99CA', '#eee'], // Renkleri kendi renklerinizle değiştirebilirsiniz.
+      hoverBackgroundColor: ['#DF99CA', '#eee']
+    }]
+  };
+
+    var grafikSecenekleri = {
+        cutoutPercentage: 80,
+        legend: {
+            display: false
+        }
+    };
+
+    var kdsidOranGrafik = new Chart(ctx, {
+        type: 'doughnut',
+        data: grafikVerileri,
+        options: grafikSecenekleri
+    });
+}
+
+// Sayfa yüklendikten sonra grafiği oluştur
+window.addEventListener('load', function() {
+    var veriler = document.querySelectorAll('.veriler'); // Tüm verileri seçin
+    veriler.forEach(function(veri, index) {
+        var kdsid = parseInt(veri.getAttribute('data-kdsid'));
+        var toplamKdsid = parseInt(veri.getAttribute('data-toplamKdsid'));
+        kdsidOranGrafikOlustur(kdsid, toplamKdsid, index + 1); // Index + 1 çünkü loop.index 1'den başlar
+    });
+});
+
+

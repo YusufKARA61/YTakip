@@ -15,20 +15,23 @@ def authenticated_required(view_func):
     return decorated_function
 
 
-def kdsid_hesapla(mvid, toplam_arsa_alani, birlesik_parsel_sayisi, is_site, bos_parsel_numaralari, parsel):
+def kdsid_hesapla(mvid, toplam_arsa_alani, birlesik_parsel_sayisi, is_site, bose_parsel_numaralari, parsel):
     kdsid = mvid  # Başlangıçta kdsid, mvid değeri ile aynıdır.
+
+    # bose_parsel_numaralari string'ini virgülle ayrılmış parsel numaralarının listesine dönüştür
+    bose_parsel_listesi = bose_parsel_numaralari.split(',')
+
+    # parsel değerini string'e çevir
+    parsel_str = str(parsel)
     
     # Eğer alan site ise koşulsuz %30 artış yapılır.
     if is_site:
         kdsid *= 1.30
     else:
-        # 6 veya daha fazla parselin birleşmesi durumunda ve boş parsel varsa %15 artış
-        # Boş parsel kontrolü
-        if birlesik_parsel_sayisi >= 6 and parsel in bos_parsel_numaralari:
-            if parsel in bos_parsel_numaralari:
-                kdsid *= 1.15  # Boş parsel ise %15 artır
-            else:
-                kdsid *= 1.30  # Diğer parseller için %30 artır
+        # 6 veya daha fazla parselin birleşmesi ve toplam arsa alanı 1000m2 üzerinde ise
+        if birlesik_parsel_sayisi >= 6 and toplam_arsa_alani > 1000:
+            # Boş parsel ise %15 artır, değilse %30 artır
+            kdsid *= 1.15 if parsel_str in bose_parsel_listesi else 1.30
         else:
             # Diğer alan büyüklüğüne göre artış yüzdeleri
             if toplam_arsa_alani > 3000:
@@ -41,5 +44,7 @@ def kdsid_hesapla(mvid, toplam_arsa_alani, birlesik_parsel_sayisi, is_site, bos_
                 kdsid *= 1.15
             elif toplam_arsa_alani > 500:
                 kdsid *= 1.10
+
     return kdsid
+
 

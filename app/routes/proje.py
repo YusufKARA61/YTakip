@@ -7,6 +7,10 @@ import pandas as pd
 from sqlalchemy import func, case
 from flask import current_app
 from app import db
+import os
+from werkzeug.utils import secure_filename
+from collections import defaultdict
+
 
 proje = Blueprint('proje', __name__)
 
@@ -29,14 +33,25 @@ def proje_ekle():
 
         # Excel dosyasını işle
         if excel_file:
-            workbook = openpyxl.load_workbook(excel_file)
+            # Dosya adını güvenli bir şekilde al
+            filename = secure_filename(excel_file.filename)
+            # Dosyayı bir yere kaydet (örneğin 'uploads' klasörüne)
+            filepath = os.path.join('uploads', filename)
+            excel_file.save(filepath)
+
+            workbook = openpyxl.load_workbook(filepath)
             sheet = workbook.active
 
-            # Excel dosyasını oku
-            df = pd.read_excel('your_excel_file.xlsx')
+            # Dosyayı kaydettikten sonra pandas ile oku
+            df = pd.read_excel(filepath)
 
             # 'ada' ve 'parsel' sütunlarına göre grupla
-            grouped = df.groupby(['ada', 'parsel'])
+            grouped = df.groupby(['ada', 'parsel'])['arsaalan'].sum()
+
+            # Toplam arsa alanını bir sözlükte sakla
+            toplam_arsa_alani_dict = defaultdict(float)
+            for (ada, parsel), total_area in grouped.items():
+                toplam_arsa_alani_dict[(ada, parsel)] = total_area
 
             # Grup sayısını hesapla
             birlesik_parsel_sayisi = len(grouped)
@@ -48,8 +63,12 @@ def proje_ekle():
                 # Hesaplamalar
                 hisseoran = kisiarsaalan / arsaalan if arsaalan > 0 else 0
 
+                ada, parsel = row[-2], row[-1]
+                toplam_arsa_alani = toplam_arsa_alani_dict.get((ada, parsel), 0)
+
+
                 # Kdsid hesapla
-                kdsid = kdsid_hesapla(mvid, arsaalan, birlesik_parsel_sayisi, is_site, bose_parsel_numaralari)
+                kdsid = kdsid_hesapla(mvid, toplam_arsa_alani, birlesik_parsel_sayisi, is_site, bose_parsel_numaralari, parsel)
 
                 # Veri tablosuna veri ekle
                 yeni_veri = Veri(proje_id=yeni_proje.proje_id, isim=isim, telefon=telefon, tcno=tcno, mvid=mvid, kdsid=kdsid, arsaalan=arsaalan, kisiarsaalan=kisiarsaalan, hisseoran=hisseoran, ada=ada, parsel=parsel)
@@ -80,16 +99,21 @@ def proje_detay(proje_id):
         Veri.ada, 
         Veri.parsel,
         func.sum(Veri.kdsid).label('kdsid_toplam'),
-        func.sum(case([(Veri.onay_durumu == True, Veri.kdsid)], else_=0)).label('kdsid_onayli_toplam')
+        func.sum(case((Veri.onay_durumu == True, Veri.kdsid), else_=0)).label('kdsid_onayli_toplam')
     ).filter(Veri.proje_id == proje_id).group_by(Veri.ada, Veri.parsel).all()
 
     # Proje ile ilişkilendirilmiş diğer detaylı verileri çek (mvid_hisseoran hesaplaması dahil)
     fizveriler = db.session.query(
         Veri.ada,
+        Veri.isim,
+        Veri.tcno,
+        Veri.arsaalan,
         Veri.parsel,
         Veri.mvid,
         Veri.hisseoran,
+        Veri.kisiarsaalan,
         (Veri.mvid * Veri.hisseoran).label('mvid_hisseoran'),
+        (Veri.kdsid * Veri.hisseoran).label('kdsid_hisseoran'),
         # Diğer gerekli sütunlar...
     ).filter(Veri.proje_id == proje_id).all()
 

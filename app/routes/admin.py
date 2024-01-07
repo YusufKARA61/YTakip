@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required
 from flask_principal import Permission, RoleNeed
-from app.models import User, Ayarlar, ModulAyar, MailSettings
+from app.models import User, Ayarlar, ModulAyar, MailSettings, KdsidAyar
 from app.permissions import admin_permission
-from app.forms import AyarlarForm, ModulAyarForm, MailSettingsForm
+from app.forms import AyarlarForm, ModulAyarForm, MailSettingsForm, KdsidAyarForm
 from werkzeug.utils import secure_filename
 from flask import current_app
 from app import db
@@ -101,6 +101,23 @@ def mail_settings():
         form.mail_default_sender.data = settings.mail_default_sender
 
     return render_template('admin/mail_settings.html', form=form)
+
+@admin.route('/admin/kdsid-ayarlari', methods=['GET', 'POST'])
+@login_required
+@admin_permission.require(http_exception=403)
+def kdsid_ayarlari():
+    ayar = KdsidAyar.query.first() or KdsidAyar()
+    form = KdsidAyarForm(obj=ayar)
+
+    if form.validate_on_submit():
+        form.populate_obj(ayar)
+        db.session.add(ayar)
+        db.session.commit()
+        flash('KDSID ayarları güncellendi', 'success')
+        return redirect(url_for('admin.kdsid_ayarlari'))
+
+    return render_template('admin/kdsid_ayarlari.html', form=form)
+
 
 
 

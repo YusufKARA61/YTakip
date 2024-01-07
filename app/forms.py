@@ -1,6 +1,6 @@
 # forms.py
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SelectField, SubmitField, BooleanField, RadioField, EmailField, FileField, IntegerField
+from wtforms import StringField, PasswordField, SelectField, SubmitField, BooleanField, RadioField, EmailField, FileField, IntegerField, FloatField
 from wtforms.validators import DataRequired, Email, EqualTo, Optional
 from flask_wtf.file import FileRequired, FileAllowed
 from app.models import User  # User modelinizi import ettiğinizden emin olun
@@ -93,6 +93,21 @@ class ProjeForm(FlaskForm):
         return choices
 
     submit = SubmitField('Proje Ekle')
+
+class KdsidAyarForm(FlaskForm):
+    birlesik_parsel_sayisi = IntegerField('Birleşik Parsel Sayısı', validators=[DataRequired()])
+    toplam_arsa_alani_min = IntegerField('Minimum Toplam Arsa Alanı', validators=[DataRequired()])
+    is_site_artis_orani = FloatField('Site Artış Oranı', validators=[DataRequired()])
+    bos_parsel_artis_orani = FloatField('Boş Parsel Artış Oranı', validators=[DataRequired()])
+    diger_parsel_artis_orani = FloatField('Diğer Parsel Artış Oranı', validators=[DataRequired()])
+    arsa_alani_3000_artis_orani = FloatField('3000 m² Üzeri Arsa Artış Oranı', validators=[DataRequired()])
+    arsa_alani_2000_artis_orani = FloatField('2000 m² Üzeri Arsa Artış Oranı', validators=[DataRequired()])
+    arsa_alani_1000_artis_orani = FloatField('1000 m² Üzeri Arsa Artış Oranı', validators=[DataRequired()])
+    arsa_alani_750_artis_orani = FloatField('750 m² Üzeri Arsa Artış Oranı', validators=[DataRequired()])
+    arsa_alani_500_artis_orani = FloatField('500 m² Üzeri Arsa Artış Oranı', validators=[DataRequired()])
+    # Gerekiyorsa diğer alanlar...
+    submit = SubmitField('Ayarları Güncelle')
+
 
 
 

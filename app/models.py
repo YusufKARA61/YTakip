@@ -95,6 +95,21 @@ class Veri(db.Model):
     parsel = db.Column(db.Integer)
     onay_durumu = db.Column(db.Boolean, default=False)
 
+class KdsidAyar(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    birlesik_parsel_sayisi = db.Column(db.Integer, nullable=False)
+    toplam_arsa_alani_min = db.Column(db.Integer, nullable=False)
+    is_site_artis_orani = db.Column(db.Float, nullable=False)
+    bos_parsel_artis_orani = db.Column(db.Float, nullable=False)
+    diger_parsel_artis_orani = db.Column(db.Float, nullable=False)
+    arsa_alani_3000_artis_orani = db.Column(db.Float, nullable=False)
+    arsa_alani_2000_artis_orani = db.Column(db.Float, nullable=False)
+    arsa_alani_1000_artis_orani = db.Column(db.Float, nullable=False)
+    arsa_alani_750_artis_orani = db.Column(db.Float, nullable=False)
+    arsa_alani_500_artis_orani = db.Column(db.Float, nullable=False)
+    # Gerekiyorsa diğer alanlar...
+
+
 
 
 
