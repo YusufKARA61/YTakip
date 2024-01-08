@@ -45,3 +45,41 @@ function confirmDelete() {
     }
 }
 
+Cookies.set('active', 'true');
+
+$(document).ready(function() {
+    $('#myTabs a').on('click', function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var checkboxes = document.querySelectorAll('input[name="onay_durumu_checkbox"]');
+
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            var veriId = checkbox.value;
+            var isChecked = checkbox.checked; // Doğrudan boolean değer olarak kullan
+
+            console.log('veriId:', veriId, 'isChecked:', isChecked);
+
+            // Veritabanını güncellemek için AJAX isteği gönder
+            fetch('/update_onay_durumu', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ projectId: veriId, isChecked: isChecked })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Veritabanı başarıyla güncellendi:', data);
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+            });
+        });
+    });
+});
+

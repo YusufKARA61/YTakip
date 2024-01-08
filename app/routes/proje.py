@@ -100,11 +100,12 @@ def proje_detay(proje_id):
         Veri.parsel,
         func.sum(Veri.kdsid).label('kdsid_toplam'),
         func.sum(case((Veri.onay_durumu == True, Veri.kdsid), else_=0)).label('kdsid_onayli_toplam')
-    ).filter(Veri.proje_id == proje_id).group_by(Veri.ada, Veri.parsel).all()
+    ).filter(Veri.proje_id == proje_id).group_by(Veri.ada, Veri.parsel).order_by(Veri.ada, Veri.parsel).all()
 
     # Proje ile ilişkilendirilmiş diğer detaylı verileri çek (mvid_hisseoran hesaplaması dahil)
     fizveriler = db.session.query(
         Veri.ada,
+        Veri.veri_id,
         Veri.isim,
         Veri.tcno,
         Veri.arsaalan,
@@ -112,13 +113,40 @@ def proje_detay(proje_id):
         Veri.mvid,
         Veri.hisseoran,
         Veri.kisiarsaalan,
+        Veri.onay_durumu,
         (Veri.mvid * Veri.hisseoran).label('mvid_hisseoran'),
         (Veri.kdsid * Veri.hisseoran).label('kdsid_hisseoran'),
         # Diğer gerekli sütunlar...
-    ).filter(Veri.proje_id == proje_id).all()
+    ).filter(Veri.proje_id == proje_id).order_by(Veri.ada, Veri.parsel).all()
 
     # Şablonu verilerle birlikte render et
     return render_template('admin/proje_detay.html', proje=proje, veriler=veriler, fizveriler=fizveriler)
+
+@proje.route('/update_onay_durumu', methods=['POST'])
+def update_onay_durumu():
+    data = request.get_json()
+    veri_id = data.get('projectId')
+    isChecked = data.get('isChecked')
+
+    # veri_id'yi integer'a dönüştür
+    try:
+        veri_id = int(veri_id)
+    except ValueError:
+        # Eğer veri_id integer'a dönüştürülemezse hata döndür
+        return jsonify({'status': 'error', 'message': 'Invalid veri_id'})
+
+    try:
+        veri = Veri.query.get(veri_id)
+        if veri:
+            veri.onay_durumu = isChecked
+            db.session.commit()
+            return jsonify({'status': 'success'})
+        else:
+            return jsonify({'status': 'error', 'message': 'Kayıt bulunamadı'})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'status': 'error', 'message': str(e)})
+
 
 
 @proje.route('/sil_proje/<int:proje_id>', methods=['POST'])

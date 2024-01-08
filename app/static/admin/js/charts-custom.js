@@ -545,6 +545,33 @@ $(function () {
 
 });
 
+Chart.pluginService.register({
+    afterDraw: function(chart) {
+        if (chart.config.type === 'doughnut') {
+            var width = chart.chart.width,
+                height = chart.chart.height,
+                ctx = chart.chart.ctx;
+
+            var dataIndex = chart.config.data.datasets[0].data.indexOf(Math.max(...chart.config.data.datasets[0].data));
+            var txt = Math.round(chart.config.data.datasets[0].data[dataIndex]) + '%';
+            // Yazı boyutunu ve stilini ayarlayın
+            ctx.font = '40px Arial'; // Örnek olarak 20px boyutunda Arial fontu
+            ctx.fillStyle = 'black'; // Yazı rengi siyah
+
+            var textX = Math.round((width - ctx.measureText(txt).width))/1.5,
+                textY = height / 1.9;
+
+            ctx.save();
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(txt, textX, textY);
+            ctx.restore();
+        }
+    }
+});
+
+
+
 function kdsidOranGrafikOlustur(kdsid, toplamKdsid, index) {
     var ctx = document.getElementById('kdsidOranGrafik' + index).getContext('2d');
 
@@ -556,15 +583,15 @@ function kdsidOranGrafikOlustur(kdsid, toplamKdsid, index) {
     labels: ['Onaylayan', 'Onaylamayan'],
     datasets: [{
       data: [kdsidOrani, geriKalanOran], // KDSID ve geri kalan
-      backgroundColor: ['#DF99CA', '#eee'], // Renkleri kendi renklerinizle değiştirebilirsiniz.
-      hoverBackgroundColor: ['#DF99CA', '#eee']
+      backgroundColor: ['#32CD32', '#CCCCCC'], // Renkleri kendi renklerinizle değiştirebilirsiniz.
+      hoverBackgroundColor: ['#32CD32', '#CCCCCC']
     }]
   };
 
     var grafikSecenekleri = {
-        cutoutPercentage: 80,
+        cutoutPercentage: 60,
         legend: {
-            display: false
+            display: true
         }
     };
 

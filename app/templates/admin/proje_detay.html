@@ -32,6 +32,7 @@
                     <li>Ada: {{ veri.ada }}, Parsel: {{ veri.parsel }}</li>
                     <li>Toplam Brüt Alan: {{ veri.kdsid_toplam }} m²</li>
                     <li>Onaylanan Brüt Alan: {{ veri.kdsid_onayli_toplam }} m²</li>
+                    <div class="veriler" data-kdsid="{{ veri.kdsid_toplam }}" data-toplamKdsid="{{ veri.kdsid_onayli_toplam }}"></div>
                   </ul>
                 </div>
                 {% endfor %}
