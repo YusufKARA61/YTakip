@@ -46,7 +46,7 @@ def proje_ekle():
             df = pd.read_excel(filepath)
 
             # 'ada' ve 'parsel' sütunlarına göre grupla
-            grouped = df.groupby(['ada', 'parsel'])['arsaalan'].sum()
+            grouped = df.groupby(['ada', 'parsel'])['arsaalan'].first()
 
             # Toplam arsa alanını bir sözlükte sakla
             toplam_arsa_alani_dict = defaultdict(float)
@@ -63,12 +63,11 @@ def proje_ekle():
                 # Hesaplamalar
                 hisseoran = kisiarsaalan / arsaalan if arsaalan > 0 else 0
 
-                ada, parsel = row[-2], row[-1]
-                toplam_arsa_alani = toplam_arsa_alani_dict.get((ada, parsel), 0)
-
+                # Gruplanmış verilerin 'arsaalan' değerlerini topla ve sonucu toplam_arsa_alani değişkenine aktar
+                toplam_arsa_alani = grouped.sum()
 
                 # Kdsid hesapla
-                kdsid = kdsid_hesapla(mvid, toplam_arsa_alani, birlesik_parsel_sayisi, is_site, bose_parsel_numaralari, parsel)
+                kdsid = 1.3 * kdsid_hesapla(mvid, toplam_arsa_alani, birlesik_parsel_sayisi, is_site, bose_parsel_numaralari, parsel)
 
                 # Veri tablosuna veri ekle
                 yeni_veri = Veri(proje_id=yeni_proje.proje_id, isim=isim, telefon=telefon, tcno=tcno, mvid=mvid, kdsid=kdsid, arsaalan=arsaalan, kisiarsaalan=kisiarsaalan, hisseoran=hisseoran, ada=ada, parsel=parsel)
@@ -80,8 +79,6 @@ def proje_ekle():
         return redirect(url_for('proje.projeler'))
 
     return render_template('admin/proje_ekle.html', form=form)
-
-
 
 @proje.route('/projeler')
 def projeler():
