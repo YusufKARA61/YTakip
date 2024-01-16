@@ -16,9 +16,8 @@ class RegistrationForm(FlaskForm):
     
     # Membership Type seçeneği
     membership_type = RadioField('Üyelik Tipi', choices=[
-        ('musteri', 'Müşteri'),
-        ('muteahhit', 'Müteahhit/İmalatçı'),
-        ('emlak', 'Emlak')
+        ('admin', 'Şef'),
+        ('koordinator', 'Koordinatör')
     ])
     # Kullanıcı sözleşmesini kabul etme checkbox'ı
     accept_terms = BooleanField('Kullanıcı Sözleşmesini Okudum ve Kabul Ediyorum', validators=[DataRequired()])
@@ -109,6 +108,8 @@ class KdsidAyarForm(FlaskForm):
     submit = SubmitField('Ayarları Güncelle')
 
 
-
+class SorguForm(FlaskForm):
+    tcno = StringField('TC Kimlik Numarası', validators=[DataRequired()])
+    submit = SubmitField('Sorgula')
 
 

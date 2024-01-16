@@ -1,0 +1,64 @@
+{% extends "frontend/layout.html" %}
+{% block title %}Kentsel Dönüşüm Durum Sorgulama{% endblock title %}
+
+{% block icerik %}
+<section>
+    <div class="container">
+        <header class="section header mb-12">
+            <h2>Kentsel Dönüşüm Durum Sorgulama</h2>
+            <p class="lead">Hesap Detayları.</p>
+        </header>
+        <div class="row">
+            <div class="col-md-6">
+                {% if sorgu_sonuclari %}
+                    {% for sonuc in sorgu_sonuclari %}
+                        <div class="card text-block">
+                            <div class="card-body">
+                                <h3 class="card-title">Hoşgeldiniz, {{ sonuc['isim'] }}</h3>
+                                <p class="card-text">Ada: {{ sonuc['ada'] }}</p>
+                                <p class="card-text">Parsel: {{ sonuc['parsel'] }}</p>
+                                <p class="card-text">Arsa Alanı: {{ sonuc['arsaalan'] }} m²</p>
+                                <p class="card-text">Kişi Başı Arsa Alanı: {{ sonuc['kisiarsaalan'] }} m²</p>
+                                <p class="card-text">Mevcut İmar Durumu: {{ sonuc['mvid_hisseoran']|round(2) }} m²</p>
+                                <p class="card-text">Kentsel Dönüşüm Sonrası İmar Durumu: {{ sonuc['kdsid_hisseoran']|round(2) }} m²</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Sorgu sonucu bulunamadı.</p>
+                {% endif %}
+            </div>
+            <!-- Diğer sütunlar ve içerikler -->
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card text-block">
+                            <div class="card-body">
+                                <p class="card-text">Kentsel İmar Durumu <strong>(%40)</strong> Oranında Mal Sahibine Kalacak Şekilde Kentsel Dönüşüm Sonrası Alan: <strong style="font-size: larger; font-weight: bold;">{{ (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.4)|round(2) }} m²</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card text-block">
+                            <div class="card-body">
+                                <p class="card-text">Kentsel İmar Durumu <strong>(%45)</strong> Oranında Mal Sahibine Kalacak Şekilde Kentsel Dönüşüm Sonrası Alan: <strong style="font-size: larger; font-weight: bold;">{{ (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.45)|round(2) }} m²</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card text-block">
+                            <div class="card-body">
+                                <p class="card-text">Kentsel İmar Durumu <strong>(%50)</strong> Oranında Mal Sahibine Kalacak Şekilde Kentsel Dönüşüm Sonrası Alan: <strong style="font-size: larger; font-weight: bold;">{{ (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5)|round(2) }} m²</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock icerik %}

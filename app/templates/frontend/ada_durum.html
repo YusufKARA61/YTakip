@@ -1,0 +1,33 @@
+
+<section>
+    <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header">
+                
+              </div>
+              <div class="card-body">
+                <div class="tab-pane fade show active" id="ada-parsel" role="tabpanel" aria-labelledby="ada-parsel-tab">
+                    <div class="row">
+                        {% for veri in veriler %}
+                        <div class="col-md-3">
+                            <canvas id="kdsidOranGrafik{{ loop.index }}" width="200" height="200"></canvas>
+                            <ul>
+                                <li>Ada: {{ veri.ada }}, Parsel: {{ veri.parsel }}</li>
+                                <li>Toplam Brüt Alan: {{ veri.kdsid_toplam }} m²</li>
+                                <li>Onaylanan Brüt Alan: {{ veri.kdsid_onayli_toplam }} m²</li>
+                                <div class="ada_durumlar" data-kdsid="{{ veri.kdsid_toplam }}" data-toplamKdsid="{{ veri.kdsid_onayli_toplam }}"></div>
+                            </ul>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            </div>
+          </div>
+      </div>
+    </div>
+    </section>
+    
