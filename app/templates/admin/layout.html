@@ -94,7 +94,7 @@
           <!-- Kullanıcılar menü öğesi -->
           {% if modulayar.kullanıcılar_aktif %}
           <li class="sidebar-list-item">
-            <a id="kullanicilar-link" href="#" class="sidebar-link text-muted menu-link">
+            <a id="kullanicilar-link" href="{{ url_for('admin.users') }}" class="sidebar-link text-muted menu-link">
               <i class="o-user-1 mr-3 text-gray"></i>
               <span>Kullanıcılar</span>
             </a>

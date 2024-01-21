@@ -53,24 +53,48 @@ function closeMessageModal() {
   window.location.reload(); // Sayfayı yenile
 }
 
-function initMap() {
-  var map = new ol.Map({
-    target: 'mapContainer',
-    layers: [
-      new ol.layer.Tile({
-        source: new ol.source.OSM()
-      })
-    ],
-    view: new ol.View({
-      center: ol.proj.fromLonLat([28.8547, 41.0345]), // İstanbul'un koordinatları
-      zoom: 13 // Yakınlaştırma seviyesi
-    })
-  });
+function showUserConfirmation(button) {
+  var userId = $(button).data('user-id');
+  
+  if (userId) {
+    $('#silmeOnayModal').modal('show');
+    $('#silmeOnayModal').data('user-id', userId);
+  } else {
+    alert('Kullanıcı ID alınamadı.');
+  }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  initMap();
-});
+function cancelUserDeletion() {
+  $('#silmeOnayModal').modal('hide');
+}
+
+function deleteUserItem() {
+  var userId = $('#silmeOnayModal').data('user-id');
+
+  if (userId) {
+    var deleteURL = "/sil_kullanici/" + userId;
+
+    $.ajax({
+      url: deleteURL,
+      method: "POST",
+      data: JSON.stringify({ user_id: userId }),
+      contentType: "application/json",
+      success: function(response) {
+        $('#silmeOnayModal').modal('hide');
+        showMessageModal(response.message);
+        setTimeout(function(){ 
+          window.location.reload();
+        }, 1000);
+      },
+      error: function(xhr, status, error) {
+        console.error('Kullanıcı ID tanımsız!');
+      }
+    });
+  } else {
+    console.error('Kullanıcı ID tanımsız!');
+  }
+}
+
 
 function initMap() {
   // Harita

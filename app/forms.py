@@ -16,7 +16,9 @@ class RegistrationForm(FlaskForm):
     
     # Membership Type seçeneği
     membership_type = RadioField('Üyelik Tipi', choices=[
-        ('admin', 'Şef'),
+        ('admin', 'Admin'),
+        ('sef', 'Şef'),
+        ('raportor', 'Raportör'),
         ('koordinator', 'Koordinatör')
     ])
     # Kullanıcı sözleşmesini kabul etme checkbox'ı

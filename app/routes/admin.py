@@ -1,12 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required
 from flask_principal import Permission, RoleNeed
-from app.models import User, Ayarlar, ModulAyar, MailSettings, KdsidAyar
+from app.models import User, Ayarlar, ModulAyar, MailSettings, KdsidAyar, db, roles_users, Role
 from app.permissions import admin_permission
-from app.forms import AyarlarForm, ModulAyarForm, MailSettingsForm, KdsidAyarForm
+from app.forms import AyarlarForm, ModulAyarForm, MailSettingsForm, KdsidAyarForm, RegistrationForm
+from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask import current_app
-from app import db
 import os
 
 admin = Blueprint('admin', __name__)
@@ -117,6 +117,56 @@ def kdsid_ayarlari():
         return redirect(url_for('admin.kdsid_ayarlari'))
 
     return render_template('admin/kdsid_ayarlari.html', form=form)
+
+@admin.route('/admin/users')
+@login_required
+@admin_permission.require(http_exception=403)
+def users():
+    users = User.query.all()
+    return render_template('admin/users.html', users=users)
+
+
+
+@admin.route('/admin/add_user', methods=['GET', 'POST'])
+@login_required
+@admin_permission.require(http_exception=403)
+def add_user():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        # E-posta adresinin zaten kayıtlı olup olmadığını kontrol edin
+        existing_user = User.query.filter_by(email=form.email.data).first()
+        if existing_user:
+            flash('Bu e-posta adresi zaten kullanılıyor.', 'error')
+            return render_template('admin/add_user.html', form=form)
+
+        hashed_password = generate_password_hash(form.password.data)
+
+        new_user = User(
+            email=form.email.data,
+            password=hashed_password,
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            active=True,
+            email_confirmed=True,
+            membership_type=form.membership_type.data
+        )
+
+        role = Role.query.filter_by(name=form.membership_type.data).first()
+        if role:
+            new_user.roles.append(role)
+        else:
+            flash(f"Role '{form.membership_type.data}' not found.", 'error')
+            return render_template('admin/add_user.html', form=form)
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        
+        flash('Hesabınız oluşturuldu, aktivasyon yapınız!', 'success')
+        return redirect(url_for('admin.users'))
+
+    return render_template('admin/add_user.html', form=form)
+
 
 
 
