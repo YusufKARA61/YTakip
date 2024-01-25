@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='front/css/fontastic.css') }}">
     <!-- theme stylesheet-->
     <link rel="stylesheet" href="{{ url_for('static', filename='front/css/style.default.css') }}" id="theme-stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
     <!-- Custom stylesheet - for your changes-->
     <link rel="stylesheet" href="{{ url_for('static', filename='front/css/custom.css') }}">
     <!-- Favicon-->
@@ -29,6 +31,10 @@
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='harita/resources/ol.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='harita/resources/fontawesome-all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='harita/resources/ol-layerswitcher.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='harita/resources/qgis2web.css') }}">
 
   </head>
 
@@ -47,13 +53,11 @@
                   <!-- Link-->
                   <li class="nav-item"> <a href="/" class="nav-link active">Anasayfa</a></li>
                   <!-- Link-->
-                  <li class="nav-item"> <a href="" class="nav-link">Projeler</a></li>        
-                  <!-- Link-->
-                  <li class="nav-item"> <a href="" class="nav-link">Blog</a></li>
-                  <!-- Link-->
-                  <li class="nav-item"> <a href="" class="nav-link">S.S.S.</a></li>
-                  <!-- Link-->
-                  <li class="nav-item"> <a href="" class="nav-link">İletişim</a></li>
+                  <li class="nav-item"> <a href="{{ url_for('main.show_map') }}" class="nav-link">Harita</a></li>        
+                  <!-- Link
+                  <li class="nav-item"> <a href="" class="nav-link">Riskli Yapılar</a></li>
+                  Link
+                  <li class="nav-item"> <a href="" class="nav-link">Yarısı Bizden</a></li>-->
               
             </ul>
             
@@ -73,13 +77,6 @@
 
             {% else %}
 
-            <ul class="nav-item dropdown ml-auto"><a id="userInfo" href="http://example.com" data-toggle="dropdown" aria-haspopup="true" class="btn btn-primary navbar-btn ml-0 ml-lg-3">Giriş/Kayıt</a>
-              <div aria-labelledby="userInfo" class="dropdown-menu">
-                <a href="{{ url_for('auth.register') }}" class="dropdown-item"><strong class="d-block text-uppercase headings-font-family">Kayıt</strong></a>
-                <a href="{{ url_for('auth.login') }}" class="dropdown-item"><strong class="d-block text-uppercase headings-font-family">Giriş</strong></a>
-                
-              </div>
-            </ul>
 
 
             {% endif %}
@@ -129,41 +126,14 @@
           <div class="col-lg-3 mb-5 mb-lg-0">
             <div class="footer-logo"><img src="{{ url_for('static', filename='front/img/logo.png') }}" alt="..." class="img-fluid"></div>
           </div>
-          <div class="col-lg-3 mb-5 mb-lg-0">
-            <h5 class="footer-heading">Sayfalar</h5>
-            <ul class="list-unstyled">
-              <li> <a href="/" class="footer-link">Anasayfa</a></li>
-              <li> <a href="" class="footer-link">S.S.S.</a></li>
-              <li> <a href="" class="footer-link">Hakkımızda</a></li>
-              <li> <a href="" class="footer-link">İletişim</a></li>
-              
-            </ul>
-          </div>
-          <div class="col-lg-3 mb-5 mb-lg-0">
-            <h5 class="footer-heading">İşimiz</h5>
-            <ul class="list-unstyled">
-              <li> <a href="#" class="footer-link">Ne Yapıyoruz?</a></li>
-              <li> <a href="#" class="footer-link">Ev Toplama Sihirbazı</a></li>
-              <li> <a href="" class="footer-link">Blog</a></li>
-              <li> <a href="#" class="footer-link">Fiyatlar</a></li>
-            </ul>
-          </div>
-          <div class="col-lg-3">
-            <h5 class="footer-heading">Sosyal Medya</h5>
-            <ul class="list-unstyled">
-              <li> <i class="fa-brands fa-instagram"></i>   <a href="https://www.instagram.com/evveko/" class="footer-link">İnstagram</a></li>
-              <li> <i class="fa-brands fa-facebook"></i>     <a href="" class="footer-link">Facebook</a></li>
-              <li> <i class="fa-brands fa-youtube"></i>   <a href="" class="footer-link">Youtube</a></li>
-              <li> <i class="fa-brands fa-linkedin"></i>   <a href="https://tr.linkedin.com/company/evveko?trk=public_post_feed-actor-name" class="footer-link">Linkedİn</a></li>
-            </ul>
-          </div>
+          
         </div>
       </div>
       <div class="copyrights">
         <div class="container">
           <div class="row">
             <div class="col-lg-6 text-center text-lg-left">
-              <p class="copyrights-text mb-3 mb-lg-0">&copy; Tüm hakları saklıdır <a href="https://evveko.com" class="external footer-link">Evveko </a></p>
+              <p class="copyrights-text mb-3 mb-lg-0">&copy; Tüm hakları saklıdır <a href="" class="external footer-link">YKARA </a></p>
               <!-- If you want to remove the backlink, please purchase a license for this template @ https://bootstrapious.com/attribution-free-license. Big thanks!-->
               
             </div>
@@ -174,6 +144,7 @@
     </footer>
     <!-- JavaScript files-->
     <script src="{{ url_for('static', filename='front/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <script src="{{ url_for('static', filename='front/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url_for('static', filename='front/vendor/jquery.cookie/jquery.cookie.js') }}"> </script>
     <script src="{{ url_for('static', filename='front/vendor/lightbox2/js/lightbox.js') }}"></script>

@@ -97,7 +97,25 @@ function deleteUserItem() {
 
 
 function initMap() {
-  // Harita
+  var styleFunction = function(feature) {
+    return new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: 'blue',
+        width: 2
+      }),
+      fill: new ol.style.Fill({
+        color: 'rgba(0, 0, 255, 0.1)'
+      }),
+      text: new ol.style.Text({
+        text: feature.get('text_data'), // text_data özelliğini kullan
+        scale: 1.2,
+        fill: new ol.style.Fill({
+          color: '#000'
+        })
+      })
+    });
+  };
+
   var map = new ol.Map({
     target: 'mapContainer',
     layers: [
@@ -107,33 +125,19 @@ function initMap() {
       new ol.layer.Vector({
         source: new ol.source.Vector({
           format: new ol.format.GeoJSON(),
-          url: 'URL_TO_YOUR_POSTGIS_VECTOR_DATA' // PostGIS veritabanınızın URL'sini buraya ekleyin
+          url: '/api/mapdata'
         }),
-        style: new ol.style.Style({
-          stroke: new ol.style.Stroke({
-            color: 'blue',
-            width: 2
-          }),
-          fill: new ol.style.Fill({
-            color: 'rgba(0, 0, 255, 0.1)'
-          })
-        })
+        style: styleFunction // Özel stil fonksiyonunu kullan
       })
     ],
     view: new ol.View({
-      center: ol.proj.fromLonLat([28.8547, 41.0345]), // İstanbul'un koordinatları
-      zoom: 13 // Yakınlaştırma seviyesi
+      center: ol.proj.fromLonLat([28.8547, 41.0345]),
+      zoom: 13
     })
   });
-
-  // Harita üzerinde ada parsellerini göstermek için uygun bir stil ve kaynak kullanın.
-  // Burada stil ve kaynak ayarlarını PostGIS veritabanınıza ve ada parsellerinin formatına göre özelleştirmeniz gerekecektir.
 }
 
 document.addEventListener('DOMContentLoaded', function() {
   initMap();
 });
-
-
-
 

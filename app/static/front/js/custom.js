@@ -118,6 +118,18 @@ acceptTermsCheckbox.addEventListener("change", function() {
     }
 });
 
+document.addEventListener("DOMContentLoaded", function() {
+  var map = L.map('mapContainer').setView([39.925533, 32.866287], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+  }).addTo(map);
+
+  fetch('{{ url_for("api.map_data") }}')
+      .then(response => response.json())
+      .then(data => {
+          L.geoJSON(data).addTo(map);
+      });
+});
 
 
 

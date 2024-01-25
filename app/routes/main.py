@@ -35,3 +35,7 @@ def home():
         else:
             flash('Bu TCNO ile eşleşen veri bulunamadı.', 'error')
     return render_template('frontend/home.html', form=form)
+
+@main.route('/map')
+def show_map():
+    return render_template('frontend/map.html')
