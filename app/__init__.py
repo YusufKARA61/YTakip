@@ -22,7 +22,7 @@ def create_app():
     app.config['SECRET_KEY'] = 'your_secret_key'
     # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123456@localhost/takip'
     
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgres://dovikaziqfugzz:f78e929267054ee9e2b50d9649fa2be6db1d5a3eb8efdad8d62ea868c15f45db@ec2-52-50-161-219.eu-west-1.compute.amazonaws.com:5432/dapekev2s71ha2')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql://dovikaziqfugzz:f78e929267054ee9e2b50d9649fa2be6db1d5a3eb8efdad8d62ea868c15f45db@ec2-52-50-161-219.eu-west-1.compute.amazonaws.com:5432/dapekev2s71ha2')
     app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'img')
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     app.config['MAIL_PORT'] = 587
