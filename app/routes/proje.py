@@ -8,9 +8,11 @@ import pandas as pd
 from sqlalchemy import func, case
 from flask import current_app
 from app import db
+from flask_mail import Message
 import os
 from werkzeug.utils import secure_filename
 from collections import defaultdict
+from app import mail
 
 
 proje = Blueprint('proje', __name__)
@@ -78,6 +80,22 @@ def proje_ekle():
 
         db.session.commit()
         flash('Proje başarıyla eklendi!', 'success')
+
+        # Seçilen koordinatörün bilgilerini alın
+        koordinator = User.query.get(koordinator_id)
+
+        # Seçilen koordinatöre bir e-posta gönderin
+        if koordinator:
+            msg = Message('Yeni Proje Eklendi',
+                    sender=current_app.config['MAIL_DEFAULT_SENDER'],
+                    recipients=[koordinator.email])  # User modelinizde 'email' adında bir özellik olduğunu varsayalım
+
+            msg.body = f"Merhaba {koordinator.first_name},\n\nYeni bir proje eklendi: {proje_adi}.\n\nDetaylar için sisteme giriş yapınız."
+
+            try:
+                mail.send(msg)
+            except Exception as e:
+                flash(f'E-posta gönderirken bir hata oluştu: {str(e)}', 'danger')
         return redirect(url_for('proje.projeler'))
 
     return render_template('admin/proje_ekle.html', form=form)

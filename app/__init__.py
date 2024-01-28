@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from flask_principal import Principal, identity_loaded, UserNeed, RoleNeed
@@ -96,6 +96,11 @@ def create_app():
     app.register_blueprint(proje_blueprint)
     from .routes.api import api_blueprint as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix='/api')
+
+    # Hata işleyiciyi ekleyin
+    @app.errorhandler(403)
+    def forbidden_error(error):
+        return render_template('admin/forbidden.html'), 403
 
 
 
