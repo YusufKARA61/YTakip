@@ -31,6 +31,9 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
     def get_id(self):
         return str(self.user_id)
+    def has_role(self, role_name):
+        """Belirtilen role sahip olup olmadığını kontrol eder."""
+        return any(role.name == role_name for role in self.roles)
 
 class Ayarlar(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required
-from flask_principal import Permission, RoleNeed
+from flask_principal import Permission, Principal, RoleNeed
 from app.models import User, Ayarlar, ModulAyar, MailSettings, KdsidAyar, db, roles_users, Role
 from app.permissions import admin_permission
 from app.forms import AyarlarForm, ModulAyarForm, MailSettingsForm, KdsidAyarForm, RegistrationForm
@@ -11,10 +11,13 @@ import os
 
 admin = Blueprint('admin', __name__)
 
+# Admin rolüne sahip kullanıcıların tüm rolleri ekleyebilmesi için izin tanımlama
+admin_can_add_all_roles_permission = Permission(RoleNeed('admin_can_add_all_roles'))
+
+
 
 @admin.route('/admin/dashboard')
 @login_required
-@admin_permission.require(http_exception=403)
 def admin_dashboard():
     return render_template('admin/dashboard.html')
 

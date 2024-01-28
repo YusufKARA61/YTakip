@@ -4,12 +4,16 @@
 
 {% block icerik %}
 
-<div id="map">
-    <div id="popup" class="ol-popup">
-        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-        <div id="popup-content"></div>
-    </div>
-</div>
+
+        
+            <div id="map">
+                <div id="popup" class="ol-popup">
+                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                    <div id="popup-content"></div>
+                </div>
+            </div>
+    
+    
 
 <!-- QGIS2Web tarafından oluşturulan JavaScript ve CSS dosyaları -->
 <script src="{{ url_for('static', filename='harita/resources/qgis2web_expressions.js') }}"></script>
@@ -31,5 +35,4 @@
 <style>
     /* Buraya özel CSS stillerini ekleyebilirsiniz */
 </style>
-
 {% endblock icerik %}

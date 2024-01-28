@@ -21,8 +21,7 @@ class RegistrationForm(FlaskForm):
         ('raportor', 'Raportör'),
         ('koordinator', 'Koordinatör')
     ])
-    # Kullanıcı sözleşmesini kabul etme checkbox'ı
-    accept_terms = BooleanField('Kullanıcı Sözleşmesini Okudum ve Kabul Ediyorum', validators=[DataRequired()])
+    
 
     
     submit = SubmitField('Register')

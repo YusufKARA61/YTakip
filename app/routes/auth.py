@@ -103,18 +103,15 @@ def login():
                 identity_changed.send(current_app._get_current_object(),
                                       identity=Identity(user.user_id))
 
-                # Admin kontrolü
-                if Role.query.filter_by(name='admin').first() in user.roles:
-                    flash('Admin Dashboard\'a yönlendiriliyorsunuz.', 'success')
-                    return redirect(url_for('admin.admin_dashboard'))  # Admin paneline yönlendir
+                flash('Giriş Başarılı!', 'success')
+                return redirect(url_for('admin.admin_dashboard'))  # Tüm kullanıcıları admin dashboard sayfasına yönlendir
 
-                flash('You have been logged in!', 'success')
-                return redirect(url_for('main.home'))  # Ana sayfaya yönlendir
             else:
                 flash('Hesabınız aktive edilmemiş. Lütfen e-postanızı kontrol edin ve aktivasyon bağlantısına tıklayın.', 'warning')
         else:
-            flash('Invalid email or password.', 'error')
+            flash('E Mail veya Şifre Hatalı.', 'error')
     return render_template('frontend/login.html', form=form)
+
 
 @auth.route('/profile')
 @login_required

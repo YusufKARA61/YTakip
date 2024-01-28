@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from app.models import Proje, Veri, User
 from app.utils import kdsid_hesapla  # utils modülünden kdsid_hesapla fonksiyonunu içe aktarın
 from app.forms import ProjeForm
+from flask_login import current_user, login_required
 import openpyxl
 import pandas as pd
 from sqlalchemy import func, case
@@ -15,6 +16,7 @@ from collections import defaultdict
 proje = Blueprint('proje', __name__)
 
 @proje.route('/proje_ekle', methods=['GET', 'POST'])
+@login_required
 def proje_ekle():
     form = ProjeForm()
 
@@ -81,12 +83,22 @@ def proje_ekle():
     return render_template('admin/proje_ekle.html', form=form)
 
 @proje.route('/projeler')
+@login_required
 def projeler():
-    projeler = db.session.query(Proje, User).join(User, Proje.user_id == User.user_id).all()
+    # Admin veya şef rolüne sahipse tüm projeleri al
+    if current_user.has_role('admin') or current_user.has_role('sef'):
+        projeler = db.session.query(Proje, User).join(User, Proje.user_id == User.user_id).all()
+    # Koordinatör rolüne sahipse sadece kendi projelerini al
+    elif current_user.has_role('koordinator'):
+        projeler = db.session.query(Proje, User).join(User, Proje.user_id == User.user_id).filter(Proje.user_id == current_user.user_id).all()
+
     return render_template('admin/projeler.html', projeler=projeler)
 
 
+
+
 @proje.route('/proje_detay/<int:proje_id>')
+@login_required
 def proje_detay(proje_id):
     # Proje bilgisini çek
     proje = Proje.query.get_or_404(proje_id)
@@ -147,6 +159,7 @@ def update_onay_durumu():
 
 
 @proje.route('/sil_proje/<int:proje_id>', methods=['POST'])
+@login_required
 def sil_proje(proje_id):
     # Proje ID'si ile ilişkili olan proje ve verileri bul
     proje = Proje.query.get_or_404(proje_id)

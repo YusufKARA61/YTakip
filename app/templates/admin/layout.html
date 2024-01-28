@@ -78,97 +78,87 @@
     </header>
 
 
+
     <div class="d-flex align-items-stretch">
 
 
-      <div id="sidebar" class="sidebar py-3">
-        <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">Menü</div>
-        <ul class="sidebar-menu list-unstyled">
-          <li class="sidebar-list-item">
-            <a id="anasayfa-link" href="{{ url_for('admin.admin_dashboard') }}" class="sidebar-link text-muted menu-link">
-              <i class="o-home-1 mr-3 text-gray"></i>
-              <span>Anasayfa</span>
-            </a>
-          </li>
 
-          <!-- Kullanıcılar menü öğesi -->
-          {% if modulayar.kullanıcılar_aktif %}
-          <li class="sidebar-list-item">
-            <a id="kullanicilar-link" href="{{ url_for('admin.users') }}" class="sidebar-link text-muted menu-link">
-              <i class="o-user-1 mr-3 text-gray"></i>
-              <span>Kullanıcılar</span>
-            </a>
-          </li>
-          {% endif %}
-
-          <!-- Projeler menü öğesi -->
-          {% if modulayar.projeler_aktif %}
-          <li class="sidebar-list-item">
-            <a id="tipprojeler-link" href="{{ url_for('proje.projeler') }}" class="sidebar-link text-muted menu-link">
-              <i class="o-survey-1 mr-3 text-gray"></i>
-              <span> Projeler</span>
-            </a>
-          </li>
-          {% endif %}
-
-          <!-- Blog menü öğesi -->
-          {% if modulayar.blog_aktif %}
-          <li class="sidebar-list-item">
-            <a id="blogs-link" href="" class="sidebar-link text-muted menu-link">
-              <i class="o-paper-stack-1 mr-3 text-gray"></i>
-              <span>Blog</span>
-            </a>
-          </li>
-          {% endif %}
-
-          <!-- Mesajlar menü öğesi -->
-          {% if modulayar.mesajlar_aktif %}
-          <li class="sidebar-list-item">
-            <a id="mesajlar-link" href="" class="sidebar-link text-muted menu-link">
-              <i class="o-contact-card-1 mr-3 text-gray"></i>
-              <span>Mesajlar</span>
-            </a>
-          </li>
-          {% endif %}
-
-          <!-- Riskli Yapı menü öğesi -->
-          {% if modulayar.riskli_yapı_aktif %}
-          <li class="sidebar-list-item">
-            <a id="riskli-yapi-link" href="" class="sidebar-link text-muted menu-link">
-              <i class="far fa-building mr-4 text-gray"></i>
-              <span>Riskli Yapılar</span>
-            </a>
-          </li>
-          {% endif %}
-          <li class="sidebar-list-item">
-            <a href="#" data-toggle="collapse" data-target="#settings" aria-expanded="false" aria-controls="pages" class="sidebar-link text-muted">
-              <i class="o-settings-window-1 mr-3 text-gray"></i>
-              <span>Genel Ayarlar</span>
-            </a>
-            <div id="settings" class="collapse">
-              <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
-                <li class="sidebar-list-item">
-                  <a id="ayarlar-link" href="{{ url_for('admin.ayarlar') }}" class="sidebar-link text-muted pl-lg-5 menu-link">Site Ayarları</a>
-                </li>
-                <li class="sidebar-list-item">
-                  <a id="ayarlar-link" href="{{ url_for('admin.mail_settings') }}" class="sidebar-link text-muted pl-lg-5 menu-link">Mail Ayarları</a>
-                </li>
-                <li class="sidebar-list-item">
-                  <a id="ayarlar-link" href="{{ url_for('admin.modul_ayarlari') }}" class="sidebar-link text-muted pl-lg-5 menu-link">Modül Ayarları</a>
-                </li>
-                <li class="sidebar-list-item">
-                  <a id="ayarlar-link" href="{{ url_for('admin.kdsid_ayarlari') }}" class="sidebar-link text-muted pl-lg-5 menu-link">Artış Ayarları</a>
-                </li>
-              </ul>
-            </div>
-            
-          </li>
-
-        </ul>
-        
-      </div>
-
-
+    <div id="sidebar" class="sidebar py-3">
+      <!-- Menü başlangıcı -->
+      <ul class="sidebar-menu list-unstyled">
+        <!-- Herkes için Anasayfa -->
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('admin.admin_dashboard') }}" class="sidebar-link text-muted">
+            <i class="o-home-1 mr-3 text-gray"></i><span>Anasayfa</span>
+          </a>
+        </li>
+    
+        <!-- Kullanıcılar menü öğesi -->
+        {% if modulayar.kullanıcılar_aktif and current_user.has_role('admin') %}
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('admin.users') }}" class="sidebar-link text-muted">
+            <i class="o-user-1 mr-3 text-gray"></i><span>Kullanıcılar</span>
+          </a>
+        </li>
+        {% endif %}
+    
+        <!-- Projeler menü öğesi -->
+        {% if modulayar.projeler_aktif and current_user.has_role('koordinator') or current_user.has_role('sef') or current_user.has_role('admin') %}
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('proje.projeler') }}" class="sidebar-link text-muted">
+            <i class="o-survey-1 mr-3 text-gray"></i><span>Projeler</span>
+          </a>
+        </li>
+        {% endif %}
+    
+        <!-- Blog menü öğesi -->
+        {% if modulayar.blog_aktif and current_user.has_role('admin') %}
+        <li class="sidebar-list-item">
+          <a href="" class="sidebar-link text-muted">
+            <i class="o-paper-stack-1 mr-3 text-gray"></i><span>Blog</span>
+          </a>
+        </li>
+        {% endif %}
+    
+        <!-- Mesajlar menü öğesi -->
+        {% if modulayar.mesajlar_aktif and current_user.has_role('admin') %}
+        <li class="sidebar-list-item">
+          <a href="" class="sidebar-link text-muted">
+            <i class="o-contact-card-1 mr-3 text-gray"></i><span>Mesajlar</span>
+          </a>
+        </li>
+        {% endif %}
+    
+        <!-- Riskli Yapılar menü öğesi -->
+        {% if modulayar.riskli_yapı_aktif and current_user.has_role('raportor') or current_user.has_role('sef') or current_user.has_role('admin') %}
+        <li class="sidebar-list-item">
+          <a href="" class="sidebar-link text-muted">
+            <i class="far fa-building mr-4 text-gray"></i><span>Riskli Yapılar</span>
+          </a>
+        </li>
+        {% endif %}
+    
+        <!-- Admin için Genel Ayarlar menü öğesi -->
+        {% if current_user.has_role('admin') %}
+        <li class="sidebar-list-item">
+          <a href="#" data-toggle="collapse" data-target="#settings" aria-expanded="false" aria-controls="settings" class="sidebar-link text-muted">
+            <i class="o-settings-window-1 mr-3 text-gray"></i><span>Genel Ayarlar</span>
+          </a>
+          <div id="settings" class="collapse">
+            <!-- Genel Ayarlar alt menüsü -->
+            <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
+              <li class="sidebar-list-item"><a href="{{ url_for('admin.ayarlar') }}" class="sidebar-link text-muted pl-lg-5">Site Ayarları</a></li>
+              <li class="sidebar-list-item"><a href="{{ url_for('admin.mail_settings') }}" class="sidebar-link text-muted pl-lg-5">Mail Ayarları</a></li>
+              <li class="sidebar-list-item"><a href="{{ url_for('admin.modul_ayarlari') }}" class="sidebar-link text-muted pl-lg-5">Modül Ayarları</a></li>
+              <li class="sidebar-list-item"><a href="{{ url_for('admin.kdsid_ayarlari') }}" class="sidebar-link text-muted pl-lg-5">Artış Ayarları</a></li>
+            </ul>
+          </div>
+        </li>
+        {% endif %}
+      </ul>
+      <!-- Menü sonu -->
+    </div>
+    
 
     
       <div class="page-holder w-100 d-flex flex-wrap">
