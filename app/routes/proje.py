@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
 from app.models import Proje, Veri, User
-from app.utils import kdsid_hesapla  # utils modülünden kdsid_hesapla fonksiyonunu içe aktarın
+from app.utils import kdsid_hesapla, harita_kdalan_guncelle  # utils modülünden kdsid_hesapla fonksiyonunu içe aktarın
 from app.forms import ProjeForm
 from flask_login import current_user, login_required
 import openpyxl
@@ -80,6 +80,9 @@ def proje_ekle():
 
         db.session.commit()
         flash('Proje başarıyla eklendi!', 'success')
+
+        # Harita tablosunu güncelle
+        harita_kdalan_guncelle()  # Fonksiyonu çağır
 
         # Seçilen koordinatörün bilgilerini alın
         koordinator = User.query.get(koordinator_id)

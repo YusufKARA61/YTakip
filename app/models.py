@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from geoalchemy2 import Geometry
 from flask_login import LoginManager, UserMixin
 from flask_principal import Principal, RoleNeed, Permission
 from datetime import datetime
@@ -112,7 +113,24 @@ class KdsidAyar(db.Model):
     arsa_alani_500_artis_orani = db.Column(db.Float, nullable=False)
     # Gerekiyorsa diğer alanlar...
 
-
+class Harita(db.Model):
+    __tablename__ = 'harita'
+    id = db.Column(db.Integer, primary_key=True)
+    geom = db.Column(Geometry('MULTIPOLYGON'), nullable=True)
+    oda_id = db.Column(db.BigInteger, nullable=True)
+    geom_type = db.Column(db.BigInteger, nullable=True)
+    line_thickness = db.Column(db.BigInteger, nullable=True)
+    line_type = db.Column(db.BigInteger, nullable=True)
+    color_code = db.Column(db.BigInteger, nullable=True)
+    thickness = db.Column(db.BigInteger, nullable=True)
+    factor = db.Column(db.BigInteger, nullable=True)
+    text_data = db.Column(db.String, nullable=True)
+    object_properties = db.Column(db.String, nullable=True)
+    point_height = db.Column(db.Float, nullable=True)
+    length = db.Column(db.Float, nullable=True)
+    ybizden = db.Column(db.String, nullable=True)
+    ortahasar = db.Column(db.String, nullable=True)
+    kdalan = db.Column(db.Boolean, default=False, nullable=False)
 
 
 

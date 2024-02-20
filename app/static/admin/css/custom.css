@@ -115,3 +115,8 @@ input:checked + .slider:before {
 #projeArama {
   float: right;
 }
+
+.map {
+  height: 400px;
+  width: 100%;
+}

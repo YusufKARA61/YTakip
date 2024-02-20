@@ -1297,7 +1297,6 @@ button {
   .sidebar {
     width: 6rem;
     text-align: center;
-    margin-left: -6rem;
     -webkit-transition: all 0.4s;
     transition: all 0.4s;
   }

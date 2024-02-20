@@ -20,7 +20,7 @@ def create_app():
 
     # Uygulama konfigürasyonları
     app.config['SECRET_KEY'] = 'your_secret_key'
-    # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123456@localhost/takip'
+    #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123456@localhost/takip'
 
     database_url = os.environ.get('DATABASE_URL')
     if database_url.startswith("postgres://"):

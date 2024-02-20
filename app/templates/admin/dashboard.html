@@ -9,8 +9,17 @@
       <div class="card mb-0">
         <div class="card-body">
           <div class="row gx-5 bg-white">
-            <!-- Harita için Konteyner -->
-            <div id="mapContainer" style="height: 600px; width: 100%;"></div>
+            <!-- Harita için Konteyner 
+            <div id="mapContainer" style="height: 600px; width: 100%;"></div> -->
+            <label><input type="checkbox" id="ybizdenCheckbox"> Yarısı Bizden</label>
+            <label><input type="checkbox" id="ortahasarCheckbox"> Orta Hasar</label>
+            <label><input type="checkbox" id="kdalanCheckbox"> Çalışma Yapılan Alanlar</label>
+            <div id="map" class="map" style="height: 800px; width: 100%;"></div>
+            
+
+
+
+
 
           </div>
         </div>
@@ -20,5 +29,9 @@
   </div>
   
   </section>
+
+
+  
+  
 
 {% endblock %}

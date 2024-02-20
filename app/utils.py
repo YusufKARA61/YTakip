@@ -1,5 +1,6 @@
 # utils.py
 from flask import session, flash, redirect, url_for
+from app.models import db, Veri, Harita
 from functools import wraps
 
 def check_authenticated():
@@ -47,4 +48,11 @@ def kdsid_hesapla(mvid, toplam_arsa_alani, birlesik_parsel_sayisi, is_site, bose
 
     return kdsid
 
-
+def harita_kdalan_guncelle():
+    veri_kayitlari = db.session.query(Veri.ada, Veri.parsel).distinct().all()
+    for ada, parsel in veri_kayitlari:
+        ada_parsel = f"{ada}/{parsel}"
+        harita_kaydi = Harita.query.filter_by(text_data=ada_parsel).first()
+        if harita_kaydi:
+            harita_kaydi.kdalan = True
+    db.session.commit()
