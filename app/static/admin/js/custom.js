@@ -95,74 +95,112 @@ function deleteUserItem() {
   }
 }
 
+var map;
+var vectorSource;
+
 function initMap() {
-  var vectorSource = new ol.source.Vector({
-      format: new ol.format.GeoJSON(),
-      url: 'http://34.118.84.26:8080/geoserver/wfs?service=WFS&' +
-          'version=1.1.0&request=GetFeature&typename=bbgis:harita&' +
-          'outputFormat=application/json&srsname=EPSG:3857',
-      strategy: ol.loadingstrategy.bbox
-  });
+    vectorSource = new ol.source.Vector({
+        format: new ol.format.GeoJSON(),
+        url: 'http://34.118.84.26:8080/geoserver/wfs?service=WFS&' +
+            'version=1.1.0&request=GetFeature&typename=bbgis:harita&' +
+            'outputFormat=application/json&srsname=EPSG:3857',
+        strategy: ol.loadingstrategy.bbox
+    });
 
-  var vectorLayer = new ol.layer.Vector({
-    source: vectorSource,
-    style: function(feature) {
-        var ybizdenChecked = document.getElementById('ybizdenCheckbox').checked;
-        var ortahasarChecked = document.getElementById('ortahasarCheckbox').checked;
-        var kdalanChecked = document.getElementById('kdalanCheckbox').checked;
+    var vectorLayer = new ol.layer.Vector({
+        source: vectorSource,
+        style: function(feature) {
+            var ybizdenChecked = document.getElementById('ybizdenCheckbox').checked;
+            var ortahasarChecked = document.getElementById('ortahasarCheckbox').checked;
+            var kdalanChecked = document.getElementById('kdalanCheckbox').checked;
 
-        // Varsayılan renk
-        var color = 'rgba(0, 0, 255, 0.1)';
+            // Varsayılan renk
+            var color = 'rgba(0, 0, 255, 0.1)';
 
-        if (kdalanChecked && feature.get('kdalan') === true) {
-            color = 'blue';
+            if (kdalanChecked && feature.get('kdalan') === true) {
+                color = 'blue';
+            }
+            if (ybizdenChecked && feature.get('ybizden') === 'Evet') {
+                color = 'green';
+            }
+            if (ortahasarChecked && feature.get('ortahasar') === 'Evet') {
+                color = 'red';
+            }
+
+            // Zoom seviyesine bağlı olarak metin stilini ayarla
+        var zoom = map.getView().getZoom();
+        var text;
+        var textStyle;
+
+        // Örneğin, zoom seviyesi 12'den büyük olduğunda metni göster
+        if (zoom > 19) {
+            text = feature.get('text_data') || ''; // text_data yoksa boş string kullan
+            textStyle = new ol.style.Text({
+                font: '14px Calibri,sans-serif',
+                text: text,
+                fill: new ol.style.Fill({
+                    color: '#000'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#fff',
+                    width: 3
+                }),
+                overflow: true,
+                offsetX: 0,
+                offsetY: -15 // Metni geometrinin biraz üstünde göstermek için
+            });
         }
-        if (ybizdenChecked && feature.get('ybizden') === 'Evet') {
-            color = 'green';
-        }
-        if (ortahasarChecked && feature.get('ortahasar') === 'Evet') {
-            color = 'red';
-        }
 
-        return new ol.style.Style({
-            stroke: new ol.style.Stroke({
-                color: 'black',
-                width: 1
+            return new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'black',
+                    width: 1
+                }),
+                fill: new ol.style.Fill({
+                    color: color
+                }),
+                text: textStyle // Metin stilini burada belirt
+            });
+        }
+    });
+
+    map = new ol.Map({
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
             }),
-            fill: new ol.style.Fill({
-                color: color
-            })
-        });
-    }
-});
+            vectorLayer
+        ],
+        target: 'map',
+        view: new ol.View({
+            center: ol.proj.fromLonLat([28.85, 41.05]),
+            zoom: 15
+        })
+    });
 
+    document.getElementById('ybizdenCheckbox').addEventListener('change', function() {
+        vectorLayer.getSource().refresh();
+    });
 
+    document.getElementById('ortahasarCheckbox').addEventListener('change', function() {
+        vectorLayer.getSource().refresh();
+    });
 
-  var map = new ol.Map({
-      layers: [
-          new ol.layer.Tile({
-              source: new ol.source.OSM()
-          }),
-          vectorLayer
-      ],
-      target: 'map',
-      view: new ol.View({
-          center: ol.proj.fromLonLat([30, 40]),
-          zoom: 6
-      })
-  });
+    document.getElementById('kdalanCheckbox').addEventListener('change', function() {
+        vectorLayer.getSource().refresh();
+    });
+}
 
-  document.getElementById('ybizdenCheckbox').addEventListener('change', function() {
-      vectorLayer.getSource().refresh(); // Refresh the layer
-  });
-
-  document.getElementById('ortahasarCheckbox').addEventListener('change', function() {
-      vectorLayer.getSource().refresh(); // Refresh the layer
-  });
-
-  document.getElementById('kdalanCheckbox').addEventListener('change', function() {
-    vectorLayer.getSource().refresh(); // Refresh the layer
-});
+function searchFeature() {
+    var searchText = document.getElementById('search-box').value;
+    vectorSource.forEachFeature(function(feature) {
+        if (feature.get('text_data') === searchText) {
+            var featureGeometry = feature.getGeometry();
+            var featureCenter = ol.extent.getCenter(featureGeometry.getExtent());
+            map.getView().animate({center: featureCenter, zoom: 19});
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', initMap);
+
