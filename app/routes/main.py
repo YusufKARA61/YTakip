@@ -39,3 +39,7 @@ def home():
 @main.route('/map')
 def show_map():
     return render_template('frontend/map.html')
+
+@main.route('/harita')
+def harita():
+    return render_template('admin/harita.html')

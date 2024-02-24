@@ -37,7 +37,7 @@
   <body>
     <!-- navbar-->
     <header class="header">
-      <nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow"><a href="/" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><img src="{{ url_for('static', filename='front/img/logo.png') }}" alt="" class="img-fluid" width="200" height="100"></a><a href="admin" class="navbar-brand font-weight-bold text-uppercase text-base d-none d-lg-block">Yönetim Ekranı</a>
+      <nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow"><a href="/" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><img src="{{ url_for('static', filename='front/img/logo.png') }}" alt="" class="img-fluid" width="200" height="100"></a>{% if current_user.is_authenticated %}<a href="admin" class="navbar-brand font-weight-bold text-uppercase text-base d-none d-lg-block">Yönetim Ekranı</a>{% endif %}
         <ul class="ml-auto d-flex align-items-center list-unstyled mb-0">
          <!-- navbar
           <li class="nav-item dropdown mr-3"><a id="notifications" href="http://example.com" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle text-gray-400 px-1"><i class="fa fa-bell"></i><span class="notification-icon"></span>Bildirim</a>
@@ -69,12 +69,13 @@
               <div class="dropdown-divider"></div><a href="#" class="dropdown-item text-center"><small class="font-weight-bold headings-font-family text-uppercase">View all notifications</small></a>
             </div>
           </li> -->
-          
+          {% if current_user.is_authenticated %}
           <ul class="nav-item dropdown ml-auto"><a id="userInfo" href="http://example.com" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-primary navbar-btn ml-0 ml-lg-3"><img src="{{ url_for('static', filename='admin/img/user.png') }}" alt="Jason Doe" style="max-width: 2.5rem;" class="img-fluid rounded-circle shadow"> {{ current_user.first_name }} {{ current_user.last_name }}</a>
             <div aria-labelledby="userInfo" class="dropdown-menu"><a href="#" class="dropdown-item"><strong class="d-block text-uppercase headings-font-family">İsim</strong></a>
               <div class="dropdown-divider"></div><a href="{{ url_for('auth.logout') }}" class="dropdown-item">Çıkış</a>
             </div>
           </ul>
+          {% endif %}
         </ul>
       </nav>
     </header>
@@ -85,82 +86,123 @@
 
 
 
-    <div id="sidebar" class="sidebar py-3">
-      <!-- Menü başlangıcı -->
-      <ul class="sidebar-menu list-unstyled">
-        <!-- Herkes için Anasayfa -->
-        <li class="sidebar-list-item">
-          <a href="{{ url_for('admin.admin_dashboard') }}" class="sidebar-link text-muted">
-            <i class="o-home-1 mr-3 text-gray"></i><span>Anasayfa</span>
-          </a>
-        </li>
-    
-        <!-- Kullanıcılar menü öğesi -->
-        {% if modulayar.kullanıcılar_aktif and current_user.has_role('admin') %}
-        <li class="sidebar-list-item">
-          <a href="{{ url_for('admin.users') }}" class="sidebar-link text-muted">
-            <i class="o-user-1 mr-3 text-gray"></i><span>Kullanıcılar</span>
-          </a>
-        </li>
+      <div id="sidebar" class="sidebar py-3">
+        {% if current_user.is_authenticated %}
+          <!-- Menü başlangıcı -->
+          <ul class="sidebar-menu list-unstyled">
+            <!-- Herkes için Anasayfa -->
+            <li class="sidebar-list-item">
+              <a href="{{ url_for('admin.admin_dashboard') }}" class="sidebar-link text-muted">
+                <i class="o-home-1 mr-3 text-gray"></i><span>Anasayfa</span>
+              </a>
+            </li>
+        
+            <!-- Kullanıcılar menü öğesi -->
+            {% if modulayar.kullanıcılar_aktif and current_user.has_role('admin') %}
+            <li class="sidebar-list-item">
+              <a href="{{ url_for('admin.users') }}" class="sidebar-link text-muted">
+                <i class="o-user-1 mr-3 text-gray"></i><span>Kullanıcılar</span>
+              </a>
+            </li>
+            {% endif %}
+        
+            <!-- Projeler menü öğesi -->
+            {% if modulayar.projeler_aktif and current_user.has_role('koordinator') or current_user.has_role('sef') or current_user.has_role('admin') %}
+            <li class="sidebar-list-item">
+              <a href="{{ url_for('proje.projeler') }}" class="sidebar-link text-muted">
+                <i class="o-survey-1 mr-3 text-gray"></i><span>Projeler</span>
+              </a>
+            </li>
+            {% endif %}
+        
+            <!-- Blog menü öğesi -->
+            {% if modulayar.blog_aktif and current_user.has_role('admin') %}
+            <li class="sidebar-list-item">
+              <a href="" class="sidebar-link text-muted">
+                <i class="o-paper-stack-1 mr-3 text-gray"></i><span>Blog</span>
+              </a>
+            </li>
+            {% endif %}
+        
+            <!-- Mesajlar menü öğesi -->
+            {% if modulayar.mesajlar_aktif and current_user.has_role('admin') %}
+            <li class="sidebar-list-item">
+              <a href="" class="sidebar-link text-muted">
+                <i class="o-contact-card-1 mr-3 text-gray"></i><span>Mesajlar</span>
+              </a>
+            </li>
+            {% endif %}
+        
+            <!-- Riskli Yapılar menü öğesi -->
+            {% if modulayar.riskli_yapı_aktif and current_user.has_role('raportor') or current_user.has_role('sef') or current_user.has_role('admin') %}
+            <li class="sidebar-list-item">
+              <a href="" class="sidebar-link text-muted">
+                <i class="far fa-building mr-4 text-gray"></i><span>Riskli Yapılar</span>
+              </a>
+            </li>
+            {% endif %}
+        
+            <!-- Admin için Genel Ayarlar menü öğesi -->
+            {% if current_user.has_role('admin') %}
+            <li class="sidebar-list-item">
+              <a href="#" data-toggle="collapse" data-target="#settings" aria-expanded="false" aria-controls="settings" class="sidebar-link text-muted">
+                <i class="o-settings-window-1 mr-3 text-gray"></i><span>Genel Ayarlar</span>
+              </a>
+              <div id="settings" class="collapse">
+                <!-- Genel Ayarlar alt menüsü -->
+                <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
+                  <li class="sidebar-list-item"><a href="{{ url_for('admin.ayarlar') }}" class="sidebar-link text-muted pl-lg-5">Site Ayarları</a></li>
+                  <li class="sidebar-list-item"><a href="{{ url_for('admin.mail_settings') }}" class="sidebar-link text-muted pl-lg-5">Mail Ayarları</a></li>
+                  <li class="sidebar-list-item"><a href="{{ url_for('admin.modul_ayarlari') }}" class="sidebar-link text-muted pl-lg-5">Modül Ayarları</a></li>
+                  <li class="sidebar-list-item"><a href="{{ url_for('admin.kdsid_ayarlari') }}" class="sidebar-link text-muted pl-lg-5">Artış Ayarları</a></li>
+                </ul>
+              </div>
+            </li>
+            {% endif %}
+          </ul>
+          <!-- Menü sonu -->
+          {% else %}
+          <!-- Giriş yapmamış kullanıcılar için menü öğeleri -->
+          <ul class="sidebar-menu list-unstyled">
+            <li class="sidebar-list-item">
+              <div class="form-group row">
+                <label class="col-md-7 form-control-label">Çalışma Alanları</label>
+                <div class="col-md-3">
+                  <label class="switch">
+                    <input type="checkbox" id="kdalanCheckbox">
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </li>
+            <li class="sidebar-list-item">
+              <div class="form-group row">
+                <label class="col-md-7 form-control-label">Yarısı Bizden</label>
+                <div class="col-md-3">
+                  <label class="switch">
+                    <input type="checkbox" id="ybizdenCheckbox">
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </li>
+            <li class="sidebar-list-item">
+              <div class="form-group row">
+                <label class="col-md-7 form-control-label">Orta Hasarlı Yapılar</label>
+                <div class="col-md-3">
+                  <label class="switch">
+                    <input type="checkbox" id="ortahasarCheckbox">
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </li>
+          </ul>
         {% endif %}
-    
-        <!-- Projeler menü öğesi -->
-        {% if modulayar.projeler_aktif and current_user.has_role('koordinator') or current_user.has_role('sef') or current_user.has_role('admin') %}
-        <li class="sidebar-list-item">
-          <a href="{{ url_for('proje.projeler') }}" class="sidebar-link text-muted">
-            <i class="o-survey-1 mr-3 text-gray"></i><span>Projeler</span>
-          </a>
-        </li>
-        {% endif %}
-    
-        <!-- Blog menü öğesi -->
-        {% if modulayar.blog_aktif and current_user.has_role('admin') %}
-        <li class="sidebar-list-item">
-          <a href="" class="sidebar-link text-muted">
-            <i class="o-paper-stack-1 mr-3 text-gray"></i><span>Blog</span>
-          </a>
-        </li>
-        {% endif %}
-    
-        <!-- Mesajlar menü öğesi -->
-        {% if modulayar.mesajlar_aktif and current_user.has_role('admin') %}
-        <li class="sidebar-list-item">
-          <a href="" class="sidebar-link text-muted">
-            <i class="o-contact-card-1 mr-3 text-gray"></i><span>Mesajlar</span>
-          </a>
-        </li>
-        {% endif %}
-    
-        <!-- Riskli Yapılar menü öğesi -->
-        {% if modulayar.riskli_yapı_aktif and current_user.has_role('raportor') or current_user.has_role('sef') or current_user.has_role('admin') %}
-        <li class="sidebar-list-item">
-          <a href="" class="sidebar-link text-muted">
-            <i class="far fa-building mr-4 text-gray"></i><span>Riskli Yapılar</span>
-          </a>
-        </li>
-        {% endif %}
-    
-        <!-- Admin için Genel Ayarlar menü öğesi -->
-        {% if current_user.has_role('admin') %}
-        <li class="sidebar-list-item">
-          <a href="#" data-toggle="collapse" data-target="#settings" aria-expanded="false" aria-controls="settings" class="sidebar-link text-muted">
-            <i class="o-settings-window-1 mr-3 text-gray"></i><span>Genel Ayarlar</span>
-          </a>
-          <div id="settings" class="collapse">
-            <!-- Genel Ayarlar alt menüsü -->
-            <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
-              <li class="sidebar-list-item"><a href="{{ url_for('admin.ayarlar') }}" class="sidebar-link text-muted pl-lg-5">Site Ayarları</a></li>
-              <li class="sidebar-list-item"><a href="{{ url_for('admin.mail_settings') }}" class="sidebar-link text-muted pl-lg-5">Mail Ayarları</a></li>
-              <li class="sidebar-list-item"><a href="{{ url_for('admin.modul_ayarlari') }}" class="sidebar-link text-muted pl-lg-5">Modül Ayarları</a></li>
-              <li class="sidebar-list-item"><a href="{{ url_for('admin.kdsid_ayarlari') }}" class="sidebar-link text-muted pl-lg-5">Artış Ayarları</a></li>
-            </ul>
-          </div>
-        </li>
-        {% endif %}
-      </ul>
-      <!-- Menü sonu -->
-    </div>
-    
+
+
+      </div>
+      
 
     
       <div class="page-holder w-100 d-flex flex-wrap">

@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
     <!-- Custom stylesheet - for your changes-->
     <link rel="stylesheet" href="{{ url_for('static', filename='front/css/custom.css') }}">
+    
     <!-- Favicon-->
     <link rel="shortcut icon" href="{{ url_for('static', filename='front/img/logo.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.17.0/font/bootstrap-icons.css" rel="stylesheet">
@@ -54,6 +55,7 @@
                   <li class="nav-item"> <a href="/" class="nav-link active">Anasayfa</a></li>
                   <!-- Link-->
                   <li class="nav-item"> <a href="{{ url_for('main.show_map') }}" class="nav-link">Harita</a></li>        
+                  <li class="nav-item"> <a href="{{ url_for('main.harita') }}" class="nav-link">Harita 2</a></li> 
                   <!-- Link
                   <li class="nav-item"> <a href="" class="nav-link">Riskli Yapılar</a></li>
                   Link
@@ -150,6 +152,7 @@
     <script src="{{ url_for('static', filename='front/vendor/lightbox2/js/lightbox.js') }}"></script>
     <script src="{{ url_for('static', filename='front/js/front.js') }}"></script>
     <script src="{{ url_for('static', filename='front/js/custom.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/js/custom.js')}}"></script>
     
   </body>
 </html>
