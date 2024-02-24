@@ -20,13 +20,13 @@ def create_app():
 
     # Uygulama konfigürasyonları
     app.config['SECRET_KEY'] = 'your_secret_key'
-    #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123456@localhost/takip'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123456@localhost/takip'
 
-    database_url = os.environ.get('DATABASE_URL')
-    if database_url.startswith("postgres://"):
-        database_url = database_url.replace("postgres://", "postgresql://", 1)
+    #database_url = os.environ.get('DATABASE_URL')
+    #if database_url.startswith("postgres://"):
+    #    database_url = database_url.replace("postgres://", "postgresql://", 1)
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+    #app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'img')
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     app.config['MAIL_PORT'] = 587
