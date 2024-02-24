@@ -133,7 +133,7 @@ function initMap() {
         var textStyle;
 
         // Örneğin, zoom seviyesi 12'den büyük olduğunda metni göster
-        if (zoom > 19) {
+        if (zoom > 17) {
             text = feature.get('text_data') || ''; // text_data yoksa boş string kullan
             textStyle = new ol.style.Text({
                 font: '14px Calibri,sans-serif',
