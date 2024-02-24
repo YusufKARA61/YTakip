@@ -98,7 +98,7 @@ function deleteUserItem() {
 function initMap() {
   var vectorSource = new ol.source.Vector({
       format: new ol.format.GeoJSON(),
-      url: 'http://localhost:8080/geoserver/wfs?service=WFS&' +
+      url: 'http://34.118.84.26:8080/geoserver/wfs?service=WFS&' +
           'version=1.1.0&request=GetFeature&typename=bbgis:harita&' +
           'outputFormat=application/json&srsname=EPSG:3857',
       strategy: ol.loadingstrategy.bbox
