@@ -30,34 +30,204 @@
             </div>
             <!-- Diğer sütunlar ve içerikler -->
             <div class="col-md-6">
+                
+                
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card text-block">
                             <div class="card-body">
-                                <p class="card-text">Kentsel İmar Durumu <strong>(%40)</strong> Oranında Mal Sahibine Kalacak Şekilde Kentsel Dönüşüm Sonrası Alan: <strong style="font-size: larger; font-weight: bold;">{{ (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.4)|round(2) }} m²</strong></p>
+                                <p class="card-text">Kentsel Dönüşüm Sonrasu İmar Durumu <strong>(%50)</strong> Oranında Mal Sahibine Kalacak Şekilde Kentsel Dönüşüm Sonrası Alan: <strong style="font-size: larger; font-weight: bold;">{{ (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5)|round(2) }} m²</strong></p>
                             </div>
                         </div>
                     </div>
                 </div>
+                <br>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card text-block">
                             <div class="card-body">
-                                <p class="card-text">Kentsel İmar Durumu <strong>(%45)</strong> Oranında Mal Sahibine Kalacak Şekilde Kentsel Dönüşüm Sonrası Alan: <strong style="font-size: larger; font-weight: bold;">{{ (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.45)|round(2) }} m²</strong></p>
+                                <p class="card-text">Daire Başı <strong>OTOPARK ÜCRETİ</strong> için; Ödenmesi Gereken Miktar: <strong style="font-size: larger; font-weight: bold;">250.000TL</strong></p>
                             </div>
                         </div>
                     </div>
                 </div>
+                <br>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card text-block">
                             <div class="card-body">
-                                <p class="card-text">Kentsel İmar Durumu <strong>(%50)</strong> Oranında Mal Sahibine Kalacak Şekilde Kentsel Dönüşüm Sonrası Alan: <strong style="font-size: larger; font-weight: bold;">{{ (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5)|round(2) }} m²</strong></p>
+                                <p class="card-text">Tamamlanması gereken <strong>m² Fiyatı</strong> için; Ödenmesi Gereken Miktar(2,5 Ton Demir): <strong style="font-size: larger; font-weight: bold;">{{ 2.5*23280 }} TL</strong></p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <br>
+            <br>
+            <br>
+            <div class="container-fluid">
+                <br>
+                <br>
+                
+                <div class="row gx-5 bg-white">
+                    <!-- Item -->
+                  <div class="col-xl-3 col-sm-6 py-4 border-lg-end border-gray-200">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="d-flex align-items-center">
+                          <div class="mx-3 d-flex flex-column align-items-center">
+                            <i class="fas fa-building fa-2x"></i>
+                            
+                          </div>
+                          <div class="number"><strong class="text-lg"></strong>
+                            <p class="card-text"><strong>2+1 80m2 Daire</strong></p></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Item -->
+                  <div class="col-xl-9 col-sm-6 py-4 border-lg-end border-gray-200">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="d-flex align-items-center">
+                          <div class="mx-3 d-flex flex-column align-items-center">
+                            <i class="fas fa-building fa-2x"></i>
+                            
+                          </div>
+                          <div class="number"><strong class="text-lg"></strong>
+                            <p class="card-text">2+1 80m2 Daire <strong>KAT BRÜTÜ</strong> için; Ödenmesi Gereken Miktar: <strong style="font-size: larger; font-weight: bold;">{{ 80 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5)|round(2)  }} m²</strong></p>
+                            <p class="card-text"><strong>Ödenecek Miktar</strong> parasal olarak: <strong style="font-size: larger; font-weight: bold;">{{ (80 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5)|round(2))*2.5*23280  }} TL</strong></p>
+                            
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                 
+                  
+                  <!-- Diğer içerikler burada gelecek -->
+                </div>
+                <div class="row gx-5 bg-white">
+                    <!-- Item -->
+                    <div class="col-xl-3 col-sm-6 py-4 border-lg-end border-gray-200">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="d-flex align-items-center">
+                            <div class="mx-3 d-flex flex-column align-items-center">
+                              <i class="fas fa-building fa-2x"></i>
+                              
+                            </div>
+                            <div class="number"><strong class="text-lg"></strong>
+                              <p class="card-text"><strong>2+1 85m2 Daire</strong></p>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Item -->
+                    <div class="col-xl-9 col-sm-6 py-4 border-lg-end border-gray-200">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="d-flex align-items-center">
+                            <div class="mx-3 d-flex flex-column align-items-center">
+                              <i class="fas fa-building fa-2x"></i>
+                              
+                            </div>
+                            <div class="number"><strong class="text-lg"></strong>
+                              <p class="card-text">2+1 85m2 Daire <strong>KAT BRÜTÜ</strong> için; Ödenmesi Gereken Miktar: <strong style="font-size: larger; font-weight: bold;">{{ 85 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5)|round(2) }} m²</strong></p>
+                              
+                              <p class="card-text"><strong>Ödenecek Miktar</strong> parasal olarak: <strong style="font-size: larger; font-weight: bold;">{{ (85 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5)|round(2))*2.5*23280  }} TL</strong></p>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                   
+                    
+                    <!-- Diğer içerikler burada gelecek -->
+                  </div>
+                <div class="row gx-5 bg-white">
+                    <!-- Item -->
+                    <div class="col-xl-3 col-sm-6 py-4 border-lg-end border-gray-200">
+                        <div class="card">
+                          <div class="card-body">
+                            <div class="d-flex align-items-center">
+                              <div class="mx-3 d-flex flex-column align-items-center">
+                                <i class="fas fa-building fa-2x"></i>
+                                
+                              </div>
+                              <div class="number"><strong class="text-lg"></strong>
+                                <p class="card-text"><strong>3+1 95m2 Daire</strong></p>
+                               </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <!-- Item -->
+                    <div class="col-xl-9 col-sm-6 py-4 border-lg-end border-gray-200">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="d-flex align-items-center">
+                            <div class="mx-3 d-flex flex-column align-items-center">
+                              <i class="fas fa-building fa-2x"></i>
+                              
+                            </div>
+                            <div class="number"><strong class="text-lg"></strong>
+                              <p class="card-text">3+1 95m2 Daire <strong>KAT BRÜTÜ</strong> için; Ödenmesi Gereken Miktar: <strong style="font-size: larger; font-weight: bold;">{{ 95 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5)|round(2) }} m²</strong></p>
+                              
+                            <p class="card-text"><strong>Ödenecek Miktar</strong> parasal olarak: <strong style="font-size: larger; font-weight: bold;">{{ (95 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5)|round(2))*2.5*23280  }} TL</strong></p>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                   
+                    
+                    <!-- Diğer içerikler burada gelecek -->
+                  </div>
+                  <div class="row gx-5 bg-white">
+                    <!-- Item -->
+                    <div class="col-xl-3 col-sm-6 py-4 border-lg-end border-gray-200">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="d-flex align-items-center">
+                            <div class="mx-3 d-flex flex-column align-items-center">
+                              <i class="fas fa-building fa-2x"></i>
+                              
+                            </div>
+                            <div class="number"><strong class="text-lg"></strong>
+                              <p class="card-text"><strong>3+1 95m2 Daire</strong></p>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Item -->
+                    <div class="col-xl-9 col-sm-6 py-4 border-lg-end border-gray-200">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="d-flex align-items-center">
+                            <div class="mx-3 d-flex flex-column align-items-center">
+                              <i class="fas fa-building fa-2x"></i>
+                              
+                            </div>
+                            <div class="number"><strong class="text-lg"></strong>
+                              <p class="card-text">3+1 100m2 Daire <strong>KAT BRÜTÜ</strong> için; Ödenmesi Gereken Miktar: <strong style="font-size: larger; font-weight: bold;">{{ 100 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5)|round(2) }} m²</strong></p>
+                              
+                            <p class="card-text"><strong>Ödenecek Miktar</strong> parasal olarak: <strong style="font-size: larger; font-weight: bold;">{{ (100 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5)|round(2))*2.5*23280  }} TL</strong></p>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                   
+                    
+                    <!-- Diğer içerikler burada gelecek -->
+                  </div>
+             
+          </div>
         </div>
     </div>
 </section>
