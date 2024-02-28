@@ -176,7 +176,49 @@ function initMap() {
             center: ol.proj.fromLonLat([28.84, 41.04]),
             zoom: 15
         })
+
+    
+        
     });
+
+    // Popup div'ini oluştur
+    var popup = document.createElement('div');
+    popup.className = 'popup';
+    popup.style.position = 'absolute';
+    popup.style.backgroundColor = 'white';
+    popup.style.padding = '10px';
+    popup.style.border = '1px solid black';
+    popup.style.borderRadius = '5px';
+    popup.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)';
+    popup.style.display = 'none';
+    document.body.appendChild(popup);
+
+    // Haritaya tıklama olayı ekle
+    map.on('singleclick', function(evt) {
+        map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+            var geometry = feature.getGeometry();
+            var area = geometry.getArea(); // Geometrinin alanını hesapla
+            // Alanı %76 azaltarak düzelt
+            var correctedArea = area / 1.76; // %76 artışı düzeltmek için
+            var coord = evt.coordinate; // Tıklanan koordinat
+            var coordPx = map.getPixelFromCoordinate(coord); // Koordinatı piksel cinsine çevir
+
+            // Popup içeriğini ayarla ve göster
+            popup.innerHTML = '<p>Alan: ' + correctedArea.toFixed(2) + ' m²</p>';
+            popup.style.display = 'block';
+            popup.style.left = coordPx[0] + 'px';
+            popup.style.top = (coordPx[1] - popup.offsetHeight) + 'px'; // Popup'ı tıklanan noktanın biraz üstünde göster
+
+            return true; // İlk bulunan özelliği işle
+        });
+
+        // Eğer tıklanan noktada herhangi bir özellik yoksa, popup'ı gizle
+        if (!map.hasFeatureAtPixel(evt.pixel)) {
+            popup.style.display = 'none';
+        }
+    });
+
+    
 
     document.getElementById('ybizdenCheckbox').addEventListener('change', function() {
         vectorLayer.getSource().refresh();
@@ -203,4 +245,5 @@ function searchFeature() {
 }
 
 document.addEventListener('DOMContentLoaded', initMap);
+
 

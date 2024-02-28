@@ -120,3 +120,15 @@ input:checked + .slider:before {
   height: 400px;
   width: 100%;
 }
+
+.popup {
+  position: absolute;
+  background-color: white;
+  padding: 15px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+  min-width: 100px;
+  text-align: center;
+  z-index: 100;
+}
