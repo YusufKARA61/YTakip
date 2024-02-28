@@ -36,6 +36,10 @@ def home():
             flash('Bu TCNO ile eşleşen veri bulunamadı.', 'error')
     return render_template('frontend/home.html', form=form)
 
+@main.route('/teklif')
+def teklif():
+    return render_template('frontend/teklif.html')
+
 @main.route('/map')
 def show_map():
     return render_template('frontend/map.html')

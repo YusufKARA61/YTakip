@@ -28,8 +28,6 @@
                     <p>Sorgu sonucu bulunamadı.</p>
                 {% endif %}
             </div>
-
-
             <!-- Diğer sütunlar ve içerikler -->
             <div class="col-md-6">
                 
@@ -39,7 +37,7 @@
                         <div class="card text-block">
                             <div class="card-body">
                                 <p class="card-text">Kentsel Dönüşüm Sonrasu İmar Durumu <strong>(%50)</strong> Oranında Mal Sahibine Kalacak Şekilde Kentsel Dönüşüm Sonrası Alan: <strong style="font-size: larger; font-weight: bold;">{{ (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5)|round(2) }} m²</strong></p>
-                              </div>             
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -97,7 +95,7 @@
                             
                           </div>
                           <div class="number"><strong class="text-lg"></strong>
-                            <p class="card-text">2+1 80m2 Daire <strong>KAT BRÜTÜ</strong> için; Alınması Gereken Alan(m²): <strong style="font-size: larger; font-weight: bold;">{{ (80 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))|round(2)  }} m²</strong></p>
+                            <p class="card-text">2+1 80m2 Daire <strong>KAT BRÜTÜ</strong> için; Ödenmesi Gereken Miktar: <strong style="font-size: larger; font-weight: bold;">{{ (80 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))|round(2)  }} m²</strong></p>
                             <p class="card-text"><strong>Ödenecek Miktar</strong> parasal olarak: <strong style="font-size: larger; font-weight: bold;">{{ ((80 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))*2.5*23280)|round(2)  }} TL</strong></p>
                             
                         </div>
@@ -137,7 +135,7 @@
                               
                             </div>
                             <div class="number"><strong class="text-lg"></strong>
-                              <p class="card-text">2+1 85m2 Daire <strong>KAT BRÜTÜ</strong> için; Alınması Gereken Alan(m²): <strong style="font-size: larger; font-weight: bold;">{{ (85 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))|round(2) }} m²</strong></p>
+                              <p class="card-text">2+1 85m2 Daire <strong>KAT BRÜTÜ</strong> için; Ödenmesi Gereken Miktar: <strong style="font-size: larger; font-weight: bold;">{{ (85 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))|round(2) }} m²</strong></p>
                               
                               <p class="card-text"><strong>Ödenecek Miktar</strong> parasal olarak: <strong style="font-size: larger; font-weight: bold;">{{ ((85 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))*2.5*23280)|round(2)  }} TL</strong></p>
                           </div>
@@ -176,7 +174,7 @@
                               
                             </div>
                             <div class="number"><strong class="text-lg"></strong>
-                              <p class="card-text">3+1 95m2 Daire <strong>KAT BRÜTÜ</strong> için; Alınması Gereken Alan(m²): <strong style="font-size: larger; font-weight: bold;">{{ (95 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))|round(2) }} m²</strong></p>
+                              <p class="card-text">3+1 95m2 Daire <strong>KAT BRÜTÜ</strong> için; Ödenmesi Gereken Miktar: <strong style="font-size: larger; font-weight: bold;">{{ (95 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))|round(2) }} m²</strong></p>
                               
                             <p class="card-text"><strong>Ödenecek Miktar</strong> parasal olarak: <strong style="font-size: larger; font-weight: bold;">{{ ((95 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))*2.5*23280)|round(2)  }} TL</strong></p>
                           </div>
@@ -216,7 +214,7 @@
                               
                             </div>
                             <div class="number"><strong class="text-lg"></strong>
-                              <p class="card-text">3+1 100m2 Daire <strong>KAT BRÜTÜ</strong> için; Alınması Gereken Alan(m²): <strong style="font-size: larger; font-weight: bold;">{{ (100 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))|round(2) }} m²</strong></p>
+                              <p class="card-text">3+1 100m2 Daire <strong>KAT BRÜTÜ</strong> için; Ödenmesi Gereken Miktar: <strong style="font-size: larger; font-weight: bold;">{{ (100 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))|round(2) }} m²</strong></p>
                               
                             <p class="card-text"><strong>Ödenecek Miktar</strong> parasal olarak: <strong style="font-size: larger; font-weight: bold;">{{ ((100 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))*2.5*23280)|round(2)  }} TL</strong></p>
                           </div>
