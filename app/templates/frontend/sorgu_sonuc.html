@@ -28,8 +28,6 @@
                     <p>Sorgu sonucu bulunamadı.</p>
                 {% endif %}
             </div>
-
-
             <!-- Diğer sütunlar ve içerikler -->
             <div class="col-md-6">
                 
@@ -39,7 +37,7 @@
                         <div class="card text-block">
                             <div class="card-body">
                                 <p class="card-text">Kentsel Dönüşüm Sonrasu İmar Durumu <strong>(%50)</strong> Oranında Mal Sahibine Kalacak Şekilde Kentsel Dönüşüm Sonrası Alan: <strong style="font-size: larger; font-weight: bold;">{{ (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5)|round(2) }} m²</strong></p>
-                              </div>             
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -96,10 +94,30 @@
                             <i class="fas fa-building fa-2x"></i>
                             
                           </div>
-                          <div class="number"><strong class="text-lg"></strong>
-                            <p class="card-text">2+1 80m2 Daire <strong>KAT BRÜTÜ</strong> için; Alınması Gereken Alan(m²): <strong style="font-size: larger; font-weight: bold;">{{ (80 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))|round(2)  }} m²</strong></p>
-                            <p class="card-text"><strong>Ödenecek Miktar</strong> parasal olarak: <strong style="font-size: larger; font-weight: bold;">{{ ((80 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))*2.5*23280)|round(2)  }} TL</strong></p>
-                            
+                          <div class="number">
+                            <p class="card-text">
+                              {% set toplam_alan = sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5 %}
+                              {% set tam_daire_sayisi = (toplam_alan // 80) %}
+                              {% set kalan_m2 = toplam_alan % 80 %}
+                              {% set eklenmesi_gereken_m2 = 80 - kalan_m2 %}
+                              {% set odenmesi_gereken_tl_ek = (eklenmesi_gereken_m2 * 2.5 * 23280) %}
+                              
+                              {% if toplam_alan < 80 %}
+                                  <strong>1 daire için</strong>, 80m²'ye tamamlamak üzere eklenmesi gereken miktar: 
+                                  <strong>{{ eklenmesi_gereken_m2|round(2) }} m²</strong>,
+                                  Bu miktarın maliyeti: <strong>{{ odenmesi_gereken_tl_ek|round(2) }} TL</strong>
+                              {% else %}
+                                  {% if tam_daire_sayisi > 0 %}
+                                      <strong>{{ tam_daire_sayisi }} adet KAT BRÜTÜ 80m² Daire Hakkınız var.</strong>
+                                  {% endif %}
+                                  {% if kalan_m2 > 0 %}
+                                      <br>Kalan hakkınız olan <strong>{{ kalan_m2|round(2) }} m²</strong> ile, 
+                                      2. Daire için 80m²'ye tamamlamak üzere eklenmesi gereken miktar: 
+                                      <strong>{{ eklenmesi_gereken_m2|round(2) }} m²</strong>,
+                                      Bu miktarın maliyeti: <strong>{{ odenmesi_gereken_tl_ek|round(2) }} TL</strong>
+                                  {% endif %}
+                              {% endif %}
+                          </p>
                         </div>
                         </div>
                       </div>
@@ -136,10 +154,30 @@
                               <i class="fas fa-building fa-2x"></i>
                               
                             </div>
-                            <div class="number"><strong class="text-lg"></strong>
-                              <p class="card-text">2+1 85m2 Daire <strong>KAT BRÜTÜ</strong> için; Alınması Gereken Alan(m²): <strong style="font-size: larger; font-weight: bold;">{{ (85 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))|round(2) }} m²</strong></p>
-                              
-                              <p class="card-text"><strong>Ödenecek Miktar</strong> parasal olarak: <strong style="font-size: larger; font-weight: bold;">{{ ((85 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))*2.5*23280)|round(2)  }} TL</strong></p>
+                            <div class="number">
+                              <p class="card-text">
+                                {% set toplam_alan = sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5 %}
+                                {% set tam_daire_sayisi = (toplam_alan // 85) %}
+                                {% set kalan_m2 = toplam_alan % 85 %}
+                                {% set eklenmesi_gereken_m2 = 85 - kalan_m2 %}
+                                {% set odenmesi_gereken_tl_ek = (eklenmesi_gereken_m2 * 2.5 * 23280) %}
+                                
+                                {% if toplam_alan < 85 %}
+                                    <strong>1 daire için</strong>, 85m²'ye tamamlamak üzere eklenmesi gereken miktar: 
+                                    <strong>{{ eklenmesi_gereken_m2|round(2) }} m²</strong>,
+                                    Bu miktarın maliyeti: <strong>{{ odenmesi_gereken_tl_ek|round(2) }} TL</strong>
+                                {% else %}
+                                    {% if tam_daire_sayisi > 0 %}
+                                        <strong>{{ tam_daire_sayisi }} adet KAT BRÜTÜ 85m² Daire Hakkınız var.</strong>
+                                    {% endif %}
+                                    {% if kalan_m2 > 0 %}
+                                        <br>Kalan hakkınız olan <strong>{{ kalan_m2|round(2) }} m²</strong> ile, 
+                                        2. Daire için 85m²'ye tamamlamak üzere eklenmesi gereken miktar: 
+                                        <strong>{{ eklenmesi_gereken_m2|round(2) }} m²</strong>,
+                                        Bu miktarın maliyeti: <strong>{{ odenmesi_gereken_tl_ek|round(2) }} TL</strong>
+                                    {% endif %}
+                                {% endif %}
+                            </p>
                           </div>
                           </div>
                         </div>
@@ -175,11 +213,32 @@
                               <i class="fas fa-building fa-2x"></i>
                               
                             </div>
-                            <div class="number"><strong class="text-lg"></strong>
-                              <p class="card-text">3+1 95m2 Daire <strong>KAT BRÜTÜ</strong> için; Alınması Gereken Alan(m²): <strong style="font-size: larger; font-weight: bold;">{{ (95 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))|round(2) }} m²</strong></p>
-                              
-                            <p class="card-text"><strong>Ödenecek Miktar</strong> parasal olarak: <strong style="font-size: larger; font-weight: bold;">{{ ((95 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))*2.5*23280)|round(2)  }} TL</strong></p>
+                            <div class="number">
+                              <p class="card-text">
+                                {% set toplam_alan = sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5 %}
+                                {% set tam_daire_sayisi = (toplam_alan // 95) %}
+                                {% set kalan_m2 = toplam_alan % 95 %}
+                                {% set eklenmesi_gereken_m2 = 95 - kalan_m2 %}
+                                {% set odenmesi_gereken_tl_ek = (eklenmesi_gereken_m2 * 2.5 * 23280) %}
+                                
+                                {% if toplam_alan < 95 %}
+                                    <strong>1 daire için</strong>, 95m²'ye tamamlamak üzere eklenmesi gereken miktar: 
+                                    <strong>{{ eklenmesi_gereken_m2|round(2) }} m²</strong>,
+                                    Bu miktarın maliyeti: <strong>{{ odenmesi_gereken_tl_ek|round(2) }} TL</strong>
+                                {% else %}
+                                    {% if tam_daire_sayisi > 0 %}
+                                        <strong>{{ tam_daire_sayisi }} adet KAT BRÜTÜ 95m² Daire Hakkınız var.</strong>
+                                    {% endif %}
+                                    {% if kalan_m2 > 0 %}
+                                        <br>Kalan hakkınız olan <strong>{{ kalan_m2|round(2) }} m²</strong> ile, 
+                                        2. Daire için 95m²'ye tamamlamak üzere eklenmesi gereken miktar: 
+                                        <strong>{{ eklenmesi_gereken_m2|round(2) }} m²</strong>,
+                                        Bu miktarın maliyeti: <strong>{{ odenmesi_gereken_tl_ek|round(2) }} TL</strong>
+                                    {% endif %}
+                                {% endif %}
+                            </p>
                           </div>
+                          
                           </div>
                         </div>
                       </div>
@@ -200,7 +259,7 @@
                               
                             </div>
                             <div class="number"><strong class="text-lg"></strong>
-                              <p class="card-text"><strong>3+1 100m2 Daire</strong></p>
+                              <p class="card-text"><strong>3+1 95m2 Daire</strong></p>
                               </div>
                           </div>
                         </div>
@@ -215,10 +274,30 @@
                               <i class="fas fa-building fa-2x"></i>
                               
                             </div>
-                            <div class="number"><strong class="text-lg"></strong>
-                              <p class="card-text">3+1 100m2 Daire <strong>KAT BRÜTÜ</strong> için; Alınması Gereken Alan(m²): <strong style="font-size: larger; font-weight: bold;">{{ (100 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))|round(2) }} m²</strong></p>
-                              
-                            <p class="card-text"><strong>Ödenecek Miktar</strong> parasal olarak: <strong style="font-size: larger; font-weight: bold;">{{ ((100 - (sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5))*2.5*23280)|round(2)  }} TL</strong></p>
+                            <div class="number">
+                              <p class="card-text">
+                                {% set toplam_alan = sorgu_sonuclari[0]['kdsid_hisseoran'] * 0.5 %}
+                                {% set tam_daire_sayisi = (toplam_alan // 100) %}
+                                {% set kalan_m2 = toplam_alan % 100 %}
+                                {% set eklenmesi_gereken_m2 = 100 - kalan_m2 %}
+                                {% set odenmesi_gereken_tl_ek = (eklenmesi_gereken_m2 * 2.5 * 23280) %}
+                                
+                                {% if toplam_alan < 100 %}
+                                    <strong>1 daire için</strong>, 100m²'ye tamamlamak üzere eklenmesi gereken miktar: 
+                                    <strong>{{ eklenmesi_gereken_m2|round(2) }} m²</strong>,
+                                    Bu miktarın maliyeti: <strong>{{ odenmesi_gereken_tl_ek|round(2) }} TL</strong>
+                                {% else %}
+                                    {% if tam_daire_sayisi > 0 %}
+                                        <strong>{{ tam_daire_sayisi }} adet KAT BRÜTÜ 100m² Daire Hakkınız var.</strong>
+                                    {% endif %}
+                                    {% if kalan_m2 > 0 %}
+                                        <br>Kalan hakkınız olan <strong>{{ kalan_m2|round(2) }} m²</strong> ile, 
+                                        2. Daire için 100m²'ye tamamlamak üzere eklenmesi gereken miktar: 
+                                        <strong>{{ eklenmesi_gereken_m2|round(2) }} m²</strong>,
+                                        Bu miktarın maliyeti: <strong>{{ odenmesi_gereken_tl_ek|round(2) }} TL</strong>
+                                    {% endif %}
+                                {% endif %}
+                            </p>
                           </div>
                           </div>
                         </div>
