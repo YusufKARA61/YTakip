@@ -191,34 +191,72 @@ function initMap() {
     popup.style.borderRadius = '5px';
     popup.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)';
     popup.style.display = 'none';
+
+    // Çarpı butonunu oluştur
+    var closeButton = document.createElement('div');
+    closeButton.innerHTML = '&times;'; // HTML entity for a multiplication sign (times)
+    closeButton.style.position = 'absolute';
+    closeButton.style.top = '5px';
+    closeButton.style.right = '10px';
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.fontSize = '20px';
+    closeButton.style.color = 'black';
+
+    // Çarpı butonuna tıklama olayı ekle
+    closeButton.onclick = function() {
+        popup.style.display = 'none'; // Popup'ı gizle
+    };
+
+    // Popup içeriğini tutacak bir div oluşturun
+    var popupContent = document.createElement('div');
+    popup.appendChild(popupContent); // Bu div'i popup'a ekleyin
+
+    // Çarpı butonunu popup'a ekle
+    popup.appendChild(closeButton);
+
+    // Popup'ı body'ye ekle
     document.body.appendChild(popup);
+
 
     // Haritaya tıklama olayı ekle
     map.on('singleclick', function(evt) {
-        map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
-            var geometry = feature.getGeometry();
-            var area = geometry.getArea(); // Geometrinin alanını hesapla
-            // Alanı %76 azaltarak düzelt
-            var correctedArea = area / 1.76; // %76 artışı düzeltmek için
-            var coord = evt.coordinate; // Tıklanan koordinat
-            var coordPx = map.getPixelFromCoordinate(coord); // Koordinatı piksel cinsine çevir
+      map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+          var geometry = feature.getGeometry();
+          var area = geometry.getArea(); // Geometrinin alanını hesapla
+          var correctedArea = area / 1.76; // %76 artışı düzeltmek için
+          var coord = evt.coordinate; // Tıklanan koordinat
+          var coordPx = map.getPixelFromCoordinate(coord); // Koordinatı piksel cinsine çevir
+  
+          // Ybizden değerini kontrol et
+          var ybizdenDurumu = feature.get('ybizden') === 'Evet' ? 'Var' : 'Yok';
+          // Orta Hasar değerini kontrol et
+          var ortahasarDurumu = feature.get('ortahasar') === 'Evet' ? 'Var' : 'Yok';
+          // Çalışma alanı kontrol et
+          var kdalanDurumu = feature.get('kdalan') === true ? 'Var' : 'Yok';
+  
+          // Popup içeriğini ayarla ve göster
+          // Popup içeriğini ayarla ve göster
+          popupContent.innerHTML = '<p>Ada/Parsel: ' + (feature.get('text_data') || 'Bilgi Yok') + '</p>' +
+                                  '<p>Alan: ' + correctedArea.toFixed(2) + ' m²</p>' +
+                                  '<p>İmar Durumu: ' + ybizdenDurumu + '</p>' +
+                                  '<p>Yapı Ruhsat Tarihi: ' + ybizdenDurumu + '</p>' +
+                                  '<p>Bağımsız Bölüm Sayısı: ' + ybizdenDurumu + '</p>' +
+                                  '<p>Yarısı Bizden Başvurusu: ' + ybizdenDurumu + '</p>' +
+                                  '<p>Kentsel Dönüşüm Çalışması: ' + kdalanDurumu + '</p>' +
+                                  '<p>Orta Hasar Var Mı: ' + ortahasarDurumu + '</p>';
 
-            // Popup içeriğini ayarla ve göster
-            popup.innerHTML = '<p>Alan: ' + correctedArea.toFixed(2) + ' m²</p>';
-            popup.style.display = 'block';
-            popup.style.left = coordPx[0] + 'px';
-            popup.style.top = (coordPx[1] - popup.offsetHeight) + 'px'; // Popup'ı tıklanan noktanın biraz üstünde göster
-
-            return true; // İlk bulunan özelliği işle
-        });
-
-        // Eğer tıklanan noktada herhangi bir özellik yoksa, popup'ı gizle
-        if (!map.hasFeatureAtPixel(evt.pixel)) {
-            popup.style.display = 'none';
-        }
-    });
-
-    
+          popup.style.display = 'block';
+          popup.style.left = evt.pixel[0] + 'px';
+          popup.style.top = evt.pixel[1] + 'px';
+          return true; // İlk bulunan özelliği işle
+      });
+  
+      // Eğer tıklanan noktada herhangi bir özellik yoksa, popup'ı gizle
+      if (!map.hasFeatureAtPixel(evt.pixel)) {
+          popup.style.display = 'none';
+      }
+  });
+  
 
     document.getElementById('ybizdenCheckbox').addEventListener('change', function() {
         vectorLayer.getSource().refresh();
