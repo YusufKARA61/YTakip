@@ -236,14 +236,54 @@ function initMap() {
   
           // Popup içeriğini ayarla ve göster
           // Popup içeriğini ayarla ve göster
-          popupContent.innerHTML = '<p>Ada/Parsel: ' + (feature.get('text_data') || 'Bilgi Yok') + '</p>' +
-                                  '<p>Alan: ' + correctedArea.toFixed(2) + ' m²</p>' +
-                                  '<p>İmar Durumu: ' + ybizdenDurumu + '</p>' +
-                                  '<p>Yapı Ruhsat Tarihi: ' + ybizdenDurumu + '</p>' +
-                                  '<p>Bağımsız Bölüm Sayısı: ' + ybizdenDurumu + '</p>' +
-                                  '<p>Yarısı Bizden Başvurusu: ' + ybizdenDurumu + '</p>' +
-                                  '<p>Kentsel Dönüşüm Çalışması: ' + kdalanDurumu + '</p>' +
-                                  '<p>Orta Hasar Var Mı: ' + ortahasarDurumu + '</p>';
+          // Sekmeler için HTML yapısını oluştur
+popupContent.innerHTML = `
+<div class="tabs">
+  <div class="tab-headers">
+    <div class="tab-header active" data-tab="tab1">Bina Bilgisi</div>
+    <div class="tab-header" data-tab="tab2">Parsel Bilgisi</div>
+  </div>
+  <div class="tab-content active" id="tab1">
+    <!-- Bina bilgisi içeriği -->
+    <p>İmar Durumu: ${ybizdenDurumu}</p>
+    <p>Yapı Ruhsat Tarihi: ${ybizdenDurumu}</p>
+    <p>Bağımsız Bölüm Sayısı: ${ybizdenDurumu}</p>
+  </div>
+  <div class="tab-content" id="tab2">
+    <!-- Parsel bilgisi içeriği -->
+    <p>Ada/Parsel: ${feature.get('text_data') || 'Bilgi Yok'}</p>
+    <p>Alan: ${correctedArea.toFixed(2)} m²</p>
+    <p>Kentsel Dönüşüm Çalışması: ${kdalanDurumu}</p>
+    <p>Orta Hasar Var Mı: ${ortahasarDurumu}</p>
+  </div>
+</div>
+`;
+
+// Sekme başlıklarına tıklama olaylarını ekle
+document.querySelectorAll('.tab-header').forEach(header => {
+header.addEventListener('click', function() {
+  // Tüm başlıkları ve içerikleri pasif yap
+  document.querySelectorAll('.tab-header').forEach(header => header.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+  
+  // Aktif başlık ve içeriği ayarla
+  this.classList.add('active');
+  document.getElementById(this.dataset.tab).classList.add('active');
+});
+});
+
+// CSS stilleri
+var style = document.createElement('style');
+style.innerHTML = `
+.tabs { border: 1px solid #ccc; }
+.tab-headers { display: flex; }
+.tab-header { padding: 10px; cursor: pointer; border-bottom: 3px solid transparent; }
+.tab-header.active { border-bottom-color: blue; }
+.tab-content { display: none; padding: 10px; }
+.tab-content.active { display: block; }
+`;
+document.head.appendChild(style);
+
 
           popup.style.display = 'block';
           popup.style.left = evt.pixel[0] + 'px';
