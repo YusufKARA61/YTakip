@@ -110,6 +110,7 @@ celerybeat.pid
 .env.*.json
 .myenv/
 .venv/
+myenv/
 env/
 venv/
 ENV/
