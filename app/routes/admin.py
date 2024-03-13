@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required
 from flask_principal import Permission, Principal, RoleNeed
-from app.models import User, Ayarlar, ModulAyar, MailSettings, KdsidAyar, db, roles_users, Role
+from app.models import User, Ayarlar, ModulAyar, MailSettings, KdsidAyar, db, roles_users, Role, Harita
 from app.permissions import admin_permission
 from app.forms import AyarlarForm, ModulAyarForm, MailSettingsForm, KdsidAyarForm, RegistrationForm
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -19,7 +19,11 @@ admin_can_add_all_roles_permission = Permission(RoleNeed('admin_can_add_all_role
 @admin.route('/admin/dashboard')
 @login_required
 def admin_dashboard():
-    return render_template('admin/dashboard.html')
+    total_count = Harita.query.count()  # Toplam kayıt sayısı
+    true_count = Harita.query.filter_by(kdalan=True).count()  # kdalan True olan kayıtların sayısı
+    
+    # Verileri şablona gönder
+    return render_template('admin/dashboard.html', total_count=total_count, true_count=true_count)
 
 @admin.route('/admin/ayarlar', methods=['GET', 'POST'])
 @login_required
