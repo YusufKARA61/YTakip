@@ -96,6 +96,9 @@ def create_app():
     app.register_blueprint(proje_blueprint)
     from .routes.api import api_blueprint as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix='/api')
+    from .routes.riskli import riskli as riskli_blueprint
+    app.register_blueprint(riskli_blueprint)
+
 
     # Hata işleyiciyi ekleyin
     @app.errorhandler(403)

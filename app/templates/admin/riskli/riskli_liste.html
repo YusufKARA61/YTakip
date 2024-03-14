@@ -1,0 +1,59 @@
+{% extends "admin/layout.html" %}
+{% block title %}Riskli Yapı Listesi{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="text-uppercase mb-0">Riskli Yapılar</h6>
+                <a href="{{ url_for('riskli.ekle') }}" class="btn btn-primary">+ Riskli Yapı Ekle</a>
+            </div>
+        </div>
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Mahalle</th>
+                <th>Ada</th>
+                <th>Parsel</th>
+                <th>Cadde/Sokak</th>
+                <th>Bina No</th>
+                <th>Durumu</th>
+                <th>Başvuru Tarihi</th>
+                <th>Personel</th>
+                <th>Özel Not</th>
+                <th>İşlemler</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for riskli in riskli_binalar %}
+              <tr>
+                <td>{{ riskli.MAHALLE }}</td>
+                <td>{{ riskli.ADA }}</td>
+                <td>{{ riskli.PARSEL }}</td>
+                <td>{{ riskli.CADDE if riskli.CADDE else riskli.SOKAK }}</td>
+                <td>{{ riskli.BINA_NO }}</td>
+                <td>{{ riskli.DURUMU }}</td>
+                <td>{{ riskli.BASVURU_TARIHI }}</td>
+                <td>{{ riskli.PERSONEL }}</td>
+                <td>{{ riskli.OZEL_NOT }}</td>
+                <td>
+                  <a href="{{ url_for('riskli.duzenle', id=riskli.id) }}" class="btn btn-primary btn-sm">Düzenle</a>
+                  <form action="{{ url_for('riskli.sil', id=riskli.id) }}" method="post" style="display: inline;">
+                    <input type="hidden" name="csrf_token" value="{{ form.csrf_token }}">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bu kaydı silmek istediğinizden emin misiniz?');">Sil</button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

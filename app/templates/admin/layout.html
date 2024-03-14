@@ -136,8 +136,8 @@
             <!-- Riskli Yapılar menü öğesi -->
             {% if modulayar.riskli_yapı_aktif and current_user.has_role('raportor') or current_user.has_role('sef') or current_user.has_role('admin') %}
             <li class="sidebar-list-item">
-              <a href="" class="sidebar-link text-muted">
-                <i class="far fa-building mr-4 text-gray"></i><span>Riskli Yapılar</span>
+              <a href="{{ url_for('riskli.listele') }}" class="sidebar-link text-muted">
+                <i class="far fa-building mr-3 text-gray"></i><span>Riskli Yapılar</span>
               </a>
             </li>
             {% endif %}

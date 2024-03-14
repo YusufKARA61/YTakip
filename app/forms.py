@@ -1,7 +1,7 @@
 # forms.py
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SelectField, SubmitField, BooleanField, RadioField, EmailField, FileField, IntegerField, FloatField
-from wtforms.validators import DataRequired, Email, EqualTo, Optional
+from wtforms import StringField, PasswordField, SelectField, SubmitField, BooleanField, RadioField, EmailField, FileField, IntegerField, FloatField, DateField, TextAreaField
+from wtforms.validators import DataRequired, Email, EqualTo, Optional, Length
 from flask_wtf.file import FileRequired, FileAllowed
 from app.models import User  # User modelinizi import ettiğinizden emin olun
 
@@ -114,3 +114,23 @@ class SorguForm(FlaskForm):
     submit = SubmitField('Sorgula')
 
 
+class RiskliForm(FlaskForm):
+    YKN = StringField('YKN', validators=[Optional(), Length(max=255)])
+    ADI = StringField('Adı', validators=[Optional(), Length(max=255)])
+    ADA = StringField('Ada', validators=[DataRequired(), Length(max=255)])
+    PARSEL = StringField('Parsel', validators=[DataRequired(), Length(max=255)])
+    MAHALLE = StringField('Mahalle', validators=[DataRequired(), Length(max=255)])
+    CADDE = StringField('Cadde', validators=[Optional(), Length(max=255)])
+    SOKAK = StringField('Sokak', validators=[Optional(), Length(max=255)])
+    BINA_NO = StringField('Bina No', validators=[Optional(), Length(max=255)])
+    DURUMU = StringField('Durumu', validators=[DataRequired(), Length(max=255)])
+    TESISAT_KESIM_TARIHI = DateField('Tesisat Kesim Tarihi', format='%Y-%m-%d', validators=[Optional()])
+    YIKIM_TARIHI = DateField('Yıkım Tarihi', format='%Y-%m-%d', validators=[Optional()])
+    PERSONEL = StringField('Personel', validators=[Optional(), Length(max=255)])
+    BASVURU_TARIHI = DateField('Başvuru Tarihi', format='%Y-%m-%d', validators=[Optional()])
+    BASVURU_NO = StringField('Başvuru No', validators=[Optional(), Length(max=255)])
+    KAT_SAYISI = IntegerField('Kat Sayısı', validators=[Optional()])
+    BETON_BASINC_DAYANIMI_MPA = IntegerField('Beton Basınç Dayanımı (MPa)', validators=[Optional()])
+    OZEL_NOT = TextAreaField('Özel Not', validators=[Optional()])
+
+    submit = SubmitField('Kaydet')

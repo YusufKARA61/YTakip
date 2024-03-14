@@ -132,5 +132,26 @@ class Harita(db.Model):
     ortahasar = db.Column(db.String, nullable=True)
     kdalan = db.Column(db.Boolean, default=False, nullable=False)
 
+class Riskli(db.Model):
+    __tablename__ = 'tbl_riskli'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    YKN = db.Column(db.String(255))
+    ADI = db.Column(db.String(255))
+    ADA = db.Column(db.String(255))
+    PARSEL = db.Column(db.String(255))
+    MAHALLE = db.Column(db.String(255))
+    CADDE = db.Column(db.String(255))
+    SOKAK = db.Column(db.String(255))
+    BINA_NO = db.Column(db.String(255))
+    DURUMU = db.Column(db.String(255))
+    TESISAT_KESIM_TARIHI = db.Column(db.Date)
+    YIKIM_TARIHI = db.Column(db.Date)
+    PERSONEL = db.Column(db.String(255))
+    BASVURU_TARIHI = db.Column(db.Date)
+    BASVURU_NO = db.Column(db.String(255))
+    KAT_SAYISI = db.Column(db.Integer)
+    BETON_BASINC_DAYANIMI_MPA = db.Column(db.Integer)
+    OZEL_NOT = db.Column(db.Text)
+
 
 
