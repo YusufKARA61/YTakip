@@ -113,6 +113,9 @@ function initMap() {
             var ybizdenChecked = document.getElementById('ybizdenCheckbox').checked;
             var ortahasarChecked = document.getElementById('ortahasarCheckbox').checked;
             var kdalanChecked = document.getElementById('kdalanCheckbox').checked;
+            var riskliChecked = document.getElementById('riskliCheckbox').checked;
+
+            riskliCheckbox
 
             // Varsayılan renk
             var color = 'rgba(0, 0, 255, 0.1)';
@@ -126,6 +129,9 @@ function initMap() {
             if (ortahasarChecked && feature.get('ortahasar') === 'Evet') {
                 color = 'red';
             }
+            if (riskliChecked && feature.get('oriskli') === true) {
+              color = 'yellow';
+          }
 
             // Zoom seviyesine bağlı olarak metin stilini ayarla
         var zoom = map.getView().getZoom();

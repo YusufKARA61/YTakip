@@ -1,6 +1,6 @@
 # utils.py
 from flask import session, flash, redirect, url_for
-from app.models import db, Veri, Harita
+from app.models import db, Veri, Harita, Riskli
 from functools import wraps
 
 def check_authenticated():
@@ -55,4 +55,13 @@ def harita_kdalan_guncelle():
         harita_kaydi = Harita.query.filter_by(text_data=ada_parsel).first()
         if harita_kaydi:
             harita_kaydi.kdalan = True
+    db.session.commit()
+
+def harita_riskli_guncelle():
+    riskli_kayitlari = db.session.query(Riskli.ada, Riskli.parsel).distinct().all()
+    for ada, parsel in riskli_kayitlari:
+        ada_parsel = f"{ada}/{parsel}"
+        harita_kaydi = Harita.query.filter_by(text_data=ada_parsel).first()
+        if harita_kaydi:
+            harita_kaydi.riskli = True
     db.session.commit()

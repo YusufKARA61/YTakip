@@ -3,6 +3,7 @@ from flask_login import login_required
 from app.forms import RiskliForm  # Riskli yapılar için form
 from app import db
 from app.models import Riskli
+from app.utils import harita_riskli_guncelle  # utils modülünden kdsid_hesapla fonksiyonunu içe aktarın
 
 riskli = Blueprint('riskli', __name__)
 
@@ -41,6 +42,10 @@ def ekle():
         db.session.add(yeni_riskli)
         db.session.commit()
         flash('Riskli yapı başarıyla eklendi.', 'success')
+
+        # Harita tablosunu güncelle
+        harita_riskli_guncelle()  # Fonksiyonu çağır
+
         return redirect(url_for('riskli.listele'))
     return render_template('admin/riskli/riskli_ekle.html', form=form)
 
