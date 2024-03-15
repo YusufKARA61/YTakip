@@ -65,3 +65,4 @@ def harita_riskli_guncelle():
         if harita_kaydi:
             harita_kaydi.riskli = True
     db.session.commit()
+

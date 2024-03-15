@@ -131,6 +131,7 @@ class Harita(db.Model):
     ybizden = db.Column(db.String, nullable=True)
     ortahasar = db.Column(db.String, nullable=True)
     kdalan = db.Column(db.Boolean, default=False, nullable=False)
+    riskli = db.Column(db.Boolean, default=False, nullable=False)
 
 class Riskli(db.Model):
     __tablename__ = 'tbl_riskli'

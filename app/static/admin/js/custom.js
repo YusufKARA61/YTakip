@@ -130,8 +130,8 @@ function initMap() {
                 color = 'red';
             }
             if (riskliChecked && feature.get('riskli') === true) {
-              color = 'yellow';
-          }
+                color = 'yellow';
+            }
 
             // Zoom seviyesine bağlı olarak metin stilini ayarla
         var zoom = map.getView().getZoom();
@@ -239,6 +239,8 @@ function initMap() {
           var ortahasarDurumu = feature.get('ortahasar') === 'Evet' ? 'Var' : 'Yok';
           // Çalışma alanı kontrol et
           var kdalanDurumu = feature.get('kdalan') === true ? 'Var' : 'Yok';
+          // Çalışma alanı kontrol et
+          var riskliDurumu = feature.get('riskli') === true ? 'Var' : 'Yok';
   
           // Popup içeriğini ayarla ve göster
           // Popup içeriğini ayarla ve göster
@@ -260,6 +262,7 @@ popupContent.innerHTML = `
     <p>Ada/Parsel: ${feature.get('text_data') || 'Bilgi Yok'}</p>
     <p>Alan: ${correctedArea.toFixed(2)} m²</p>
     <p>Kentsel Dönüşüm Çalışması: ${kdalanDurumu}</p>
+    <p>Riskli Yapı: ${riskliDurumu}</p>
     <p>Orta Hasar Var Mı: ${ortahasarDurumu}</p>
   </div>
 </div>
@@ -318,7 +321,7 @@ document.head.appendChild(style);
 
     document.getElementById('riskliCheckbox').addEventListener('change', function() {
       vectorLayer.getSource().refresh();
-  });
+    });
 }
 
 function searchFeature() {
