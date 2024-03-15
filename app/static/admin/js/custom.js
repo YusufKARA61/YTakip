@@ -315,6 +315,10 @@ document.head.appendChild(style);
     document.getElementById('kdalanCheckbox').addEventListener('change', function() {
         vectorLayer.getSource().refresh();
     });
+
+    document.getElementById('riskliCheckbox').addEventListener('change', function() {
+      vectorLayer.getSource().refresh();
+  });
 }
 
 function searchFeature() {
