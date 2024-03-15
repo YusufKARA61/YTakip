@@ -129,7 +129,7 @@ function initMap() {
             if (ortahasarChecked && feature.get('ortahasar') === 'Evet') {
                 color = 'red';
             }
-            if (riskliChecked && feature.get('oriskli') === true) {
+            if (riskliChecked && feature.get('riskli') === true) {
               color = 'yellow';
           }
 
