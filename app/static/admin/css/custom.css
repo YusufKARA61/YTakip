@@ -50,22 +50,22 @@
   .modal-backdrop {
     background-color: rgba(0, 0, 0, 0.5) !important;
   }
-  
-/* Switch Butonları için Ek Stiller */
+
+/* Sidebar menüsünü sağa çekmek için */
+.sidebar-menu {
+  padding-left: 20px; /* ya da ihtiyacınıza göre daha fazla */
+}
+
+/* Toggle switch boyutunu küçültmek için */
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 40px; /* Genişliği azalt */
+  height: 24px; /* Yüksekliği azalt */
 }
 
-.switch input { 
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
+/* Switch slider (açma/kapama düğmesi) için */
+.switch .slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -77,11 +77,11 @@
   transition: .4s;
 }
 
-.slider:before {
+.switch .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
+  height: 16px; /* Yüksekliği azalt */
+  width: 16px; /* Genişliği azalt */
   left: 4px;
   bottom: 4px;
   background-color: white;
@@ -89,6 +89,7 @@
   transition: .4s;
 }
 
+/* Checkbox'ın kontrol durumunda slider'ın pozisyonunu ve arka plan rengini değiştir */
 input:checked + .slider {
   background-color: #2196F3;
 }
@@ -98,12 +99,12 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+  -webkit-transform: translateX(16px);
+  -ms-transform: translateX(16px);
+  transform: translateX(16px);
 }
 
-/* Yuvarlak Slider */
+/* Yuvarlak slider için (opsiyonel) */
 .slider.round {
   border-radius: 34px;
 }
@@ -111,6 +112,15 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+/* Checkbox'ı gizlemek için */
+.switch input[type="checkbox"] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
 
 #projeArama {
   float: right;

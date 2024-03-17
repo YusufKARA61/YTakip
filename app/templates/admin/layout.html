@@ -75,9 +75,12 @@
               <div class="dropdown-divider"></div><a href="{{ url_for('auth.logout') }}" class="dropdown-item">Çıkış</a>
             </div>
           </ul>
-          {% endif %}
+          {% else %}
           <!-- Arama Çubuğu -->
           <input type="text" id="search-box" onkeyup="searchFeature()" placeholder="Ada/Parsel ara" class="form-control w-auto">
+          {% endif %}
+          
+          
         </ul>
       </nav>
     </header>
