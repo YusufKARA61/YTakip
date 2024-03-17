@@ -3,13 +3,15 @@ from flask_login import current_user
 
 # Roller
 admin_role = RoleNeed('admin')
-musteri_role = RoleNeed('musteri')
-muteahhit_role = RoleNeed('muteahhit')
-emlak_role = RoleNeed('emlak')
+sef_role = RoleNeed('sef')
+raportor_role = RoleNeed('raportor')
+koordinator_role = RoleNeed('koordinator')
 
 # İzinler
 admin_permission = Permission(admin_role)
-musteri_permission = Permission(musteri_role)
-muteahhit_permission = Permission(muteahhit_role)
-emlak_permission = Permission(emlak_role)
+sef_permission = Permission(sef_role)
+raportor_permission = Permission(raportor_role)
+koordinator_permission = Permission(koordinator_role)
+# İzinler
+riskli_islem_permission = Permission(admin_role, sef_role, raportor_role)
 

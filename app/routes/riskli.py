@@ -3,12 +3,14 @@ from flask_login import login_required
 from app.forms import RiskliForm  # Riskli yapılar için form
 from app import db
 from app.models import Riskli
+from app.permissions import riskli_islem_permission
 from app.utils import harita_riskli_guncelle  # utils modülünden kdsid_hesapla fonksiyonunu içe aktarın
 
 riskli = Blueprint('riskli', __name__)
 
 @riskli.route('/riskli')
 @login_required
+@riskli_islem_permission.require(http_exception=403)  # Belirli rollerin erişimini kontrol et
 def listele():
     form = RiskliForm()
     riskli_binalar = Riskli.query.all()

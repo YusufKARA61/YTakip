@@ -6,7 +6,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, U
 from flask_principal import Identity, AnonymousIdentity, identity_changed
 from flask_mail import Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
-from flask import current_app
+from flask import current_app, session
 from app import mail
 
 
@@ -102,6 +102,7 @@ def login():
                 # Kullanıcının kimliğini ve rollerini güncelleyin
                 identity_changed.send(current_app._get_current_object(),
                                       identity=Identity(user.user_id))
+                session.permanent = True
 
                 flash('Giriş Başarılı!', 'success')
                 return redirect(url_for('admin.admin_dashboard'))  # Tüm kullanıcıları admin dashboard sayfasına yönlendir

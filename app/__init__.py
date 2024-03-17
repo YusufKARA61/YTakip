@@ -4,6 +4,7 @@ from flask_login import LoginManager, current_user
 from flask_principal import Principal, identity_loaded, UserNeed, RoleNeed
 from flask_mail import Mail
 from flask_migrate import Migrate  # Flask-Migrate'ı içe aktar
+from datetime import timedelta
 from flask_cors import CORS
 import os
 
@@ -34,6 +35,7 @@ def create_app():
     app.config['MAIL_USERNAME'] = 'yusufkara061@gmail.com'  # Gmail adresinizi girin
     app.config['MAIL_PASSWORD'] = 'zizq lvpl lzgi dedx'  # Gmail şifrenizi girin
     app.config['MAIL_DEFAULT_SENDER'] = 'yusufkara061@gmail.com'  # Varsayılan gönderici adres
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=15) # Oturumun süresini 15 dakika olarak ayarla
 
     # CORS'u başlat
     CORS(app)
