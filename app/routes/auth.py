@@ -89,7 +89,6 @@ def activate_account(token):
     return redirect(url_for('main.home'))
 
 
-
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -105,13 +104,19 @@ def login():
                 session.permanent = True
 
                 flash('Giriş Başarılı!', 'success')
-                return redirect(url_for('admin.admin_dashboard'))  # Tüm kullanıcıları admin dashboard sayfasına yönlendir
+
+                # Kullanıcının rolüne göre yönlendirme yap
+                if any(role.name == 'muteahhit' for role in user.roles):
+                    return redirect(url_for('main.profile'))  # Örneğin kullanıcının profil sayfası
+                else:
+                    return redirect(url_for('admin.admin_dashboard'))
 
             else:
                 flash('Hesabınız aktive edilmemiş. Lütfen e-postanızı kontrol edin ve aktivasyon bağlantısına tıklayın.', 'warning')
         else:
-            flash('E Mail veya Şifre Hatalı.', 'error')
+            flash('E-Mail veya Şifre Hatalı.', 'error')
     return render_template('frontend/login.html', form=form)
+
 
 
 @auth.route('/profile')

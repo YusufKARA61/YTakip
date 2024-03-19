@@ -47,3 +47,5 @@ def show_map():
 @main.route('/harita')
 def harita():
     return render_template('admin/harita.html')
+
+

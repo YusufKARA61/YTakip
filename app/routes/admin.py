@@ -174,6 +174,21 @@ def add_user():
 
     return render_template('admin/add_user.html', form=form)
 
+@admin.route('/admin/delete_user/<int:user_id>', methods=['POST'])
+@login_required
+@admin_permission.require(http_exception=403)
+def delete_user(user_id):
+    user_to_delete = User.query.get(user_id)
+    if user_to_delete:
+        db.session.delete(user_to_delete)
+        db.session.commit()
+        flash('Kullanıcı başarıyla silindi.', 'success')
+    else:
+        flash('Kullanıcı bulunamadı.', 'error')
+
+    return redirect(url_for('admin.users'))
+
+
 
 
 

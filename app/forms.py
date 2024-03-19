@@ -16,10 +16,7 @@ class RegistrationForm(FlaskForm):
     
     # Membership Type seçeneği
     membership_type = RadioField('Üyelik Tipi', choices=[
-        ('admin', 'Admin'),
-        ('sef', 'Şef'),
-        ('raportor', 'Raportör'),
-        ('koordinator', 'Koordinatör')
+        ('muteahhit', 'Müteahhit')
     ])
     
 
@@ -133,4 +130,16 @@ class RiskliForm(FlaskForm):
     BETON_BASINC_DAYANIMI_MPA = IntegerField('Beton Basınç Dayanımı (MPa)', validators=[Optional()])
     OZEL_NOT = TextAreaField('Özel Not', validators=[Optional()])
 
+    submit = SubmitField('Kaydet')
+
+class FirmaBilgileriForm(FlaskForm):
+    firma_ad = StringField('Firma Adı', validators=[DataRequired(), Length(min=2, max=255)])
+    vergi_no = StringField('Vergi Numarası', validators=[DataRequired(), Length(min=10, max=50)])
+    yetkili_tc = StringField('Yetkili TC Kimlik Numarası', validators=[DataRequired(), Length(min=11, max=11)])
+    yetkili_ad = StringField('Yetkili Adı ve Soyadı', validators=[DataRequired(), Length(min=2, max=255)])
+    firma_adres = StringField('Firma Adresi', validators=[DataRequired()])
+    tel_no = StringField('Telefon Numarası', validators=[DataRequired(), Length(min=10, max=20)])
+    email = StringField('E-Mail Adresi', validators=[DataRequired(), Email()])
+    iban_no = StringField('IBAN Numarası', validators=[DataRequired(), Length(min=24, max=34)])
+    mut_sinif = StringField('Muhasebe Sınıfı', validators=[DataRequired()])
     submit = SubmitField('Kaydet')

@@ -22,7 +22,7 @@
                             <li><a href="" class="categories-link">Talepler</a></li>
                             <li><a href="" class="categories-link">Tekliflerim</a></li>
                             <li><a href="" class="categories-link">Projelerim</a></li>
-                            <li><a href="" class="categories-link">Abonelik</a></li>
+                            <li><a href="{{ url_for('firma.firma_bilgileri') }}" class="categories-link">Firma Bilgileri</a></li>
                         {% elif current_user.membership_type == 'emlak' %}
                             <li><a href="" class="categories-link">Portföyüm</a></li>
                         {% endif %}

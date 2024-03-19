@@ -100,6 +100,8 @@ def create_app():
     app.register_blueprint(api_blueprint, url_prefix='/api')
     from .routes.riskli import riskli as riskli_blueprint
     app.register_blueprint(riskli_blueprint)
+    from .routes.firma import firma as firma_blueprint
+    app.register_blueprint(firma_blueprint)
 
 
     # Hata işleyiciyi ekleyin

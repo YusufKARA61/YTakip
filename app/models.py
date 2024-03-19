@@ -155,4 +155,28 @@ class Riskli(db.Model):
     OZEL_NOT = db.Column(db.Text)
 
 
+class FirmaBilgileri(db.Model):
+    __tablename__ = 'firma_bilgileri'
+    id = db.Column(db.Integer, primary_key=True)
+    firma_ad = db.Column(db.String(255), unique=True)
+    vergi_no = db.Column(db.String(50))
+    yetkili_tc = db.Column(db.String(20))
+    yetkili_ad = db.Column(db.String(255))
+    firma_adres = db.Column(db.String(255))
+    tel_no = db.Column(db.String(20))
+    email = db.Column(db.String(255))
+    iban_no = db.Column(db.String(34))
+    mut_sinif = db.Column(db.String(50))
+    referanslar = db.relationship('ReferansProje', backref='firma', lazy=True)
+
+class ReferansProje(db.Model):
+    __tablename__ = 'referans_projeler'
+    id = db.Column(db.Integer, primary_key=True)
+    proje_adi = db.Column(db.String(255))
+    proje_resimleri = db.Column(db.Text) # JSON olarak saklanabilir
+    proje_detaylari = db.Column(db.Text)
+    toplam_insaat_alani = db.Column(db.Integer)
+    bagimsiz_bolum_sayisi = db.Column(db.Integer)
+    firma_id = db.Column(db.Integer, db.ForeignKey('firma_bilgileri.id'))
+
 

@@ -41,6 +41,46 @@ function deleteItem() {
   }
 }
 
+function showUserDeletionConfirmation(button) {
+  var userId = $(button).data('user-id');
+  
+  if (userId) {
+    $('#userDeletionConfirmModal').modal('show');
+    $('#userDeletionConfirmModal').data('user-id', userId); // Kullanıcı ID'sini modalın kendisine ekleyin
+  } else {
+    alert('Kullanıcı ID alınamadı.');
+  }
+}
+
+function cancelUserDeletion() {
+  $('#userDeletionConfirmModal').modal('hide');
+}
+
+function deleteUser() {
+  var userId = $('#userDeletionConfirmModal').data('user-id');
+
+  if (userId) {
+    var deleteURL = "/admin/delete_user/" + userId;
+
+    $.ajax({
+      url: deleteURL,
+      method: "POST",
+      contentType: "application/json",
+      success: function(response) {
+        $('#userDeletionConfirmModal').modal('hide'); // Kullanıcı silme onay modalını kapat
+        showMessageModal(response.message); // Başarı mesajını göster
+        setTimeout(function(){ 
+          window.location.reload(); // 1 saniye sonra sayfayı yenile
+        }, 1000);
+      },
+      error: function(xhr, status, error) {
+        console.error('Hata: ' + error);
+      }
+    });
+  } else {
+    console.error('Kullanıcı ID tanımsız!');
+  }
+}
 
 
 function showMessageModal(message) {
