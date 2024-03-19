@@ -1,10 +1,11 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify,send_file
 from app.models import Proje, Veri, User
 from app.utils import kdsid_hesapla, harita_kdalan_guncelle  # utils modülünden kdsid_hesapla fonksiyonunu içe aktarın
 from app.forms import ProjeForm
 from flask_login import current_user, login_required
 import openpyxl
 import pandas as pd
+from io import BytesIO
 from sqlalchemy import func, case
 from flask import current_app
 from app import db
@@ -152,6 +153,46 @@ def proje_detay(proje_id):
     # Şablonu verilerle birlikte render et
     return render_template('admin/proje_detay.html', proje=proje, veriler=veriler, fizveriler=fizveriler)
 
+@proje.route('/export_excel', methods=['POST'])
+def export_excel():
+    proje_id = request.form.get('proje_id')
+    if proje_id is None:
+        return "Proje ID'si eksik.", 400  # Kullanıcıya hata mesajı döndür
+
+    # Veritabanından ilgili verileri çek
+    sorgu_sonuclari = Veri.query.filter_by(proje_id=proje_id).all()
+
+    # Sorgu sonuçlarını bir pandas DataFrame'ine dönüştür
+    data = [{
+        'Ada': veri.ada,
+        'Parsel': veri.parsel,
+        'TcNo': veri.tcno,
+        'İsim': veri.isim,
+        'Arsa Alanı': veri.arsaalan,
+        'Kişi Arsa Alanı': veri.kisiarsaalan,
+        'Mvid': veri.mvid,
+        'Kdsid': veri.kdsid,
+        'Onay Durumu': 'Evet' if veri.onay_durumu else 'Hayır'
+    } for veri in sorgu_sonuclari]
+
+    df = pd.DataFrame(data)
+
+    # DataFrame'i bir Excel dosyasına yaz
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, sheet_name='Fizibilite Verileri', index=False)
+        
+    
+    output.seek(0)
+
+    # Oluşturulan Excel dosyasını indirme olarak sun
+    return send_file(
+    output,
+    as_attachment=True,
+    download_name=f"fizibilite_{proje_id}.xlsx",  # Flask 2.0 ve sonrası için
+    # Flask 1.x için attachment_filename=f"fizibilite_{proje_id}.xlsx",
+    mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+)
 @proje.route('/update_onay_durumu', methods=['POST'])
 def update_onay_durumu():
     data = request.get_json()
