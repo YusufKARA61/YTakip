@@ -22,7 +22,7 @@
                             <li><a href="" class="categories-link">Çalışmalar</a></li>
                             <li><a href="" class="categories-link">Tekliflerim</a></li>
                             <li><a href="" class="categories-link">Referanslar</a></li>
-                            <li><a href="" class="categories-link">Firma Bilgilerim</a></li>
+                            <li><a href="{{ url_for('firma.firma_bilgileri') }}" class="categories-link">Firma Bilgilerim</a></li>
                         {% elif current_user.membership_type == 'emlak' %}
                             <li><a href="" class="categories-link">Portföyüm</a></li>
                         {% endif %}
@@ -32,35 +32,76 @@
             </aside>
 
             <!-- İçerik Kısmı -->
-            <div class="col-lg-9">
-                <h2>Kullanıcı Bilgilerini Düzenle</h2>
-                <form method="POST" class="login-form text-left">
-                    {{ form.hidden_tag() }}
-                    <div class="form-group mb-4 mobcenter">
-                        {{ form.first_name.label(class="form-label") }} {{ form.first_name(class="form-control") }}
-                    </div>
-                    <div class="form-group mb-4 mobcenter">
-                        {{ form.last_name.label(class="form-label") }} {{ form.last_name(class="form-control") }}
-                    </div>
-                    <div class="form-group mb-4 mobcenter">
-                        {{ form.email.label(class="form-label") }} {{ form.email(class="form-control") }}
-                    </div>
-                    <!-- Telefon ve adres alanları varsayılan form modelinizde yok, bu alanlar eklenirse aşağıdaki kodları kullanabilirsiniz. -->
-                    <!-- <div class="form-group mb-4 mobcenter">
-                        {{ form.phone.label(class="form-label") }} {{ form.phone(class="form-control") }}
-                    </div>
-                    <div class="form-group mb-4 mobcenter">
-                        {{ form.address.label(class="form-label") }} {{ form.address(class="form-control") }}
-                    </div> -->
-                    <div class="form-group mb-4 mobcenter">
-                        {{ form.password.label(class="form-label") }} {{ form.password(class="form-control") }}
-                    </div>
-                    <div class="form-group mb-4 mobcenter">
-                        {{ form.confirm_password.label(class="form-label") }} {{ form.confirm_password(class="form-control") }}
-                    </div>
-                    {{ form.submit(class="btn btn-primary") }}
-                </form>
-            </div>
+            <div class="col-lg-9 mb-5">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="h6 text-uppercase mb-0">Firma Bilgileri Düzenleme Sayfası</h3>
+                  </div>
+                  <div class="card-body">
+                    {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                      <ul class="flash-messages">
+                          {% for message in messages %}
+                          <li>{{ message }}</li>
+                          {% endfor %}
+                      </ul>
+                      {% endif %}
+                    {% endwith %}
+                    <form class="form-horizontal" method="POST">
+                      {{ form.hidden_tag() }}
+          
+                      <div class="form-group">
+                        {{ form.firma_ad.label(class="form-control-label") }}
+                        {{ form.firma_ad(class="form-control") }}
+                      </div>
+          
+                      <div class="form-group">
+                        {{ form.vergi_no.label(class="form-control-label") }}
+                        {{ form.vergi_no(class="form-control") }}
+                      </div>
+          
+                      <div class="form-group">
+                        {{ form.yetkili_tc.label(class="form-control-label") }}
+                        {{ form.yetkili_tc(class="form-control") }}
+                      </div>
+          
+                      <div class="form-group">
+                        {{ form.yetkili_ad.label(class="form-control-label") }}
+                        {{ form.yetkili_ad(class="form-control") }}
+                      </div>
+          
+                      <div class="form-group">
+                        {{ form.firma_adres.label(class="form-control-label") }}
+                        {{ form.firma_adres(class="form-control") }}
+                      </div>
+          
+                      <div class="form-group">
+                        {{ form.tel_no.label(class="form-control-label") }}
+                        {{ form.tel_no(class="form-control") }}
+                      </div>
+          
+                      <div class="form-group">
+                        {{ form.email.label(class="form-control-label") }}
+                        {{ form.email(class="form-control") }}
+                      </div>
+          
+                      <div class="form-group">
+                        {{ form.iban_no.label(class="form-control-label") }}
+                        {{ form.iban_no(class="form-control") }}
+                      </div>
+          
+                      <div class="form-group">
+                        {{ form.mut_sinif.label(class="form-control-label") }}
+                        {{ form.mut_sinif(class="form-control") }}
+                      </div>
+          
+                      <div class="form-group">
+                        {{ form.submit(class="btn btn-primary") }}
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
         </div>
     </div>
 </section>

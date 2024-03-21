@@ -107,7 +107,7 @@ def login():
 
                 # Kullanıcının rolüne göre yönlendirme yap
                 if any(role.name == 'muteahhit' for role in user.roles):
-                    return redirect(url_for('main.profile'))  # Örneğin kullanıcının profil sayfası
+                    return redirect(url_for('auth.profile'))  # Örneğin kullanıcının profil sayfası
                 else:
                     return redirect(url_for('admin.admin_dashboard'))
 
