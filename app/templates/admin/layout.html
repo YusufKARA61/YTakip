@@ -115,7 +115,7 @@
             {% if modulayar.projeler_aktif and current_user.has_role('koordinator') or current_user.has_role('sef') or current_user.has_role('admin') %}
             <li class="sidebar-list-item">
               <a href="{{ url_for('proje.projeler') }}" class="sidebar-link text-muted">
-                <i class="o-survey-1 mr-3 text-gray"></i><span>Projeler</span>
+                <i class="o-wireframe-1 mr-3 text-gray"></i><span>Projeler</span>
               </a>
             </li>
             {% endif %}
@@ -124,7 +124,7 @@
             {% if modulayar.blog_aktif and current_user.has_role('admin') %}
             <li class="sidebar-list-item">
               <a href="" class="sidebar-link text-muted">
-                <i class="o-paper-stack-1 mr-3 text-gray"></i><span>Blog</span>
+                <i class="o-stack-1 mr-3 text-gray"></i><span>Blog</span>
               </a>
             </li>
             {% endif %}
@@ -132,8 +132,8 @@
             <!-- Mesajlar menü öğesi -->
             {% if modulayar.mesajlar_aktif and current_user.has_role('admin') %}
             <li class="sidebar-list-item">
-              <a href="" class="sidebar-link text-muted">
-                <i class="o-contact-card-1 mr-3 text-gray"></i><span>Mesajlar</span>
+              <a href="{{ url_for('ruhsat.ruhsat_listele') }}" class="sidebar-link text-muted">
+                <i class="o-paperwork-1 mr-3 text-gray"></i><span>Yapı Ruhsat Bilgileri</span>
               </a>
             </li>
             {% endif %}
@@ -142,7 +142,7 @@
             {% if modulayar.riskli_yapı_aktif and current_user.has_role('raportor') or current_user.has_role('sef') or current_user.has_role('admin') %}
             <li class="sidebar-list-item">
               <a href="{{ url_for('riskli.listele') }}" class="sidebar-link text-muted">
-                <i class="far fa-building mr-3 text-gray"></i><span>Riskli Yapılar</span>
+                <i class="o-archive-folder-1 mr-3 text-gray"></i><span>Riskli Yapılar</span>
               </a>
             </li>
             {% endif %}

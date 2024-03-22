@@ -1,0 +1,37 @@
+{% extends "admin/layout.html" %}
+{% block title %}Admin Panel - Ruhsat Ekleme{% endblock title %}
+
+{% block content %}
+<section class="py-5">
+  <div class="row">
+      <div class="col-lg-12 mb-5">
+          <div class="card">
+              <div class="card-header">
+                  <h3 class="h6 text-uppercase mb-0">Ruhsat Ekleme Sayfası</h3>
+              </div>
+              <div class="card-body">
+                  <form class="form-horizontal" action="{{ url_for('ruhsat.ruhsat_ekle') }}" method="POST">
+                      {{ form.csrf_token }}
+
+                      <!-- Form alanları -->
+                      {% for field in form %}
+                        <div class="form-group">
+                            {{ field.label(class="form-control-label") }}
+                            {{ field(class="form-control") }}
+                            {% for error in field.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                      {% endfor %}
+
+                      <!-- Kaydet butonu -->
+                      <div class="form-group">
+                          {{ form.submit(class="btn btn-primary") }}
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+{% endblock content %}

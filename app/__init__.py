@@ -102,6 +102,9 @@ def create_app():
     app.register_blueprint(riskli_blueprint)
     from .routes.firma import firma as firma_blueprint
     app.register_blueprint(firma_blueprint)
+    from .routes.ruhsat import ruhsat as ruhsat_blueprint
+    app.register_blueprint(ruhsat_blueprint)
+
 
 
     # Hata işleyiciyi ekleyin

@@ -54,7 +54,7 @@ class AyarlarForm(FlaskForm):
 class ModulAyarForm(FlaskForm):
     kullanıcılar_aktif = BooleanField('Kullanıcılar Modülü')
     blog_aktif = BooleanField('Blog Modülü')
-    mesajlar_aktif = BooleanField('Mesajlar Modülü')
+    mesajlar_aktif = BooleanField('Yapı Ruhsat Modülü')
     projeler_aktif = BooleanField('Projeler Modülü')
     riskli_yapı_aktif = BooleanField('Riskli Yapı Modülü')
     # Diğer modüller için benzer alanlar...
@@ -142,4 +142,22 @@ class FirmaBilgileriForm(FlaskForm):
     email = StringField('E-Mail Adresi', validators=[DataRequired(), Email()])
     iban_no = StringField('IBAN Numarası', validators=[DataRequired(), Length(min=24, max=34)])
     mut_sinif = StringField('Muhasebe Sınıfı', validators=[DataRequired()])
+    submit = SubmitField('Kaydet')
+
+class RuhsatBilgileriForm(FlaskForm):
+    yapi_adi = StringField('Yapı Adı', validators=[DataRequired()])
+    ruhsat_tarihi = DateField('Ruhsat Tarihi', validators=[DataRequired()])
+    zabıt_tarih = DateField('Zabıt Tarihi', validators=[DataRequired()])
+    imar_barisi = BooleanField('İmar Barışı')
+    mahalle = StringField('Mahalle', validators=[DataRequired()])
+    ada = StringField('Ada', validators=[DataRequired()])
+    parsel = StringField('Parsel', validators=[DataRequired()])
+    parsel_turu = StringField('Parsel Türü', validators=[DataRequired()])
+    mevcut_insaat_alan = FloatField('Mevcut İnşaat Alanı', validators=[DataRequired()])
+    tapu_alani = FloatField('Tapu Alanı', validators=[DataRequired()])
+    blok_sayi = FloatField('Blok Sayısı', validators=[DataRequired()])
+    konut_bb_sayi = FloatField('Konut Bağımsız Bölüm Sayısı', validators=[DataRequired()])
+    ticari_bb_sayi = FloatField('Ticari Bağımsız Bölüm Sayısı', validators=[DataRequired()])
+    toplam_bb_sayi = FloatField('Toplam Bağımsız Bölüm Sayısı', validators=[DataRequired()])
+    toplam_insaat_alan = FloatField('Toplam İnşaat Alanı', validators=[DataRequired()])
     submit = SubmitField('Kaydet')

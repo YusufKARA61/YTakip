@@ -179,4 +179,24 @@ class ReferansProje(db.Model):
     bagimsiz_bolum_sayisi = db.Column(db.Integer)
     firma_id = db.Column(db.Integer, db.ForeignKey('firma_bilgileri.id'))
 
+class RuhsatBilgileri(db.Model):
+    __tablename__ = 'tbl_ruhsat'
+    id = db.Column(db.Integer, primary_key=True)
+    yapi_adi = db.Column(db.String(255))
+    ruhsat_tarihi = db.Column(db.Date)
+    zabıt_tarih = db.Column(db.Date)
+    imar_barisi = db.Column(db.Boolean)
+    mahalle = db.Column(db.String(255))
+    ada = db.Column(db.Integer)
+    parsel = db.Column(db.Integer)
+    parsel_turu = db.Column(db.String(50))
+    mevcut_insaat_alan = db.Column(db.Float)
+    tapu_alani = db.Column(db.Float)
+    blok_sayi = db.Column(db.Integer)
+    konut_bb_sayi = db.Column(db.Integer)
+    ticari_bb_sayi = db.Column(db.Integer)
+    toplam_bb_sayi = db.Column(db.Integer)
+    toplam_insaat_alan = db.Column(db.Float)
+
+
 
