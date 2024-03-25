@@ -153,6 +153,7 @@ function initMap() {
             var ybizdenChecked = document.getElementById('ybizdenCheckbox').checked;
             var ortahasarChecked = document.getElementById('ortahasarCheckbox').checked;
             var kdalanChecked = document.getElementById('kdalanCheckbox').checked;
+            var ruhsatChecked = document.getElementById('ruhsatCheckbox').checked;
             var riskliChecked = document.getElementById('riskliCheckbox').checked;
 
             riskliCheckbox
@@ -172,6 +173,9 @@ function initMap() {
             if (riskliChecked && feature.get('riskli') === true) {
                 color = 'yellow';
             }
+            if (ruhsatChecked && feature.get('ruhsat') === true) {
+              color = 'yellow';
+          }
 
             // Zoom seviyesine bağlı olarak metin stilini ayarla
         var zoom = map.getView().getZoom();
@@ -281,6 +285,8 @@ function initMap() {
           var kdalanDurumu = feature.get('kdalan') === true ? 'Var' : 'Yok';
           // Çalışma alanı kontrol et
           var riskliDurumu = feature.get('riskli') === true ? 'Var' : 'Yok';
+          // Çalışma alanı kontrol et
+          var ruhsatDurumu = feature.get('ruhsat') === true ? 'Var' : 'Yok';
   
           // Popup içeriğini ayarla ve göster
           // Popup içeriğini ayarla ve göster
@@ -294,7 +300,7 @@ popupContent.innerHTML = `
   <div class="tab-content active" id="tab1">
     <!-- Bina bilgisi içeriği -->
     <p>İmar Durumu: ${ybizdenDurumu}</p>
-    <p>Yapı Ruhsat Tarihi: ${ybizdenDurumu}</p>
+    <p>Yapı Ruhsat Tarihi: ${ruhsatDurumu}</p>
     <p>Bağımsız Bölüm Sayısı: ${ybizdenDurumu}</p>
   </div>
   <div class="tab-content" id="tab2">
@@ -360,6 +366,10 @@ document.head.appendChild(style);
     });
 
     document.getElementById('riskliCheckbox').addEventListener('change', function() {
+      vectorLayer.getSource().refresh();
+    });
+
+    document.getElementById('ruhsatCheckbox').addEventListener('change', function() {
       vectorLayer.getSource().refresh();
     });
 }

@@ -3,6 +3,7 @@ from flask_login import login_required
 from app import db
 from app.forms import RuhsatBilgileriForm
 from app.models import RuhsatBilgileri
+from app.utils import harita_ruhsat_guncelle  # utils modülünden ruhsat güncelle fonksiyonunu içe aktarın
 
 ruhsat = Blueprint('ruhsat', __name__)
 
@@ -37,6 +38,10 @@ def ruhsat_ekle():
         db.session.add(yeni_ruhsat)
         db.session.commit()
         flash('Ruhsat başarıyla eklendi.', 'success')
+
+        # Harita tablosunu güncelle
+        harita_ruhsat_guncelle()  # Fonksiyonu çağır
+
         return redirect(url_for('ruhsat.ruhsat_listele'))
     return render_template('admin/ruhsat/ruhsat_ekle.html', form=form)
 
