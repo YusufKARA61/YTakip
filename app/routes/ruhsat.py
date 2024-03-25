@@ -10,9 +10,8 @@ ruhsat = Blueprint('ruhsat', __name__)
 @ruhsat.route('/ruhsatlar')
 @login_required
 def ruhsat_listele():
-    form = RuhsatBilgileriForm()
     ruhsatlar = RuhsatBilgileri.query.all()
-    return render_template('admin/ruhsat/ruhsat_listele.html', form=form, ruhsatlar=ruhsatlar)
+    return render_template('admin/ruhsat/ruhsat_listele.html', ruhsatlar=ruhsatlar)
 
 @ruhsat.route('/ruhsat-ekle', methods=['GET', 'POST'])
 @login_required
@@ -48,6 +47,8 @@ def ruhsat_ekle():
         except Exception as e:
             db.session.rollback()
             flash(str(e), 'danger')  # Hata mesajını göster
+
+        
 
         return redirect(url_for('ruhsat.ruhsat_listele'))
     return render_template('admin/ruhsat/ruhsat_ekle.html', form=form)

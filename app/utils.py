@@ -72,6 +72,6 @@ def harita_ruhsat_guncelle():
         ada_parsel = f"{ada}/{parsel}"
         harita_kaydi = Harita.query.filter_by(text_data=ada_parsel).first()
         if harita_kaydi:
-            harita_kaydi.riskli = True
+            harita_kaydi.ruhsat = True
     db.session.commit()
 

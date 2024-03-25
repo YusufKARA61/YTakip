@@ -5,6 +5,7 @@ from flask_principal import Principal, identity_loaded, UserNeed, RoleNeed
 from flask_mail import Mail
 from flask_migrate import Migrate  # Flask-Migrate'ı içe aktar
 from datetime import timedelta
+from flask_wtf.csrf import CSRFProtect
 from flask_cors import CORS
 import os
 
@@ -48,6 +49,8 @@ def create_app():
     # Flask-Principal'i app ile ilişkilendir
     principal.init_app(app)
 
+    # CSRF korumasını başlat
+    csrf = CSRFProtect(app)
     
     # Uzantıları başlat
     db.init_app(app)

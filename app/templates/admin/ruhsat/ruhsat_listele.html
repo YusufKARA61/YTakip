@@ -12,6 +12,15 @@
                 <a href="{{ url_for('ruhsat.ruhsat_ekle') }}" class="btn btn-primary">+ Ruhsat Ekle</a>
             </div>
         </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} fade show" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
         <div class="card-body">
           <table class="table table-striped">
             <thead>
@@ -68,4 +77,18 @@
     </div>
   </div>
 </section>
+<script>
+  // Mesajları belirlenen süre sonra kaybolacak şekilde ayarla
+  window.onload = function() {
+      // Tüm alert div'lerini seç
+      var alerts = document.querySelectorAll('.alert');
+      // Her bir alert için kaybolma işlemi
+      alerts.forEach(function(alert) {
+          // 3000ms (3 saniye) sonra kaybol
+          setTimeout(function() {
+              alert.style.display = 'none'; // alert'i gizle
+          }, 3000); // 3000 milisaniye = 3 saniye
+      });
+  };
+</script>
 {% endblock %}
