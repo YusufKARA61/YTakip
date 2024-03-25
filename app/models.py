@@ -184,7 +184,7 @@ class RuhsatBilgileri(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     yapi_adi = db.Column(db.String(255))
     ruhsat_tarihi = db.Column(db.Date)
-    zabıt_tarih = db.Column(db.Date)
+    zabit_tarih = db.Column(db.Date)
     imar_barisi = db.Column(db.Boolean)
     mahalle = db.Column(db.String(255))
     ada = db.Column(db.Integer)

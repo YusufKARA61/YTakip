@@ -21,7 +21,7 @@ def ruhsat_ekle():
         yeni_ruhsat = RuhsatBilgileri(
             yapi_adi=form.yapi_adi.data,
             ruhsat_tarihi=form.ruhsat_tarihi.data,
-            zabıt_tarih=form.zabıt_tarih.data,
+            zabit_tarih=form.zabıt_tarih.data,
             imar_barisi=form.imar_barisi.data,
             mahalle=form.mahalle.data,
             ada=form.ada.data,

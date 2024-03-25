@@ -147,7 +147,7 @@ class FirmaBilgileriForm(FlaskForm):
 class RuhsatBilgileriForm(FlaskForm):
     yapi_adi = StringField('Yapı Adı', validators=[DataRequired()])
     ruhsat_tarihi = DateField('Ruhsat Tarihi', validators=[DataRequired()])
-    zabıt_tarih = DateField('Zabıt Tarihi', validators=[DataRequired()])
+    zabit_tarih = DateField('Zabıt Tarihi', validators=[DataRequired()])
     imar_barisi = BooleanField('İmar Barışı')
     mahalle = StringField('Mahalle', validators=[DataRequired()])
     ada = StringField('Ada', validators=[DataRequired()])
