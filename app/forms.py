@@ -144,20 +144,49 @@ class FirmaBilgileriForm(FlaskForm):
     mut_sinif = StringField('Muhasebe Sınıfı', validators=[DataRequired()])
     submit = SubmitField('Kaydet')
 
+# İstanbul Bağcılar ilçesine ait mahallelerin listesi
+bagcilar_mahalleleri = [
+    ('0', '100. Yıl Mahallesi'),
+    ('1', 'Göztepe Mahallesi'),
+    ('2', 'Kazım Karabekir Mahallesi'),
+    ('3', 'Fatih Mahallesi'),
+    ('4', 'Çınar Mahallesi'),
+    ('5', 'Demirkapı Mahallesi'),
+    ('6', 'Fevzi Çakmak Mahallesi'),
+    ('7', 'Güneşli Mahallesi'),
+    ('8', 'Hürriyet Mahallesi'),
+    ('9', 'İnönü Mahallesi'),
+    ('10', 'Kemalpaşa Mahallesi'),
+    ('11', 'Kirazlı Mahallesi'),
+    ('12', 'Mahmutbey Mahallesi'),
+    ('13', 'Barbaros Mahallesi'),
+    ('14', 'Sancaktepe'),
+    ('15', 'Bağlar Mahallesi'),
+    ('16', '15 Temmuz Mahallesi'),
+    ('17', 'Yavuz Selim Mahallesi'),
+    ('18', 'Yenigün Mahallesi'),
+    ('19', 'Yenimahalle'),
+    ('20', 'Yıldıztepe Mahallesi'),
+    ('21', 'Sancaktepe Mahallesi'),
+]
+
 class RuhsatBilgileriForm(FlaskForm):
     yapi_adi = StringField('Yapı Adı', validators=[DataRequired()])
-    ruhsat_tarihi = DateField('Ruhsat Tarihi', validators=[DataRequired()])
-    zabit_tarih = DateField('Zabıt Tarihi', validators=[DataRequired()])
+    ruhsat_tarihi = DateField('Ruhsat Tarihi', format='%Y-%m-%d', validators=[DataRequired()])
+    zabit_tarih = DateField('Zabıt Tarihi', format='%Y-%m-%d')
     imar_barisi = BooleanField('İmar Barışı')
-    mahalle = StringField('Mahalle', validators=[DataRequired()])
-    ada = StringField('Ada', validators=[DataRequired()])
-    parsel = StringField('Parsel', validators=[DataRequired()])
-    parsel_turu = StringField('Parsel Türü', validators=[DataRequired()])
-    mevcut_insaat_alan = FloatField('Mevcut İnşaat Alanı', validators=[DataRequired()])
+    mahalle = SelectField('Mahalle', choices=bagcilar_mahalleleri, validators=[DataRequired()])
+    ada = IntegerField('Ada', validators=[DataRequired()])
+    parsel = IntegerField('Parsel', validators=[DataRequired()])
+    parsel_turu = StringField('Parsel Türü')
+    mevcut_insaat_alan = FloatField('Mevcut İnşaat Alanı')
     tapu_alani = FloatField('Tapu Alanı', validators=[DataRequired()])
-    blok_sayi = FloatField('Blok Sayısı', validators=[DataRequired()])
+    blok_sayi = FloatField('Blok Sayısı')
     konut_bb_sayi = FloatField('Konut Bağımsız Bölüm Sayısı', validators=[DataRequired()])
     ticari_bb_sayi = FloatField('Ticari Bağımsız Bölüm Sayısı', validators=[DataRequired()])
-    toplam_bb_sayi = FloatField('Toplam Bağımsız Bölüm Sayısı', validators=[DataRequired()])
+    toplam_bb_sayi = StringField('Toplam Bağımsız Bölüm Sayısı')  # Otomatik hesaplanacak, bu yüzden doğrulayıcı yok.
     toplam_insaat_alan = FloatField('Toplam İnşaat Alanı', validators=[DataRequired()])
+    yapi_yuksekligi = FloatField('Yapı Yüksekliği (metre cinsinden)', validators=[DataRequired()])
+    zemin_alti_kat_sayisi = IntegerField('Zemin Altı Kat Sayısı', validators=[DataRequired()])
+    zemin_ustu_kat_sayisi = IntegerField('Zemin Üstü Kat Sayısı', validators=[DataRequired()])
     submit = SubmitField('Kaydet')

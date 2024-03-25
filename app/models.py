@@ -181,7 +181,7 @@ class ReferansProje(db.Model):
 
 class RuhsatBilgileri(db.Model):
     __tablename__ = 'tbl_ruhsat'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     yapi_adi = db.Column(db.String(255))
     ruhsat_tarihi = db.Column(db.Date)
     zabit_tarih = db.Column(db.Date)
@@ -197,6 +197,10 @@ class RuhsatBilgileri(db.Model):
     ticari_bb_sayi = db.Column(db.Integer)
     toplam_bb_sayi = db.Column(db.Integer)
     toplam_insaat_alan = db.Column(db.Float)
+    yapi_yuksekligi = db.Column(db.Float)  # Yapı yüksekliği (metre cinsinden)
+    zemin_alti_kat_sayisi = db.Column(db.Integer)  # Zemin altı kat sayısı
+    zemin_ustu_kat_sayisi = db.Column(db.Integer)  # Zemin üstü kat sayısı
+
 
 
 

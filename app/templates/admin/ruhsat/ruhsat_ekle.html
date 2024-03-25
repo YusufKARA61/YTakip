@@ -1,37 +1,63 @@
 {% extends "admin/layout.html" %}
-{% block title %}Admin Panel - Ruhsat Ekleme{% endblock title %}
+
+{% block title %}Admin Panel - Ruhsat Ekleme{% endblock %}
 
 {% block content %}
+
 <section class="py-5">
-  <div class="row">
-      <div class="col-lg-12 mb-5">
-          <div class="card">
-              <div class="card-header">
-                  <h3 class="h6 text-uppercase mb-0">Ruhsat Ekleme Sayfası</h3>
-              </div>
-              <div class="card-body">
-                  <form class="form-horizontal" action="{{ url_for('ruhsat.ruhsat_ekle') }}" method="POST">
-                      {{ form.csrf_token }}
-
-                      <!-- Form alanları -->
-                      {% for field in form %}
-                        <div class="form-group">
-                            {{ field.label(class="form-control-label") }}
-                            {{ field(class="form-control") }}
-                            {% for error in field.errors %}
-                                <div class="invalid-feedback">{{ error }}</div>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-12 mb-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="h6 text-uppercase mb-0">Ruhsat Ekleme Sayfası</h3>
+                    </div>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
                             {% endfor %}
-                        </div>
-                      {% endfor %}
+                        {% endif %}
+                        {% endwith %}
 
-                      <!-- Kaydet butonu -->
-                      <div class="form-group">
-                          {{ form.submit(class="btn btn-primary") }}
-                      </div>
-                  </form>
-              </div>
-          </div>
-      </div>
-  </div>
+
+                    <div class="card-body">
+                        <form class="form-horizontal" method="POST">
+                            {{ form.hidden_tag() }}
+                            
+                            {% for field in form %}
+                                {% if field.name != 'csrf_token' and field.name != 'submit' %}
+                                <div class="form-group row">
+                                    <label class="col-md-3 form-control-label">{{ field.label }}</label>
+                                    <div class="col-md-9">
+                                        {% if field.type == 'BooleanField' %}
+                                            {{ field(class="form-check-input") }}
+                                        {% else %}
+                                            {{ field(class="form-control form-control-lg") }}
+                                        {% endif %}
+                                        {% if field.errors %}
+                                            {% for error in field.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            <div class="form-group row">
+                                <div class="col-md-9 ml-auto">
+                                    {{ form.submit(class="btn btn-primary") }}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
-{% endblock content %}
+
+{% endblock %}

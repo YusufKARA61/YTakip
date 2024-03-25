@@ -10,8 +10,9 @@ ruhsat = Blueprint('ruhsat', __name__)
 @ruhsat.route('/ruhsatlar')
 @login_required
 def ruhsat_listele():
+    form = RuhsatBilgileriForm()
     ruhsatlar = RuhsatBilgileri.query.all()
-    return render_template('admin/ruhsat/ruhsat_listele.html', ruhsatlar=ruhsatlar)
+    return render_template('admin/ruhsat/ruhsat_listele.html', form=form, ruhsatlar=ruhsatlar)
 
 @ruhsat.route('/ruhsat-ekle', methods=['GET', 'POST'])
 @login_required
@@ -21,7 +22,7 @@ def ruhsat_ekle():
         yeni_ruhsat = RuhsatBilgileri(
             yapi_adi=form.yapi_adi.data,
             ruhsat_tarihi=form.ruhsat_tarihi.data,
-            zabit_tarih=form.zabıt_tarih.data,
+            zabit_tarih=form.zabit_tarih.data,
             imar_barisi=form.imar_barisi.data,
             mahalle=form.mahalle.data,
             ada=form.ada.data,
@@ -33,14 +34,20 @@ def ruhsat_ekle():
             konut_bb_sayi=form.konut_bb_sayi.data,
             ticari_bb_sayi=form.ticari_bb_sayi.data,
             toplam_bb_sayi=form.toplam_bb_sayi.data,
-            toplam_insaat_alan=form.toplam_insaat_alan.data
+            toplam_insaat_alan=form.toplam_insaat_alan.data,
+            yapi_yuksekligi=form.yapi_yuksekligi.data,
+            zemin_alti_kat_sayisi=form.zemin_alti_kat_sayisi.data,
+            zemin_ustu_kat_sayisi=form.zemin_ustu_kat_sayisi.data
         )
-        db.session.add(yeni_ruhsat)
-        db.session.commit()
-        flash('Ruhsat başarıyla eklendi.', 'success')
-
-        # Harita tablosunu güncelle
-        harita_ruhsat_guncelle()  # Fonksiyonu çağır
+        try:
+            db.session.add(yeni_ruhsat)
+            db.session.commit()
+            harita_ruhsat_guncelle()  # Bu fonksiyonu da try bloğu içine alın.
+            flash('Ruhsat başarıyla eklendi.', 'success')
+            return redirect(url_for('ruhsat.ruhsat_listele'))
+        except Exception as e:
+            db.session.rollback()
+            flash(str(e), 'danger')  # Hata mesajını göster
 
         return redirect(url_for('ruhsat.ruhsat_listele'))
     return render_template('admin/ruhsat/ruhsat_ekle.html', form=form)
