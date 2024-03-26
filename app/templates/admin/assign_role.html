@@ -1,0 +1,12 @@
+<!-- templates/admin/assign_role.html -->
+{% extends "admin/layout.html" %}
+
+{% block content %}
+<h2>Rol Atama</h2>
+<form method="post">
+    {{ form.hidden_tag() }}
+    <p>{{ form.user.label }} {{ form.user }}</p>
+    <p>{{ form.role.label }} {{ form.role }}</p>
+    <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}

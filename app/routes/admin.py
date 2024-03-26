@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from flask_login import login_required
+from flask_login import login_required, current_user
 from flask_principal import Permission, Principal, RoleNeed
 from app.models import User, Ayarlar, ModulAyar, MailSettings, KdsidAyar, db, roles_users, Role, Harita
 from app.permissions import admin_permission
-from app.forms import AyarlarForm, ModulAyarForm, MailSettingsForm, KdsidAyarForm, RegistrationForm
+from app.forms import AyarlarForm, ModulAyarForm, MailSettingsForm, KdsidAyarForm, RegistrationForm, AssignRoleForm, UserProfileForm, UserPasswordForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask import current_app
@@ -140,7 +140,6 @@ def users():
 def add_user():
     form = RegistrationForm()
     if form.validate_on_submit():
-        # E-posta adresinin zaten kayıtlı olup olmadığını kontrol edin
         existing_user = User.query.filter_by(email=form.email.data).first()
         if existing_user:
             flash('Bu e-posta adresi zaten kullanılıyor.', 'error')
@@ -148,31 +147,25 @@ def add_user():
 
         hashed_password = generate_password_hash(form.password.data)
 
+        # 'membership_type' alanını sabit bir değer olarak ayarlayın. Örneğin, boş bir string ('').
         new_user = User(
             email=form.email.data,
             password=hashed_password,
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             active=True,
-            email_confirmed=True,
-            membership_type=form.membership_type.data
+            email_confirmed=True,  # Kullanıcıyı doğrudan onaylanmış olarak işaretle
+            membership_type=''  # 'membership_type' için varsayılan değer
         )
-
-        role = Role.query.filter_by(name=form.membership_type.data).first()
-        if role:
-            new_user.roles.append(role)
-        else:
-            flash(f"Role '{form.membership_type.data}' not found.", 'error')
-            return render_template('admin/add_user.html', form=form)
 
         db.session.add(new_user)
         db.session.commit()
 
-        
-        flash('Hesabınız oluşturuldu, aktivasyon yapınız!', 'success')
+        flash('Yeni kullanıcı başarıyla eklendi.', 'success')
         return redirect(url_for('admin.users'))
 
     return render_template('admin/add_user.html', form=form)
+
 
 @admin.route('/admin/delete_user/<int:user_id>', methods=['POST'])
 @login_required
@@ -190,6 +183,57 @@ def delete_user(user_id):
 
 
 
+@admin.route('/assign_role', methods=['GET', 'POST'])
+@login_required
+@admin_permission.require(http_exception=403)
+def assign_role():
+    form = AssignRoleForm()
+    if form.validate_on_submit():
+        user_id = form.user.data
+        role_id = form.role.data
+        user = User.query.get(user_id)
+        role = Role.query.get(role_id)
+        if user and role:
+            # Kullanıcıya rol ekleme
+            if role not in user.roles:
+                user.roles.append(role)
+            # Kullanıcının membership_type sütununu güncelleme
+            user.membership_type = role.name
+            db.session.commit()
+            flash('Rol başarıyla atandı ve kullanıcı türü güncellendi.', 'success')
+        else:
+            flash('Kullanıcı veya rol bulunamadı.', 'error')
+        return redirect(url_for('admin.assign_role'))
+    return render_template('admin/assign_role.html', form=form)
 
 
+@admin.route('/admin/profile', methods=['GET', 'POST'])
+@login_required
+@admin_permission.require(http_exception=403)
+def user_profile():
+    user = current_user
+    profile_form = UserProfileForm(obj=user)
+    password_form = UserPasswordForm()
+    
+    if "profile_submit" in request.form and profile_form.validate_on_submit():
+        # Profil güncelleme işlemleri
+        user.first_name = profile_form.first_name.data
+        user.last_name = profile_form.last_name.data
+        user.email = profile_form.email.data
+        # Profil resmi ve diğer alanlar için ek işlemler...
+        db.session.commit()
+        flash('Your profile has been updated.', 'success')
+        return redirect(url_for('admin.user_profile'))
+
+    if "password_submit" in request.form and password_form.validate_on_submit():
+        # Şifre güncelleme işlemleri
+        if user.check_password(password_form.current_password.data):
+            user.set_password(password_form.new_password.data)
+            db.session.commit()
+            flash('Your password has been changed.', 'success')
+        else:
+            flash('Current password is not correct.', 'danger')
+        return redirect(url_for('admin.user_profile'))
+    
+    return render_template('admin/profile.html', profile_form=profile_form, password_form=password_form)
 

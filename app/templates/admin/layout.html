@@ -9,6 +9,8 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Bootstrap CSS-->
     
     <link rel="stylesheet" href="{{ url_for('static', filename='admin/vendor/bootstrap/css/bootstrap.min.css') }}">
@@ -71,7 +73,7 @@
           </li> -->
           {% if current_user.is_authenticated %}
           <ul class="nav-item dropdown ml-auto"><a id="userInfo" href="http://example.com" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-primary navbar-btn ml-0 ml-lg-3"><img src="{{ url_for('static', filename='admin/img/user.png') }}" alt="Jason Doe" style="max-width: 2.5rem;" class="img-fluid rounded-circle shadow"> {{ current_user.first_name }} {{ current_user.last_name }}</a>
-            <div aria-labelledby="userInfo" class="dropdown-menu"><a href="#" class="dropdown-item"><strong class="d-block text-uppercase headings-font-family">İsim</strong></a>
+            <div aria-labelledby="userInfo" class="dropdown-menu"><a href="{{ url_for('admin.user_profile') }}" class="dropdown-item"><strong class="d-block text-uppercase headings-font-family">Profilim</strong></a>
               <div class="dropdown-divider"></div><a href="{{ url_for('auth.logout') }}" class="dropdown-item">Çıkış</a>
             </div>
           </ul>
@@ -160,6 +162,7 @@
                   <li class="sidebar-list-item"><a href="{{ url_for('admin.mail_settings') }}" class="sidebar-link text-muted pl-lg-5">Mail Ayarları</a></li>
                   <li class="sidebar-list-item"><a href="{{ url_for('admin.modul_ayarlari') }}" class="sidebar-link text-muted pl-lg-5">Modül Ayarları</a></li>
                   <li class="sidebar-list-item"><a href="{{ url_for('admin.kdsid_ayarlari') }}" class="sidebar-link text-muted pl-lg-5">Artış Ayarları</a></li>
+                  <li class="sidebar-list-item"><a href="{{ url_for('admin.assign_role') }}" class="sidebar-link text-muted pl-lg-5">Rol Atama</a></li>
                 </ul>
               </div>
             </li>

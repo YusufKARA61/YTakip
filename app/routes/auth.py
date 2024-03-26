@@ -30,11 +30,11 @@ def check_user_logged_in():
         return redirect(url_for('auth.profile'))
 
 
+
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        # E-posta adresinin zaten kayıtlı olup olmadığını kontrol edin
         existing_user = User.query.filter_by(email=form.email.data).first()
         if existing_user:
             flash('Bu e-posta adresi zaten kullanılıyor.', 'error')
@@ -49,30 +49,23 @@ def register():
             last_name=form.last_name.data,
             active=True,
             email_confirmed=False,
-            membership_type=form.membership_type.data
+            membership_type='muteahhit'
         )
-
-        role = Role.query.filter_by(name=form.membership_type.data).first()
-        if role:
-            new_user.roles.append(role)
-        else:
-            flash(f"Role '{form.membership_type.data}' not found.", 'error')
-            return render_template('frontend/register.html', form=form)
 
         db.session.add(new_user)
         db.session.commit()
 
         # Token oluştur ve e-posta gönder
-        # Token üreteci oluşturma
         s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         token = s.dumps(new_user.email, salt='email-activation')
+        
+        # Bu fonksiyon, uygulamanızın gerçek e-posta gönderme işlevini temsil eder
         send_activation_email(new_user.email, token)
 
-        flash('Hesabınız oluşturuldu, aktivasyon yapınız!', 'success')
+        flash('Hesabınız oluşturuldu, aktivasyon e-postanızı kontrol ediniz.', 'success')
         return redirect(url_for('auth.login'))
 
     return render_template('frontend/register.html', form=form)
-
 
 @auth.route('/activate/<token>')
 def activate_account(token):

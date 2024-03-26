@@ -43,9 +43,12 @@
             <div class="tab-pane fade" id="fizibilite" role="tabpanel" aria-labelledby="fizibilite-tab">
               <div class="text-right">
                 <form method="post" action="/export_excel">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                   <input type="hidden" name="proje_id" value="{{ proje.proje_id }}">
                   <button type="submit" class="btn btn-primary">Excel'e Aktar</button>
                 </form>
+              
+              
               </div>
               <br>
               <table class="table table-bordered">

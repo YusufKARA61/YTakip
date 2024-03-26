@@ -16,30 +16,35 @@ function cancelDeletion() {
 
 function deleteItem() {
   var projeId = $('#silmeOnayModal').data('proje-id');
+  var csrfToken = $('meta[name="csrf-token"]').attr('content'); // CSRF token'ı alın
 
   if (projeId) {
     var deleteURL = "/sil_proje/" + projeId;
 
     $.ajax({
       url: deleteURL,
-      method: "POST",
+      type: "POST",
       data: JSON.stringify({ proje_id: projeId }),
       contentType: "application/json",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader("X-CSRFToken", csrfToken); // CSRF token'ını istek başlığına ekleyin
+      },
       success: function(response) {
         $('#silmeOnayModal').modal('hide'); // Silme onay modalını kapat
         showMessageModal(response.message);
-        setTimeout(function(){ 
+        setTimeout(function() { 
           window.location.reload(); // 1 saniye sonra sayfayı yenile
         }, 1000);
       },
       error: function(xhr, status, error) {
-        console.log(error);
+        console.log('Hata: ' + error);
       }
     });
   } else {
     console.error('Proje ID tanımsız!');
   }
 }
+
 
 function showUserDeletionConfirmation(button) {
   var userId = $(button).data('user-id');
@@ -58,19 +63,24 @@ function cancelUserDeletion() {
 
 function deleteUser() {
   var userId = $('#userDeletionConfirmModal').data('user-id');
+  var csrfToken = $('meta[name="csrf-token"]').attr('content'); // CSRF token'ı alın
 
   if (userId) {
     var deleteURL = "/admin/delete_user/" + userId;
 
     $.ajax({
       url: deleteURL,
-      method: "POST",
+      type: "POST",
+      data: JSON.stringify({ user_id: userId }),
       contentType: "application/json",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader("X-CSRFToken", csrfToken); // CSRF token'ını istek başlığına ekleyin
+      },
       success: function(response) {
-        $('#userDeletionConfirmModal').modal('hide'); // Kullanıcı silme onay modalını kapat
-        showMessageModal(response.message); // Başarı mesajını göster
-        setTimeout(function(){ 
-          window.location.reload(); // 1 saniye sonra sayfayı yenile
+        $('#userDeletionConfirmModal').modal('hide');
+        showMessageModal('Kullanıcı başarıyla silindi.');
+        setTimeout(function() {
+          window.location.reload();
         }, 1000);
       },
       error: function(xhr, status, error) {
@@ -83,6 +93,7 @@ function deleteUser() {
 }
 
 
+
 function showMessageModal(message) {
   $('#message-modal .modal-body').text(message);
   $('#message-modal').modal('show');
@@ -93,47 +104,6 @@ function closeMessageModal() {
   window.location.reload(); // Sayfayı yenile
 }
 
-function showUserConfirmation(button) {
-  var userId = $(button).data('user-id');
-  
-  if (userId) {
-    $('#silmeOnayModal').modal('show');
-    $('#silmeOnayModal').data('user-id', userId);
-  } else {
-    alert('Kullanıcı ID alınamadı.');
-  }
-}
-
-function cancelUserDeletion() {
-  $('#silmeOnayModal').modal('hide');
-}
-
-function deleteUserItem() {
-  var userId = $('#silmeOnayModal').data('user-id');
-
-  if (userId) {
-    var deleteURL = "/sil_kullanici/" + userId;
-
-    $.ajax({
-      url: deleteURL,
-      method: "POST",
-      data: JSON.stringify({ user_id: userId }),
-      contentType: "application/json",
-      success: function(response) {
-        $('#silmeOnayModal').modal('hide');
-        showMessageModal(response.message);
-        setTimeout(function(){ 
-          window.location.reload();
-        }, 1000);
-      },
-      error: function(xhr, status, error) {
-        console.error('Kullanıcı ID tanımsız!');
-      }
-    });
-  } else {
-    console.error('Kullanıcı ID tanımsız!');
-  }
-}
 
 var map;
 var vectorSource;

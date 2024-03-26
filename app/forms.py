@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SelectField, SubmitField, BooleanField, RadioField, EmailField, FileField, IntegerField, FloatField, DateField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo, Optional, Length
 from flask_wtf.file import FileRequired, FileAllowed
-from app.models import User  # User modelinizi import ettiğinizden emin olun
+from app.models import User, Role  # User modelinizi import ettiğinizden emin olun
 
 
 
@@ -13,15 +13,20 @@ class RegistrationForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
-    
-    # Membership Type seçeneği
-    membership_type = RadioField('Üyelik Tipi', choices=[
-        ('muteahhit', 'Müteahhit')
-    ])
-    
-
-    
     submit = SubmitField('Register')
+
+
+# forms.py içinde
+class AssignRoleForm(FlaskForm):
+    user = SelectField('Kullanıcı Seç', coerce=int)
+    role = SelectField('Rol Seç', coerce=int)
+    submit = SubmitField('Ata')
+
+    def __init__(self, *args, **kwargs):
+        super(AssignRoleForm, self).__init__(*args, **kwargs)
+        self.user.choices = [(u.user_id, u.email) for u in User.query.all()]
+        self.role.choices = [(r.id, r.name) for r in Role.query.all()]
+
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -37,6 +42,21 @@ class ProfileForm(FlaskForm):
     password = PasswordField('Yeni Şifre', validators=[Optional(), EqualTo('confirm_password', message='Şifreler eşleşmeli')])
     confirm_password = PasswordField('Şifreyi Onayla')
     submit = SubmitField('Güncelle')
+
+class UserProfileForm(FlaskForm):
+    first_name = StringField('First Name', validators=[DataRequired()])
+    last_name = StringField('Last Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    profile_picture = FileField('Profile Picture')
+    department = StringField('Department', validators=[DataRequired()])
+    role = StringField('Role', validators=[DataRequired()])
+    submit = SubmitField('Save Changes')
+
+class UserPasswordForm(FlaskForm):
+    current_password = PasswordField('Current Password', validators=[DataRequired()])
+    new_password = PasswordField('New Password', validators=[DataRequired(), Length(min=6)])
+    confirm_password = PasswordField('Confirm New Password', validators=[DataRequired(), EqualTo('new_password')])
+    submit = SubmitField('Change Password')
 
 
 class AyarlarForm(FlaskForm):
