@@ -1,19 +1,53 @@
 # forms.py
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SelectField, SubmitField, BooleanField, RadioField, EmailField, FileField, IntegerField, FloatField, DateField, TextAreaField
+from wtforms import StringField, PasswordField, SelectField, SubmitField, BooleanField, RadioField, EmailField, FileField, IntegerField, FloatField, DateField, TextAreaField, validators
 from wtforms.validators import DataRequired, Email, EqualTo, Optional, Length
 from flask_wtf.file import FileRequired, FileAllowed
-from app.models import User, Role  # User modelinizi import ettiğinizden emin olun
+from app.models import User, Role, Department  # User modelinizi import ettiğinizden emin olun
 
 
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    first_name = StringField('First Name', validators=[DataRequired()])
-    last_name = StringField('Last Name', validators=[DataRequired()])
-    submit = SubmitField('Register')
+    password = PasswordField('Şifre', validators=[DataRequired()])
+    confirm_password = PasswordField('Tekrar Şifre', validators=[DataRequired(), EqualTo('password')])
+    first_name = StringField('İsim', validators=[DataRequired()])
+    last_name = StringField('Soyisim', validators=[DataRequired()])
+    submit = SubmitField('Kayıt')
+
+class AddUserForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    first_name = StringField('İsim', validators=[DataRequired()])
+    last_name = StringField('Soyisim', validators=[DataRequired()])
+    password = PasswordField('Şifre', validators=[DataRequired()])
+    confirm_password = PasswordField('Tekrar Şifre', validators=[EqualTo('password', message='Şifreler Birbirini Karşılamıyor')])
+    department = SelectField('Müdürlük', coerce=int)
+    sub_department = SelectField('Şeflik', coerce=int)
+    role = SelectField('Rol', coerce=int)  # Yeni eklenen alan: Rol seçimi
+    submit = SubmitField('Ekle')
+
+    def __init__(self, *args, **kwargs):
+        super(AddUserForm, self).__init__(*args, **kwargs)
+        self.department.choices = [(d.id, d.name) for d in Department.query.all()]
+        self.sub_department.choices = [(0, 'Lütfen,Müdürlük Seçiniz')]
+        self.role.choices = [(r.id, r.name) for r in Role.query.filter(Role.name != 'muteahhit').all()]
+
+
+
+class DepartmentForm(FlaskForm):
+    name = StringField('Departman Adı', validators=[validators.DataRequired()])
+    submit = SubmitField('Departman Ekle')
+
+class SubDepartmentForm(FlaskForm):
+    name = StringField('Alt Departman Adı', validators=[validators.DataRequired()])
+    department_id = SelectField('Üst Departman Seç', coerce=int, validators=[validators.DataRequired()])
+    submit = SubmitField('Alt Departman Ekle')
+
+    def __init__(self, *args, **kwargs):
+        super(SubDepartmentForm, self).__init__(*args, **kwargs)
+        # Dinamik olarak departman seçeneklerini doldur
+
+        self.department_id.choices = [(d.id, d.name) for d in Department.query.order_by('name')]
 
 
 # forms.py içinde
@@ -27,11 +61,15 @@ class AssignRoleForm(FlaskForm):
         self.user.choices = [(u.user_id, u.email) for u in User.query.all()]
         self.role.choices = [(r.id, r.name) for r in Role.query.all()]
 
+class RoleForm(FlaskForm):
+    name = StringField('Rol Adı', validators=[DataRequired()])
+    description = TextAreaField('Açıklama')
+    submit = SubmitField('Ekle')
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Login')
+    password = PasswordField('Şifre', validators=[DataRequired()])
+    submit = SubmitField('Giriş')
 
 class ProfileForm(FlaskForm):
     first_name = StringField('Ad', validators=[DataRequired()])
@@ -44,12 +82,12 @@ class ProfileForm(FlaskForm):
     submit = SubmitField('Güncelle')
 
 class UserProfileForm(FlaskForm):
-    first_name = StringField('First Name', validators=[DataRequired()])
-    last_name = StringField('Last Name', validators=[DataRequired()])
+    first_name = StringField('İsim', validators=[DataRequired()])
+    last_name = StringField('Soyisim', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    profile_picture = FileField('Profile Picture')
-    department = StringField('Department', validators=[DataRequired()])
-    role = StringField('Role', validators=[DataRequired()])
+    profile_picture = FileField('Profil Fotoğrafı')
+    department = StringField('Müdürlük', validators=[DataRequired()])
+    role = StringField('Görev', validators=[DataRequired()])
     submit = SubmitField('Save Changes')
 
 class UserPasswordForm(FlaskForm):

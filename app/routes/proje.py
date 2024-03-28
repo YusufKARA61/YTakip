@@ -108,7 +108,7 @@ def proje_ekle():
 @login_required
 def projeler():
     # Admin veya şef rolüne sahipse tüm projeleri al
-    if current_user.has_role('admin') or current_user.has_role('sef'):
+    if current_user.has_role('admin') or current_user.has_role('Etüt ve Proje Şefi'):
         projeler = db.session.query(Proje, User).join(User, Proje.user_id == User.user_id).all()
     # Koordinatör rolüne sahipse sadece kendi projelerini al
     elif current_user.has_role('koordinator'):

@@ -114,7 +114,7 @@
             {% endif %}
         
             <!-- Projeler menü öğesi -->
-            {% if modulayar.projeler_aktif and current_user.has_role('koordinator') or current_user.has_role('sef') or current_user.has_role('admin') %}
+            {% if modulayar.projeler_aktif and current_user.has_role('koordinator') or current_user.has_role('Etüt ve Proje Şefi') or current_user.has_role('admin') %}
             <li class="sidebar-list-item">
               <a href="{{ url_for('proje.projeler') }}" class="sidebar-link text-muted">
                 <i class="o-wireframe-1 mr-3 text-gray"></i><span>Projeler</span>
@@ -132,7 +132,7 @@
             {% endif %}
         
             <!-- Mesajlar menü öğesi -->
-            {% if modulayar.mesajlar_aktif and current_user.has_role('admin') %}
+            {% if modulayar.mesajlar_aktif and current_user.has_role('raportor') or current_user.has_role('Riskli Yapı Şefi') or current_user.has_role('admin') %}
             <li class="sidebar-list-item">
               <a href="{{ url_for('ruhsat.ruhsat_listele') }}" class="sidebar-link text-muted">
                 <i class="o-paperwork-1 mr-3 text-gray"></i><span>Yapı Ruhsat Bilgileri</span>
@@ -141,7 +141,7 @@
             {% endif %}
         
             <!-- Riskli Yapılar menü öğesi -->
-            {% if modulayar.riskli_yapı_aktif and current_user.has_role('raportor') or current_user.has_role('sef') or current_user.has_role('admin') %}
+            {% if modulayar.riskli_yapı_aktif and current_user.has_role('raportor') or current_user.has_role('Riskli Yapı Şefi') or current_user.has_role('admin') %}
             <li class="sidebar-list-item">
               <a href="{{ url_for('riskli.listele') }}" class="sidebar-link text-muted">
                 <i class="o-archive-folder-1 mr-3 text-gray"></i><span>Riskli Yapılar</span>
@@ -162,6 +162,9 @@
                   <li class="sidebar-list-item"><a href="{{ url_for('admin.mail_settings') }}" class="sidebar-link text-muted pl-lg-5">Mail Ayarları</a></li>
                   <li class="sidebar-list-item"><a href="{{ url_for('admin.modul_ayarlari') }}" class="sidebar-link text-muted pl-lg-5">Modül Ayarları</a></li>
                   <li class="sidebar-list-item"><a href="{{ url_for('admin.kdsid_ayarlari') }}" class="sidebar-link text-muted pl-lg-5">Artış Ayarları</a></li>
+                  <li class="sidebar-list-item"><a href="{{ url_for('admin.add_department') }}" class="sidebar-link text-muted pl-lg-5">Müdürlük Ekle</a></li>
+                  <li class="sidebar-list-item"><a href="{{ url_for('admin.add_sub_department') }}" class="sidebar-link text-muted pl-lg-5">Şeflik Ekle</a></li>
+                  <li class="sidebar-list-item"><a href="{{ url_for('admin.add_role') }}" class="sidebar-link text-muted pl-lg-5">Görev Ekle</a></li>
                   <li class="sidebar-list-item"><a href="{{ url_for('admin.assign_role') }}" class="sidebar-link text-muted pl-lg-5">Rol Atama</a></li>
                 </ul>
               </div>

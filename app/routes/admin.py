@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from flask_principal import Permission, Principal, RoleNeed
-from app.models import User, Ayarlar, ModulAyar, MailSettings, KdsidAyar, db, roles_users, Role, Harita
+from app.models import User, Ayarlar, ModulAyar, MailSettings, KdsidAyar, db, roles_users, Role, Harita, Department, SubDepartment
 from app.permissions import admin_permission
-from app.forms import AyarlarForm, ModulAyarForm, MailSettingsForm, KdsidAyarForm, RegistrationForm, AssignRoleForm, UserProfileForm, UserPasswordForm
+from app.forms import AyarlarForm, ModulAyarForm, MailSettingsForm, KdsidAyarForm, AssignRoleForm, UserProfileForm, UserPasswordForm, AddUserForm, DepartmentForm, SubDepartmentForm, RoleForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask import current_app
@@ -138,7 +138,11 @@ def users():
 @login_required
 @admin_permission.require(http_exception=403)
 def add_user():
-    form = RegistrationForm()
+    # Departman ve alt departman seçimlerini form içine ekleyin
+    form = AddUserForm()
+    form.department.choices = [(d.id, d.name) for d in Department.query.all()]
+    form.sub_department.choices = [(sd.id, sd.name) for sd in SubDepartment.query.all()]
+    
     if form.validate_on_submit():
         existing_user = User.query.filter_by(email=form.email.data).first()
         if existing_user:
@@ -147,16 +151,23 @@ def add_user():
 
         hashed_password = generate_password_hash(form.password.data)
 
-        # 'membership_type' alanını sabit bir değer olarak ayarlayın. Örneğin, boş bir string ('').
         new_user = User(
             email=form.email.data,
             password=hashed_password,
             first_name=form.first_name.data,
             last_name=form.last_name.data,
+            department_id=form.department.data,
+            sub_department_id=form.sub_department.data,
+            membership_type=form.role.data,
             active=True,
-            email_confirmed=True,  # Kullanıcıyı doğrudan onaylanmış olarak işaretle
-            membership_type=''  # 'membership_type' için varsayılan değer
+            email_confirmed=True
         )
+
+        # Seçilen rolü al
+        selected_role = Role.query.get(form.role.data)
+
+        # Yeni kullanıcıya rol ata
+        new_user.roles.append(selected_role)
 
         db.session.add(new_user)
         db.session.commit()
@@ -166,6 +177,47 @@ def add_user():
 
     return render_template('admin/add_user.html', form=form)
 
+
+
+@admin.route('/add_department', methods=['GET', 'POST'])
+def add_department():
+    form = DepartmentForm()
+    if form.validate_on_submit():
+        department = Department(name=form.name.data)
+        db.session.add(department)
+        db.session.commit()
+        flash('Departman başarıyla eklendi.', 'success')
+        return redirect(url_for('admin.add_department'))
+    departments = Department.query.all()
+    return render_template('admin/add_department.html', form=form, departments=departments)
+
+@admin.route('/add_sub_department', methods=['GET', 'POST'])
+def add_sub_department():
+    form = SubDepartmentForm()
+    if form.validate_on_submit():
+        sub_department = SubDepartment(name=form.name.data, department_id=form.department_id.data)
+        db.session.add(sub_department)
+        db.session.commit()
+        flash('Alt departman başarıyla eklendi.', 'success')
+        return redirect(url_for('admin.add_sub_department'))
+    sub_departments = SubDepartment.query.all()
+    return render_template('admin/add_sub_department.html', form=form, sub_departments=sub_departments)
+
+@admin.route('/add_role', methods=['GET', 'POST'])
+@login_required
+@admin_permission.require(http_exception=403)
+def add_role():
+    form = RoleForm()
+    if form.validate_on_submit():
+        new_role = Role(
+            name=form.name.data,
+            description=form.description.data
+        )
+        db.session.add(new_role)
+        db.session.commit()
+        flash('Yeni rol başarıyla eklendi.', 'success')
+        return redirect(url_for('admin.add_role'))
+    return render_template('admin/add_role.html', form=form)
 
 @admin.route('/admin/delete_user/<int:user_id>', methods=['POST'])
 @login_required

@@ -12,9 +12,26 @@ roles_users = db.Table('roles_users',
     db.Column('role_id', db.Integer(), db.ForeignKey('role.id'))
 )
 
+class Department(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+
+    # İlişkiler
+    sub_departments = db.relationship('SubDepartment', backref='department', lazy=True)
+
+class SubDepartment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
+
+    # İlişkiler
+    users = db.relationship('User', backref='sub_department', lazy=True)
+
+
 class Role(db.Model):
     __tablename__ = 'role'
     id = db.Column(db.Integer(), primary_key=True)
+    department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
 
@@ -29,6 +46,8 @@ class User(db.Model, UserMixin):
     fs_uniquifier = db.Column(db.String(255), unique=True)
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
+    department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
+    sub_department_id = db.Column(db.Integer, db.ForeignKey('sub_department.id'))
     roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
     def get_id(self):
         return str(self.user_id)

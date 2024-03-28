@@ -1,15 +1,15 @@
 {% extends "admin/layout.html" %}
 
-{% block title %}Admin Panel - Kullanıcı Ekle{% endblock %}
+{% block title %}Admin Panel - Departman Ekleme{% endblock %}
 
 {% block content %}
 <section class="py-5">
     <div class="container mt-4">
         <div class="row">
-            <div class="col-lg-12 mb-5">
+            <div class="col-lg-6 mb-5">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="h6 text-uppercase mb-0">Kullanıcı Ekleme Sayfası</h3>
+                        <h3 class="h6 text-uppercase mb-0">Departman Ekleme Formu</h3>
                     </div>
                     {% with messages = get_flashed_messages(with_categories=true) %}
                         {% if messages %}
@@ -44,6 +44,20 @@
                                 </div>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="h6 text-uppercase mb-0">Eklenmiş Departmanlar</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            {% for sub_department in sub_departments %}
+                            <li>{{ sub_department.name }}</li>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
             </div>

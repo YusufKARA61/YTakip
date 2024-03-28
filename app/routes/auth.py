@@ -96,7 +96,6 @@ def login():
                                       identity=Identity(user.user_id))
                 session.permanent = True
 
-                flash('Giriş Başarılı!', 'success')
 
                 # Kullanıcının rolüne göre yönlendirme yap
                 if any(role.name == 'muteahhit' for role in user.roles):
